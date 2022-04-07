@@ -2,6 +2,7 @@ using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 
 public class TestConnect : MonoBehaviourPunCallbacks
@@ -9,6 +10,7 @@ public class TestConnect : MonoBehaviourPunCallbacks
     public Text text; //debug
 
     MasterManager masterManager;
+    bool printable = false; //debug
 
     void Awake()
     {
@@ -48,13 +50,7 @@ public class TestConnect : MonoBehaviourPunCallbacks
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
         Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
         Debug.Log(PhotonNetwork.CurrentRoom.MaxPlayers);
-
-        //debug text on screen
-        string toPrint = "Nickname: " + PhotonNetwork.NickName + "\n\n";
-        toPrint += "Room name: " + PhotonNetwork.CurrentRoom.Name + " \n";
-        toPrint += "Number of players: " + PhotonNetwork.CurrentRoom.PlayerCount + "\n";
-        toPrint += "Max number of players: " + PhotonNetwork.CurrentRoom.MaxPlayers;
-        text.text = toPrint;
+        printable = true; //debug
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -66,6 +62,28 @@ public class TestConnect : MonoBehaviourPunCallbacks
         roomOptions.MaxPlayers = (byte)masterManager.MaxPlayersNumber();
         string roomName = PhotonNetwork.NickName + "_room";
         PhotonNetwork.CreateRoom(roomName, roomOptions, TypedLobby.Default);
+    }
+
+    void Update()
+    {
+        //debug text on screen
+        if (printable)
+        { 
+            string toPrint = "Nickname: " + PhotonNetwork.NickName + "\n\n";
+
+            toPrint += "Room name: " + PhotonNetwork.CurrentRoom.Name + " \n";
+            toPrint += "Number of players: " + PhotonNetwork.CurrentRoom.PlayerCount + "\n";
+            toPrint += "Max number of players: " + PhotonNetwork.CurrentRoom.MaxPlayers + "\n\n";
+
+            toPrint += "Player in room:\n";
+            Dictionary<int, Player> dictionary = PhotonNetwork.CurrentRoom.Players;
+            foreach (Player p in dictionary.Values)
+            {
+                toPrint += "- " + p.NickName + "\n";
+            }
+
+            text.text = toPrint;
+        }
     }
 
     /*
