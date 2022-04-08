@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 2016628729}
   - component: {fileID: 2016628728}
   m_Layer: 0
-  m_Name: TestConnection
+  m_Name: Quick Match
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -590,6 +590,7 @@ MonoBehaviour:
   gameVersion: 0.0.1
   playerName: shanga_93
   maxPlayersNumber: 8
+  minPlayersNumber: 2
 --- !u!4 &2016628730
 Transform:
   m_ObjectHideFlags: 0

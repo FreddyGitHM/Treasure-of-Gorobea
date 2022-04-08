@@ -5,17 +5,23 @@ using UnityEngine.UI;
 using System.Collections.Generic;
 
 
-public class TestConnect : MonoBehaviourPunCallbacks
+public class QuickMatch : MonoBehaviourPunCallbacks
 {
     public Text text; //debug
 
     MasterManager masterManager;
-    bool printable = false; //debug
+    bool roomJoined;
+    bool starting;
+    float countdown;
 
     void Awake()
     {
         Application.targetFrameRate = 60;
+
         masterManager = gameObject.GetComponent<MasterManager>();
+        roomJoined = false;
+        starting = false;
+        countdown = 10f;
     }
 
     void Start()
@@ -24,6 +30,7 @@ public class TestConnect : MonoBehaviourPunCallbacks
         int n = Random.Range(0, 9999);
         PhotonNetwork.NickName = masterManager.PlayerName() + "_" + n.ToString();
         PhotonNetwork.GameVersion = masterManager.GameVersion();
+        PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
     }
 
@@ -50,7 +57,7 @@ public class TestConnect : MonoBehaviourPunCallbacks
         Debug.Log(PhotonNetwork.CurrentRoom.Name);
         Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
         Debug.Log(PhotonNetwork.CurrentRoom.MaxPlayers);
-        printable = true; //debug
+        roomJoined = true;
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message)
@@ -66,10 +73,11 @@ public class TestConnect : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        //debug text on screen
-        if (printable)
-        { 
-            string toPrint = "Nickname: " + PhotonNetwork.NickName + "\n\n";
+        if(roomJoined)
+        {
+            //debug text on screen
+            string toPrint = "Nickname: " + PhotonNetwork.NickName + "\n";
+            toPrint += "Host: " + PhotonNetwork.IsMasterClient + "\n\n";
 
             toPrint += "Room name: " + PhotonNetwork.CurrentRoom.Name + " \n";
             toPrint += "Number of players: " + PhotonNetwork.CurrentRoom.PlayerCount + "\n";
@@ -82,23 +90,38 @@ public class TestConnect : MonoBehaviourPunCallbacks
                 toPrint += "- " + p.NickName + "\n";
             }
 
+            if (countdown < 10f && countdown >= 0f)
+            {
+                toPrint += "\nCountdown: " + (int)countdown;
+            }
+
             text.text = toPrint;
+
+
+            if(PhotonNetwork.CurrentRoom.PlayerCount >= (byte)masterManager.MinPlayersNumber())
+            {
+                countdown -= Time.deltaTime;
+                if(countdown <= 0f)
+                {
+                    if (starting == false && PhotonNetwork.IsMasterClient)
+                    {
+                        starting = true;
+                        StartGame();
+                    }
+                }
+            }
+            else
+            {
+                countdown = 10f;
+            }
         }
     }
 
-    /*
-    public override void OnRoomListUpdate(List<RoomInfo> roomList)
+    public void StartGame()
     {
-        string toPrint = "Rooms list: \n";
-        Debug.Log("Rooms list:");
-        foreach(RoomInfo info in roomList)
-        {
-            Debug.Log(info.Name.Substring(0,10) + " - players: " + info.PlayerCount + " - max: " + info.MaxPlayers);
-            toPrint += info.Name.Substring(0, 10) + " - players: " + info.PlayerCount + " - max: " + info.MaxPlayers + "\n";
-        }
-        //text.text = toPrint;
-    }*/
-
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.LoadLevel(1);
+    }
 
 
     //errors

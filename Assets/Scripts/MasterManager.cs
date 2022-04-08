@@ -9,6 +9,8 @@ public class MasterManager : MonoBehaviour
     string playerName = "shanga_93";
     [SerializeField]
     int maxPlayersNumber = 8;
+    [SerializeField]
+    int minPlayersNumber = 2;
 
     public MasterManager() {}
 
@@ -26,5 +28,10 @@ public class MasterManager : MonoBehaviour
     {
         return maxPlayersNumber;
     }
+
+    public int MinPlayersNumber()
+    {
+        return minPlayersNumber;
+    }    
 
 }
