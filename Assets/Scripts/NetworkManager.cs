@@ -21,6 +21,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             //send random position for players
             foreach (Player p in PhotonNetwork.PlayerList)
             {
+                //set here the spawn position
                 Vector3 spawnPos = new Vector3(Random.Range(-5f, 5f), 0.5f, Random.Range(-5f, 5f));
                 Debug.Log("Position for player " + p.NickName + ": " + spawnPos);
 
@@ -39,7 +40,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                     PhotonNetwork.RaiseEvent(SPAWN_POSITION, data, raiseEventOptions, sendOptions);
                 } else
                 {
-                    PhotonNetwork.Instantiate("Cube", spawnPos, Quaternion.identity);
+                    //choose the Prefab to spawn
+                    //PhotonNetwork.Instantiate("Prefab_name", spawnPos, Quaternion.identity);
                 }
             }
         }
@@ -62,7 +64,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             case SPAWN_POSITION:
                 object[] data = (object[])eventData.CustomData;
                 Vector3 spawnPos = (Vector3)data[0];
-                PhotonNetwork.Instantiate("Cube", spawnPos, Quaternion.identity);
+                //PhotonNetwork.Instantiate("Prefab_name", spawnPos, Quaternion.identity);
                 break;
         }
     }
