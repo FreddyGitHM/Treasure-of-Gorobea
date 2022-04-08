@@ -11,6 +11,8 @@ public class MasterManager : MonoBehaviour
     int maxPlayersNumber = 8;
     [SerializeField]
     int minPlayersNumber = 2;
+    [SerializeField]
+    float countdown = 10f;
 
     public MasterManager() {}
 
@@ -32,6 +34,11 @@ public class MasterManager : MonoBehaviour
     public int MinPlayersNumber()
     {
         return minPlayersNumber;
-    }    
+    }
+
+    public float Countdown()
+    {
+        return countdown;
+    }
 
 }

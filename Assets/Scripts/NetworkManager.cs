@@ -1,14 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 using UnityEngine;
 
+
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
-
     const byte SPAWN_POSITION = 0;
+
+    GameObject player;
+    bool instantiated;
+    bool ready;
+
+    private void Awake()
+    {
+        instantiated = false;
+        ready = false;
+    }
 
     void Start()
     {
@@ -22,7 +30,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
             foreach (Player p in PhotonNetwork.PlayerList)
             {
                 //set here the spawn position
-                Vector3 spawnPos = new Vector3(Random.Range(-5f, 5f), 0.5f, Random.Range(-5f, 5f));
+                Vector3 spawnPos = new Vector3(Random.Range(10f, 20f), 0.5f, Random.Range(10f, 20f));
                 Debug.Log("Position for player " + p.NickName + ": " + spawnPos);
 
                 if (PhotonNetwork.LocalPlayer != p)
@@ -38,21 +46,43 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
                     Debug.Log("send SPAWN_POSITION to player: " + p.NickName);
                     PhotonNetwork.RaiseEvent(SPAWN_POSITION, data, raiseEventOptions, sendOptions);
-                } else
+                }
+                else
                 {
                     //choose the Prefab to spawn
-                    //PhotonNetwork.Instantiate("Prefab_name", spawnPos, Quaternion.identity);
+                    player = PhotonNetwork.Instantiate("Man", spawnPos, Quaternion.identity);
+                    instantiated = true;
                 }
             }
         }
     }
 
-    public void OnEnable()
+    private void Update()
+    {
+        if(instantiated == true && ready == false)
+        {
+            EnableComponents();
+            ready = true;
+            Debug.Log("Ready!");
+        }
+    }
+
+    private void EnableComponents()
+    {
+        player.GetComponent<BasicBehaviour>().enabled = true;
+        player.GetComponent<MoveBehaviour>().enabled = true;
+        GameObject camera = player.transform.GetComponentInChildren<Camera>().gameObject;
+        camera.GetComponent<Camera>().enabled = true;
+        camera.GetComponent<AudioListener>().enabled = true;
+        camera.GetComponent<ThirdPersonOrbitCamBasic>().enabled = true;
+    }
+
+    public override void OnEnable()
     {
         PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
     }
 
-    public void OnDisable()
+    public override void OnDisable()
     {
         PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
     }
@@ -62,9 +92,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         switch(eventData.Code)
         {
             case SPAWN_POSITION:
+                Debug.Log("event SPAWN_POSITION received");
                 object[] data = (object[])eventData.CustomData;
                 Vector3 spawnPos = (Vector3)data[0];
-                //PhotonNetwork.Instantiate("Prefab_name", spawnPos, Quaternion.identity);
+                player = PhotonNetwork.Instantiate("Man", spawnPos, Quaternion.identity);
+                instantiated = true;
                 break;
         }
     }

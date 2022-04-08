@@ -21,7 +21,7 @@ public class QuickMatch : MonoBehaviourPunCallbacks
         masterManager = gameObject.GetComponent<MasterManager>();
         roomJoined = false;
         starting = false;
-        countdown = 10f;
+        countdown = masterManager.Countdown();
     }
 
     void Start()
@@ -90,7 +90,7 @@ public class QuickMatch : MonoBehaviourPunCallbacks
                 toPrint += "- " + p.NickName + "\n";
             }
 
-            if (countdown < 10f && countdown >= 0f)
+            if (countdown < masterManager.Countdown() && countdown >= 0f)
             {
                 toPrint += "\nCountdown: " + (int)countdown;
             }
@@ -112,7 +112,7 @@ public class QuickMatch : MonoBehaviourPunCallbacks
             }
             else
             {
-                countdown = 10f;
+                countdown = masterManager.Countdown();
             }
         }
     }

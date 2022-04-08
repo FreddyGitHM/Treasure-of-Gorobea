@@ -591,6 +591,7 @@ MonoBehaviour:
   playerName: shanga_93
   maxPlayersNumber: 8
   minPlayersNumber: 2
+  countdown: 10
 --- !u!4 &2016628730
 Transform:
   m_ObjectHideFlags: 0
