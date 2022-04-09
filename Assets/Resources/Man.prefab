@@ -2061,8 +2061,9 @@ GameObject:
   - component: {fileID: 1088204488954779378}
   - component: {fileID: 5545491723765244346}
   - component: {fileID: 6142021591366153555}
-  - component: {fileID: 3831409252878758732}
   - component: {fileID: 3831409252878758735}
+  - component: {fileID: 3831409252878758732}
+  - component: {fileID: -5776917918640938823}
   - component: {fileID: 2105731966514423126}
   - component: {fileID: 8329540954669955129}
   - component: {fileID: 2788563135633983741}
@@ -2155,6 +2156,22 @@ CapsuleCollider:
   m_Height: 2.05
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &3831409252878758735
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5958799210285307442}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d91044bddee1594cb64cddcbb5e76b9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerCamera: {fileID: 4137297660452946753}
+  turnSmoothing: 0.06
+  sprintFOV: 100
+  sprintButton: Fire3
 --- !u!114 &3831409252878758732
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2172,9 +2189,9 @@ MonoBehaviour:
   sprintSpeed: 2
   speedDampTime: 0.1
   jumpButton: Jump
-  jumpHeight: 1.5
-  jumpIntertialForce: 10
---- !u!114 &3831409252878758735
+  jumpHeight: 0
+  jumpIntertialForce: 0
+--- !u!114 &-5776917918640938823
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2183,13 +2200,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5958799210285307442}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d91044bddee1594cb64cddcbb5e76b9, type: 3}
+  m_Script: {fileID: 11500000, guid: 931904f2c760b4e2ba545d4e0203800f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 4137297660452946753}
-  turnSmoothing: 0.06
-  sprintFOV: 100
-  sprintButton: Fire3
 --- !u!114 &2105731966514423126
 MonoBehaviour:
   m_ObjectHideFlags: 0

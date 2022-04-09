@@ -83,7 +83,7 @@ public class QuickMatch : MonoBehaviourPunCallbacks
             toPrint += "Number of players: " + PhotonNetwork.CurrentRoom.PlayerCount + "\n";
             toPrint += "Max number of players: " + PhotonNetwork.CurrentRoom.MaxPlayers + "\n\n";
 
-            toPrint += "Player in room:\n";
+            toPrint += "Players in room:\n";
             Dictionary<int, Player> dictionary = PhotonNetwork.CurrentRoom.Players;
             foreach (Player p in dictionary.Values)
             {

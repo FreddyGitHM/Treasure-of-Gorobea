@@ -4,7 +4,7 @@ using ExitGames.Client.Photon;
 using UnityEngine;
 
 
-public class NetworkManager : MonoBehaviourPunCallbacks
+public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     const byte SPAWN_POSITION = 0;
 
@@ -24,7 +24,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
         Debug.Log("Nickname: " + PhotonNetwork.NickName);
         Debug.Log("Host: " + PhotonNetwork.IsMasterClient);
 
-        if(PhotonNetwork.IsMasterClient)
+        if (PhotonNetwork.IsMasterClient)
         {
             //send random position for players
             foreach (Player p in PhotonNetwork.PlayerList)
@@ -54,12 +54,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                     instantiated = true;
                 }
             }
+
+            //debug pickup
+            PhotonNetwork.InstantiateRoomObject("PickableObject", new Vector3(19f, 0.5f, 21f), Quaternion.identity);
         }
     }
 
     private void Update()
     {
-        if(instantiated == true && ready == false)
+        if (instantiated == true && ready == false)
         {
             EnableComponents();
             ready = true;
@@ -71,6 +74,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
     {
         player.GetComponent<BasicBehaviour>().enabled = true;
         player.GetComponent<MoveBehaviour>().enabled = true;
+        player.GetComponent<PickUp>().enabled = true;
         GameObject camera = player.transform.GetComponentInChildren<Camera>().gameObject;
         camera.GetComponent<Camera>().enabled = true;
         camera.GetComponent<AudioListener>().enabled = true;
@@ -89,7 +93,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks
 
     private void OnEvent(EventData eventData)
     {
-        switch(eventData.Code)
+        switch (eventData.Code)
         {
             case SPAWN_POSITION:
                 Debug.Log("event SPAWN_POSITION received");
@@ -99,6 +103,21 @@ public class NetworkManager : MonoBehaviourPunCallbacks
                 instantiated = true;
                 break;
         }
+    }
+
+    public void OnOwnershipRequest(PhotonView targetView, Player requestingPlayer)
+    {
+        targetView.TransferOwnership(requestingPlayer);
+    }
+
+    void IPunOwnershipCallbacks.OnOwnershipTransfered(PhotonView targetView, Player previousOwner)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    void IPunOwnershipCallbacks.OnOwnershipTransferFailed(PhotonView targetView, Player senderOfFailedRequest)
+    {
+        throw new System.NotImplementedException();
     }
 
 }
