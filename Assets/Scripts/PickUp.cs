@@ -19,7 +19,10 @@ public class PickUp : MonoBehaviourPun
             int id = pickableObjects[pickableObjects.Count-1];
             RemovePickUp(id);
             GameObject pickUp = PhotonNetwork.GetPhotonView(id).gameObject;
-            pickUp.GetComponent<PhotonView>().RequestOwnership();
+            if (!PhotonNetwork.GetPhotonView(id).IsMine)
+            {
+                pickUp.GetComponent<PhotonView>().RequestOwnership();
+            }
 
             //copy info from pickup;
 
