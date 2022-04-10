@@ -4,8 +4,8 @@ using Photon.Pun;
 
 public class Pickable : MonoBehaviourPun
 {
-
-    private void OnTriggerEnter(Collider other)
+    
+    void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "Player" && other.gameObject.GetComponent<PhotonView>().IsMine)
         {
@@ -14,7 +14,7 @@ public class Pickable : MonoBehaviourPun
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if(other.gameObject.tag == "Player" && other.gameObject.GetComponent<PhotonView>().IsMine)
         {

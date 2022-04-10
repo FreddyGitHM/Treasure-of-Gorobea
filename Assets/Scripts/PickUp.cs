@@ -7,26 +7,29 @@ public class PickUp : MonoBehaviourPun
 {
     List<int> pickableObjects;
 
-    void Start()
+    void Awake()
     {
         pickableObjects = new List<int>();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<PhotonView>().IsMine && pickableObjects.Count > 0)
+        if(Input.GetKeyDown(KeyCode.E) && gameObject.GetComponent<PhotonView>().IsMine && pickableObjects.Count > 0)
         {
             int id = pickableObjects[pickableObjects.Count-1];
             RemovePickUp(id);
             GameObject pickUp = PhotonNetwork.GetPhotonView(id).gameObject;
-            if (!PhotonNetwork.GetPhotonView(id).IsMine)
+            if(!PhotonNetwork.GetPhotonView(id).IsMine)
             {
-                pickUp.GetComponent<PhotonView>().RequestOwnership();
+                //take ownership of the pick-up object
+                pickUp.GetComponent<PhotonView>().TransferOwnership(PhotonNetwork.LocalPlayer.ActorNumber);
             }
+            else
+            {
+                //copy info from pickup;
 
-            //copy info from pickup;
-
-            PhotonNetwork.Destroy(pickUp);
+                PhotonNetwork.Destroy(pickUp);
+            }
         }
     }
 
