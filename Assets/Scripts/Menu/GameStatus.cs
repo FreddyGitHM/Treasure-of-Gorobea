@@ -2,13 +2,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class PlayerStats : MonoBehaviour
+public class GameStatus : MonoBehaviour
 {
     public string username;
-
-    public int hp;
-    public float speed;
-    public int ammo;
 
     public int xp;
     public int coins;
@@ -16,4 +12,9 @@ public class PlayerStats : MonoBehaviour
     public List<int> skinsAvailable;
     public int weaponSelected;
     public List<int> weaponsAvailable;
+
+    public int resolutionIndex;
+    public bool fullScreen;
+    public int qualityIndex;
+    public float volume;
 }

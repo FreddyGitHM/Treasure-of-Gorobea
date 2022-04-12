@@ -1,12 +1,10 @@
 using UnityEngine;
 
 
-public class MasterManager : MonoBehaviour
+public class RoomManager : MonoBehaviour
 {
     [SerializeField]
     string gameVersion = "0.0.1";
-    [SerializeField]
-    string playerName = "shanga_93";
     [SerializeField]
     int maxPlayersNumber = 8;
     [SerializeField]
@@ -14,16 +12,11 @@ public class MasterManager : MonoBehaviour
     [SerializeField]
     float countdown = 10f;
 
-    public MasterManager() {}
+    public RoomManager() {}
 
     public string GameVersion()
     {
         return gameVersion;
-    }
-
-    public string PlayerName()
-    {
-        return playerName;
     }
 
     public int MaxPlayersNumber()

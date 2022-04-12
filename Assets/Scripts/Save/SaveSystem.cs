@@ -10,22 +10,26 @@ public static class SaveSystem
     {
         Debug.Log("Loading...");
 
-        PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
+        GameStatus gameStatus = GameObject.FindWithTag("GameController").GetComponent<GameStatus>();
 
         SaveData saveData = LoadFile();
         if(saveData == null) //no save data file found
         {
-            saveData = new SaveData(playerStats.username);
+            saveData = new SaveData(gameStatus.username);
             SaveFile(saveData);
         }
 
-        playerStats.username = saveData.username;
-        playerStats.xp = saveData.xp;
-        playerStats.coins = saveData.coins;
-        playerStats.skinSelected = saveData.skinSelected;
-        playerStats.skinsAvailable = saveData.skinsAvailable;
-        playerStats.weaponSelected = saveData.weaponSelected;
-        playerStats.weaponsAvailable = saveData.weaponsAvailable;
+        gameStatus.username = saveData.username;
+        gameStatus.xp = saveData.xp;
+        gameStatus.coins = saveData.coins;
+        gameStatus.skinSelected = saveData.skinSelected;
+        gameStatus.skinsAvailable = saveData.skinsAvailable;
+        gameStatus.weaponSelected = saveData.weaponSelected;
+        gameStatus.weaponsAvailable = saveData.weaponsAvailable;
+        gameStatus.resolutionIndex = saveData.resolutionIndex;
+        gameStatus.fullScreen = saveData.fullScreen;
+        gameStatus.qualityIndex = saveData.qualityIndex;
+        gameStatus.volume = saveData.volume;
 
         Debug.Log("Loaded");
     }
@@ -36,14 +40,18 @@ public static class SaveSystem
 
         SaveData saveData = new SaveData();
 
-        PlayerStats playerStats = GameObject.FindWithTag("Player").GetComponent<PlayerStats>();
-        saveData.username = playerStats.username;
-        saveData.xp = playerStats.xp;
-        saveData.coins = playerStats.coins;
-        saveData.skinSelected = playerStats.skinSelected;
-        saveData.skinsAvailable = playerStats.skinsAvailable;
-        saveData.weaponSelected = playerStats.weaponSelected;
-        saveData.weaponsAvailable = playerStats.weaponsAvailable;
+        GameStatus gameStatus = GameObject.FindWithTag("GameController").GetComponent<GameStatus>();
+        saveData.username = gameStatus.username;
+        saveData.xp = gameStatus.xp;
+        saveData.coins = gameStatus.coins;
+        saveData.skinSelected = gameStatus.skinSelected;
+        saveData.skinsAvailable = gameStatus.skinsAvailable;
+        saveData.weaponSelected = gameStatus.weaponSelected;
+        saveData.weaponsAvailable = gameStatus.weaponsAvailable;
+        saveData.resolutionIndex = gameStatus.resolutionIndex;
+        saveData.fullScreen = gameStatus.fullScreen;
+        saveData.qualityIndex = gameStatus.qualityIndex;
+        saveData.volume = gameStatus.volume;
 
         SaveFile(saveData);
 

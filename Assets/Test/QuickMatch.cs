@@ -9,7 +9,8 @@ public class QuickMatch : MonoBehaviourPunCallbacks
 {
     public Text text; //debug
 
-    MasterManager masterManager;
+    GameStatus gameStatus;
+    RoomManager masterManager;
     bool roomJoined;
     bool starting;
     float countdown;
@@ -18,7 +19,8 @@ public class QuickMatch : MonoBehaviourPunCallbacks
     {
         Application.targetFrameRate = 60;
 
-        masterManager = gameObject.GetComponent<MasterManager>();
+        gameStatus = GameObject.FindWithTag("GameController").GetComponent<GameStatus>();
+        masterManager = gameObject.GetComponent<RoomManager>();
         roomJoined = false;
         starting = false;
         countdown = masterManager.Countdown();
@@ -28,7 +30,7 @@ public class QuickMatch : MonoBehaviourPunCallbacks
     {
         Debug.Log("Connecting to server...");
         int n = Random.Range(0, 9999);
-        PhotonNetwork.NickName = masterManager.PlayerName() + "_" + n.ToString();
+        PhotonNetwork.NickName = gameStatus.username + "_" + n.ToString();
         PhotonNetwork.GameVersion = masterManager.GameVersion();
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
