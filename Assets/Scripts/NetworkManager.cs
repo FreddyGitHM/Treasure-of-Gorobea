@@ -77,6 +77,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<BasicBehaviour>().enabled = true;
         player.GetComponent<MoveBehaviour>().enabled = true;
         player.GetComponent<PickUp>().enabled = true;
+        player.GetComponent<Hide>().enabled = true;
+
         GameObject camera = player.transform.GetComponentInChildren<Camera>().gameObject;
         camera.GetComponent<Camera>().enabled = true;
         camera.GetComponent<AudioListener>().enabled = true;
@@ -119,6 +121,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 //copy info from pickup;
 
                 PhotonNetwork.Destroy(pickUp);
+                break;
+
+            //received the viewId of a player that it's hiding somewhere
+            case Codes.HIDE:
+                object[] data2 = (object[])eventData.CustomData;
+                GameObject otherPlayerGraphics = PhotonNetwork.GetPhotonView((int)data2[0]).gameObject.transform.GetChild(0).gameObject;
+                if(otherPlayerGraphics.activeSelf)
+                {
+                    otherPlayerGraphics.SetActive(false);
+                }
+                else
+                {
+                    otherPlayerGraphics.SetActive(true);
+                }
                 break;
         }
     }
