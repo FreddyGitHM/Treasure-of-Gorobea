@@ -4,6 +4,7 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
+using TMPro;
 
 
 public class MainMenu : MonoBehaviourPunCallbacks
@@ -13,6 +14,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public AudioMixer audioMixer;
     public Dropdown qualityDropdown;
     public Slider volumeSlider;
+    public TextMeshProUGUI roomText;
 
     bool loading;
     GameStatus gameStatus;
@@ -157,24 +159,26 @@ public class MainMenu : MonoBehaviourPunCallbacks
         {
             if(PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber())
             {
+                roomText.text = "MATCH STARTS IN: " + (int)countdown + " s.";
                 countdown -= Time.deltaTime;
                 if(countdown <= 0f)
                 {
                     if(starting == false && PhotonNetwork.IsMasterClient)
                     {
                         starting = true;
-                        StartGame();
+                        StartMatch();
                     }
                 }
             }
             else
             {
+                roomText.text = "WAITING FOR OTHER PLAYERS...";
                 countdown = roomManager.Countdown();
             }
         }
     }
 
-    private void StartGame()
+    private void StartMatch()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel(1);
