@@ -55,7 +55,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             }
 
             //debug pickup
-            PhotonNetwork.InstantiateRoomObject("PickableObject", new Vector3(19f, 0.5f, 21f), Quaternion.identity);
+            PhotonNetwork.InstantiateRoomObject("PickableObject", new Vector3(15f, 0.5f, 60f), Quaternion.identity);
+
+            //debug hiding place
+            PhotonNetwork.InstantiateRoomObject("HidingPlace", new Vector3(21f, 0f, 25f), Quaternion.identity);
 
             //add this class for IPunOwnershipCallbacks
             PhotonNetwork.AddCallbackTarget(this);
@@ -127,13 +130,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             case Codes.HIDE:
                 object[] data2 = (object[])eventData.CustomData;
                 GameObject otherPlayerGraphics = PhotonNetwork.GetPhotonView((int)data2[0]).gameObject.transform.GetChild(0).gameObject;
+                GameObject hidingPlace = PhotonNetwork.GetPhotonView((int)data2[1]).gameObject;
                 if(otherPlayerGraphics.activeSelf)
                 {
                     otherPlayerGraphics.SetActive(false);
+                    hidingPlace.GetComponent<HidingPlace>().SetBusy(true);
                 }
                 else
                 {
                     otherPlayerGraphics.SetActive(true);
+                    hidingPlace.GetComponent<HidingPlace>().SetBusy(false);
                 }
                 break;
         }
