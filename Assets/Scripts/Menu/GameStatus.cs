@@ -17,4 +17,10 @@ public class GameStatus : MonoBehaviour
     public bool fullScreen;
     public int qualityIndex;
     public float volume;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(transform.gameObject);    
+    }
+
 }

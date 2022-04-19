@@ -178,12 +178,25 @@ public class MainMenu : MonoBehaviourPunCallbacks
         }
     }
 
-    private void StartMatch()
+    void StartMatch()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
         PhotonNetwork.LoadLevel(1);
     }
 
+    public void ExitRoom()
+    {
+        roomJoined = false;
+        starting = false;
+        countdown = roomManager.Countdown();
+        PhotonNetwork.Disconnect();
+    }
+
+    public void QuitGame()
+    {
+        Debug.Log("QUIT");
+        Application.Quit();
+    }
 
     //errors
     public override void OnDisconnected(DisconnectCause cause)
@@ -201,11 +214,4 @@ public class MainMenu : MonoBehaviourPunCallbacks
         Debug.Log("Room joining failed");
     }
 
-
-    public void QuitGame ()
-    {
-        Debug.Log ("QUIT");
-        Application.Quit();
-    }
-    
 }
