@@ -20,6 +20,7 @@ public static class SaveSystem
         }
 
         gameStatus.username = saveData.username;
+        gameStatus.level = saveData.level;
         gameStatus.xp = saveData.xp;
         gameStatus.coins = saveData.coins;
         gameStatus.skinSelected = saveData.skinSelected;
@@ -42,6 +43,7 @@ public static class SaveSystem
 
         GameStatus gameStatus = GameObject.FindWithTag("GameController").GetComponent<GameStatus>();
         saveData.username = gameStatus.username;
+        saveData.level = gameStatus.level;
         saveData.xp = gameStatus.xp;
         saveData.coins = gameStatus.coins;
         saveData.skinSelected = gameStatus.skinSelected;

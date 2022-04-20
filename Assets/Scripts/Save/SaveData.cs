@@ -6,6 +6,7 @@ using UnityEngine;
 public class SaveData
 {
     public string username;
+    public int level;
     public int xp;
     public int coins;
     public int skinSelected;
@@ -23,6 +24,7 @@ public class SaveData
     public SaveData(string username)
     {
         this.username = username;
+        level = 1;
         xp = 0;
         coins = 0;
         skinSelected = 0;

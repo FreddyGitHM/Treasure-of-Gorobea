@@ -6,6 +6,7 @@ public class GameStatus : MonoBehaviour
 {
     public string username;
 
+    public int level;
     public int xp;
     public int coins;
     public int skinSelected;
