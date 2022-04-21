@@ -42,7 +42,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
     // The slider object in order to perform changes in its status
     public Slider slider;
     public TextMeshProUGUI loadingScreenText;
-    
 
     void Awake()
     {
@@ -206,106 +205,22 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     private void StartMatch()
     {
-        PhotonNetwork.CurrentRoom.IsOpen = false;
+        PhotonNetwork.CurrentRoom.IsOpen = false;  
 
-        PhotonNetwork.LoadLevel(nextScene);
-
-        PhotonNetwork.AsyncLevelLoading.allowSceneActivation = false;
-        
-        // Hiding previous panel of loading screen
-        previousLoadingScreen.SetActive(false);
-
-        // Set the loadingScreen canvas visible
-        loadingScreen.SetActive(true);  
-
-        StartCoroutine(LoadingLevel());    
-    }
-
-    private IEnumerator LoadingLevel(){
-
-        bool isDone = PhotonNetwork.AsyncLevelLoading.isDone;
-
-        while(!isDone){
-            // In Unity the loading process is misuread with a float number between 0 and 0.9, in order to have it in the range [0, 1] it is calculated the progress value 
-            float progress = Mathf.Clamp(PhotonNetwork.AsyncLevelLoading.progress, 0, .8f);
-
-            Debug.Log("Progress level: " + PhotonNetwork.AsyncLevelLoading.progress  +  " Clamp progress" + progress);
-
-            // This is a placeholder if in order to see the loading bar charging a bit over time. It is needed for the scenes that are too simple to be charged, otherwise the loading process will be too 
-            // fast and it is not possible to see it. When we will load a real scene, heavy enough, it is not needed because the process will take a time and during this the slider bar will be updated as well
-            if(PhotonNetwork.AsyncLevelLoading.progress == 0.9f){
-                while(slider.value < progress){
-                    slider.value += 0.1f;
-                    yield return new WaitForSecondsRealtime(.2f);
-                }
-
-                isDone = true;
-            }
-
-            // Setting the slider value to the process value, in order to have an animation of the slider and the loading process
-            // slider.value = progress;
-        }
+        // Defines if all clients in a room should load the same level as the Master Client 
+        PhotonNetwork.AutomaticallySyncScene = true;
 
         if(PhotonNetwork.IsMasterClient){
-            StartCoroutine(WaitingForClients());
-        }
-        else{
-            // Invio messaggio al master
-            object[] data = new object[] { }; 
 
-            RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
-            raiseEventOptions.Receivers = ReceiverGroup.MasterClient;
-            raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+            PhotonNetwork.LoadLevel(nextScene);
 
-            SendOptions sendOptions = new SendOptions();
-            sendOptions.Reliability = true;
+            // // Hiding previous panel of loading screen
+            // previousLoadingScreen.SetActive(false);
 
-            PhotonNetwork.RaiseEvent(Codes.CLIENTREADY, data, raiseEventOptions, sendOptions);  
-        }
-    }
+            // // Set the loadingScreen canvas visible
+            // loadingScreen.SetActive(true);  
 
-    private IEnumerator WaitingForClients(){
-        loadingScreenText.text = "WAITING FOR CLIENTS BE READY...";
-
-        yield return new WaitUntil( () => clientsReady == PhotonNetwork.CurrentRoom.PlayerCount - 1);
-
-        object[] data = new object[] { }; 
-
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
-        raiseEventOptions.Receivers = ReceiverGroup.Others;
-        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
-
-        SendOptions sendOptions = new SendOptions();
-        sendOptions.Reliability = true;
-
-        while(slider.value < 1){
-            slider.value += 0.1f;
-            yield return new WaitForSecondsRealtime(.2f);
-        }
-
-        Debug.Log("Send scene activation code");
-        PhotonNetwork.RaiseEvent(Codes.SCENEACTIVATION, data, raiseEventOptions, sendOptions);
-    }
-
-    public override void OnEnable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
-    }
-
-    public override void OnDisable()
-    {
-        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
-    }
-
-    void OnEvent(EventData eventData){
-        Debug.Log("Event Data: " + eventData);
-
-        if(eventData.Code == Codes.CLIENTREADY){
-            clientsReady ++;
-        }
-        else if(eventData.Code == Codes.SCENEACTIVATION){
-            PhotonNetwork.AsyncLevelLoading.allowSceneActivation = true;
-        }
+        } 
     }
 
 

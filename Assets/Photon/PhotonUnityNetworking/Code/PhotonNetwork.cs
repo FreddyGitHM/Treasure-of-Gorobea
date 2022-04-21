@@ -63,8 +63,6 @@ namespace Photon.Pun
     /// \ingroup publicApi
     public static partial class PhotonNetwork
     {
-        public static AsyncOperation AsyncLevelLoading;
-
         /// <summary>Version number of PUN. Used in the AppVersion, which separates your playerbase in matchmaking.</summary>
         public const string PunVersion = "2.40";
 
@@ -3112,7 +3110,6 @@ namespace Photon.Pun
             PhotonNetwork.IsMessageQueueRunning = false;
             loadingLevelAndPausedNetwork = true;
             _AsyncLevelLoadingOperation = SceneManager.LoadSceneAsync(levelName, LoadSceneMode.Single);
-            AsyncLevelLoading = _AsyncLevelLoadingOperation;
         }
 
         /// <summary>
