@@ -53,7 +53,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
         roomJoined = false;
         starting = false;
         countdown = roomManager.Countdown();
-
     }
 
     void Start()
@@ -75,7 +74,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         volumeSlider.value = gameStatus.volume;
         
-        PhotonNetwork.AddCallbackTarget(this);
         loading = false;
     }
 

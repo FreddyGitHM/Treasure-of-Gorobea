@@ -37,7 +37,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     object[] data = new object[] { spawnPos };
 
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
-                    raiseEventOptions.Receivers = ReceiverGroup.Others;
+                    int[] reveivers = { p.ActorNumber };
+                    raiseEventOptions.TargetActors = reveivers;
                     raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
 
                     SendOptions sendOptions = new SendOptions();
@@ -59,10 +60,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
             //debug hiding place
             PhotonNetwork.InstantiateRoomObject("HidingPlace", new Vector3(21f, 0f, 25f), Quaternion.identity);
-
-            //add this class for IPunOwnershipCallbacks
-            PhotonNetwork.AddCallbackTarget(this);
         }
+
+        //add this class for EventsHandler and IPunOwnershipCallbacks
+        PhotonNetwork.AddCallbackTarget(this);
     }
 
     void Update()
