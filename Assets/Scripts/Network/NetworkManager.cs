@@ -29,7 +29,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             foreach(Player p in PhotonNetwork.PlayerList)
             {
                 //set here the spawn position
-                Vector3 spawnPos = new Vector3(Random.Range(10f, 20f), 0.5f, Random.Range(10f, 20f));
+                Vector3 spawnPos = new Vector3(600f, 100f, 185f);
                 Debug.Log("Position for player " + p.NickName + ": " + spawnPos);
 
                 if(PhotonNetwork.LocalPlayer != p)
