@@ -1,15 +1,10 @@
 using System.Collections.Generic;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
-
-
-using ExitGames.Client.Photon;
-using EventCodes;
 
 
 public class MainMenu : MonoBehaviourPunCallbacks
@@ -20,6 +15,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public Dropdown qualityDropdown;
     public Slider volumeSlider;
     public TextMeshProUGUI roomText;
+    public string nextScene; //the scene to be loaded
 
     bool loading;
     GameStatus gameStatus;
@@ -31,10 +27,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
     bool starting;
     float countdown;
 
+    /*
     // Loading Bar stuff
     int clientsReady = 0;
-    // The scene to be loaded
-    public string nextScene;
     //The previous panel of the loading screen in oreder to hide it
     public GameObject previousLoadingScreen;
     // The panel to be loaded where it is a loading screen with the slider
@@ -42,6 +37,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     // The slider object in order to perform changes in its status
     public Slider slider;
     public TextMeshProUGUI loadingScreenText;
+    */
 
     void Awake()
     {
@@ -178,21 +174,15 @@ public class MainMenu : MonoBehaviourPunCallbacks
         {
             if(PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber())
             {
-                // roomText.text = "MATCH STARTS IN: " + (int)countdown + " s.";
-                // countdown -= Time.deltaTime;
-                // if(countdown <= 0f)
-                // {
-                //     if(starting == false && PhotonNetwork.IsMasterClient)
-                //     {
-                //         starting = true;
-                //         StartMatch();
-                //     }
-                // }
-
-                if(starting == false && PhotonNetwork.IsMasterClient)
+                roomText.text = "MATCH STARTS IN: " + (int)countdown + " s.";
+                countdown -= Time.deltaTime;
+                if(countdown <= 0f)
                 {
-                    starting = true;
-                    StartMatch();
+                    if(starting == false && PhotonNetwork.IsMasterClient)
+                    {
+                         starting = true;
+                         StartMatch();
+                    }
                 }
             }
             else
@@ -206,21 +196,14 @@ public class MainMenu : MonoBehaviourPunCallbacks
     void StartMatch()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;  
+        PhotonNetwork.LoadLevel(nextScene);
 
-        // Defines if all clients in a room should load the same level as the Master Client 
-        PhotonNetwork.AutomaticallySyncScene = true;
+        // Hiding previous panel of loading screen
+        // previousLoadingScreen.SetActive(false);
 
-        if(PhotonNetwork.IsMasterClient){
+        // Set the loadingScreen canvas visible
+        // loadingScreen.SetActive(true);  
 
-            PhotonNetwork.LoadLevel(nextScene);
-
-            // // Hiding previous panel of loading screen
-            // previousLoadingScreen.SetActive(false);
-
-            // // Set the loadingScreen canvas visible
-            // loadingScreen.SetActive(true);  
-
-        } 
     }
 
     public void ExitRoom()
