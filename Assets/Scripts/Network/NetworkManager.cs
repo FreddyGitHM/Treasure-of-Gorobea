@@ -21,15 +21,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         Debug.Log("Connected: " + PhotonNetwork.IsConnected);
         Debug.Log("Nickname: " + PhotonNetwork.NickName);
-        Debug.Log("Host: " + PhotonNetwork.IsMasterClient);
+        Debug.Log("Host: " + PhotonNetwork.IsMasterClient);        
 
         if(PhotonNetwork.IsMasterClient)
-        {
+        {  
+            Debug.Log("Calculating players spawn position with " +  PhotonNetwork.CurrentRoom.PlayerCount + " players...");
+            SpawnPosition.Instance.calculateSpawnPositions(PhotonNetwork.CurrentRoom.PlayerCount);
+
             //send random position for players
             foreach(Player p in PhotonNetwork.PlayerList)
             {
                 //set here the spawn position
-                Vector3 spawnPos = new Vector3(600f, 100f, 185f);
+                Vector3 spawnPos = SpawnPosition.Instance.getSpawnPosition();
                 Debug.Log("Position for player " + p.NickName + ": " + spawnPos);
 
                 if(PhotonNetwork.LocalPlayer != p)
