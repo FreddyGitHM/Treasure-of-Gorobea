@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 [RequireComponent(typeof(Terrain))]
 
@@ -17,12 +16,10 @@ public class MassPlaceTree : MonoBehaviour
     // Parameter for decide how many tree will be placed
     public GameObject[] trees;
     public int numberOfTrees;
+    public bool keepExistingTree = true;
 
-    // OnDrawGizmos
-    bool start;
-    Vector3 position;
+    public void BeforePlaceTrees(){
 
-    void Start(){
         //Getting terrain information
         terrain = GetComponent<Terrain> ();
         td = terrain.terrainData;
@@ -32,17 +29,25 @@ public class MassPlaceTree : MonoBehaviour
         //Initialize heighmap
         heightmap = td.GetHeights(0, 0, x, y);
 
-        // Draw Gizmos
-        start = false;
-
         placeTrees();
     }
 
     private void placeTrees(){
 
-        for (int i = 0; i < numberOfTrees; i++){
-            var trees = Instantiate(chooseRandomTree(), getlocation(), Quaternion.identity);
+        if(numberOfTrees == 0 || !keepExistingTree){
+            DestroyAllTrees();
         }
+
+        for (int i = 0; i < numberOfTrees; i++){
+
+            Selection.activeObject = PrefabUtility.InstantiatePrefab(chooseRandomTree(), transform);
+
+            var tree = Selection.activeGameObject;
+
+            tree.transform.position = getlocation();
+        }
+
+        Selection.activeGameObject = transform.gameObject;
 
         // Make sure to sync with physics engine in order to try to spawn Tree with map
         // Physics.SyncTransforms();
@@ -57,7 +62,7 @@ public class MassPlaceTree : MonoBehaviour
         int x = Random.Range(0, this.x);
         int y = Random.Range(0, this.y);
 
-        position = new Vector3(x, (heightmap[y, x] * td.size.y), y);
+        Vector3 position = new Vector3(x, (heightmap[y, x] * td.size.y), y);
 
         // Check if location is free
         Collider[] colliders = Physics.OverlapBox(position + Vector3.up * 6, new Vector3(10, 30, 10) * .5f, Quaternion.identity, LayerMask.GetMask("Tree"));
@@ -74,11 +79,11 @@ public class MassPlaceTree : MonoBehaviour
         return position;
     }
 
-    private void OnDrawGizmos() {
-        Gizmos.color = Color.red;
+    private void DestroyAllTrees(){
+        GameObject[] trees = GameObject.FindGameObjectsWithTag("Tree");
 
-        if(start){
-            Gizmos.DrawWireCube(position + Vector3.up * 6, new Vector3(10, 30, 10));
+        foreach (GameObject tree in trees){
+            DestroyImmediate(tree);
         }
     }
 }

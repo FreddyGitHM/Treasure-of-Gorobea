@@ -7,6 +7,9 @@ using UnityEngine;
 public class RandomTreeMapGenerator : MonoBehaviour
 {
 
+    // Instance of this class in order to access at list of spawn position
+    public static RandomTreeMapGenerator Instance;
+
     //Terrain data
     private Terrain terrain;
     private TerrainData td;
@@ -24,6 +27,17 @@ public class RandomTreeMapGenerator : MonoBehaviour
     // Boolean value for OnDrawGizmos
     bool start;
 
+    private void Awake() {
+        
+        if(Instance == null){
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else{
+            Destroy(gameObject);
+        }
+    }
+
     void Start(){
 
         //Getting terrain information
@@ -37,11 +51,9 @@ public class RandomTreeMapGenerator : MonoBehaviour
 
         // Initialize start value
         start = true;
-
-        spawnTreeMap();
     }
 
-    private void spawnTreeMap(){
+    public Vector3 spawnTreeMap(){
 
         // Get Random position inside unit circle
         Vector2 randomPosition = new Vector2(x/2, y/2) +  Random.insideUnitCircle * radius;
@@ -57,7 +69,9 @@ public class RandomTreeMapGenerator : MonoBehaviour
         }
 
         // Instantiate TreeMap at that random position
-        var treeMap = Instantiate(TreeWithMap, TreeWithMapPosition, Quaternion.identity);
+        // var treeMap = Instantiate(TreeWithMap, TreeWithMapPosition, Quaternion.identity);
+
+        return TreeWithMapPosition;
     }
 
     void OnDrawGizmos() {

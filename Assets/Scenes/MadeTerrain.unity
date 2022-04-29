@@ -4791,7 +4791,8 @@ MonoBehaviour:
   trees:
   - {fileID: 1030635741597182, guid: 8b1409f64714e44c5ab49deb3aa9f519, type: 3}
   - {fileID: 1512810094444040, guid: 9bc51bcb73d0344e8a2242a42b28a728, type: 3}
-  numberOfTrees: 1
+  numberOfTrees: 0
+  keepExistingTree: 1
 --- !u!114 &1190605701
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4799,7 +4800,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1190605695}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 733279b6b6c96c0cc8b5283f2bc6cdc9, type: 3}
   m_Name: 
@@ -6666,7 +6667,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1599891896}
   - component: {fileID: 1599891895}
-  - component: {fileID: 1599891894}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6674,14 +6674,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &1599891894
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599891893}
-  m_Enabled: 1
 --- !u!20 &1599891895
 Camera:
   m_ObjectHideFlags: 0

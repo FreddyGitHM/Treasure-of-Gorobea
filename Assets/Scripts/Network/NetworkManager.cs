@@ -8,6 +8,7 @@ using EventCodes;
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     GameObject player; //local player
+    GameObject MapTree; // MapTree object
     bool instantiated;
     bool ready;
 
@@ -25,6 +26,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         if(PhotonNetwork.IsMasterClient)
         {  
+            Vector3 TreeMapPosition = RandomTreeMapGenerator.Instance.spawnTreeMap();
+            Debug.Log("Calculating tree map poistion: " + TreeMapPosition);
+
             Debug.Log("Calculating players spawn position with " +  PhotonNetwork.CurrentRoom.PlayerCount + " players...");
             SpawnPosition.Instance.calculateSpawnPositions(PhotonNetwork.CurrentRoom.PlayerCount);
 
@@ -37,7 +41,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
                 if(PhotonNetwork.LocalPlayer != p)
                 {
-                    object[] data = new object[] { spawnPos };
+                    object[] data = new object[] { spawnPos, TreeMapPosition };
 
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
                     int[] reveivers = { p.ActorNumber };
@@ -47,13 +51,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     SendOptions sendOptions = new SendOptions();
                     sendOptions.Reliability = true;
 
-                    Debug.Log("send SPAWN_POSITION to player: " + p.NickName);
+                    Debug.Log("send SPAWN_POSITION and TreeMapPosition to player: " + p.NickName);
                     PhotonNetwork.RaiseEvent(Codes.SPAWN_POSITION, data, raiseEventOptions, sendOptions);
                 }
                 else
                 {
                     //choose the Prefab to spawn
-                    player = PhotonNetwork.Instantiate("Man", spawnPos, Quaternion.identity);
+                    player = PhotonNetwork.Instantiate("Man", spawnPos, Quaternion.LookRotation((TreeMapPosition-spawnPos).normalized, Vector3.up) );
+                    MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
                     instantiated = true;
                 }
             }
@@ -117,6 +122,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 object[] data0 = (object[])eventData.CustomData;
                 Vector3 spawnPos = (Vector3)data0[0];
                 player = PhotonNetwork.Instantiate("Man", spawnPos, Quaternion.identity);
+                Vector3 TreeMapPosition = (Vector3)data0[1];
+                MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.LookRotation((TreeMapPosition-spawnPos).normalized, Vector3.up));
                 instantiated = true;
                 break;
 
