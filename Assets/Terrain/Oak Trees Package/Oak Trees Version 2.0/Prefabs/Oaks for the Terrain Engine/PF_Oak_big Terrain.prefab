@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4162815117446924}
   - component: {fileID: 227021336509502398}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Oak big Billboard
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -83,7 +83,7 @@ GameObject:
   - component: {fileID: 4119967966183312}
   - component: {fileID: 33604850566893904}
   - component: {fileID: 23247842875903860}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Oak big LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -165,9 +165,9 @@ GameObject:
   - component: {fileID: 4344470648180242}
   - component: {fileID: 205895447070892522}
   - component: {fileID: 136727364617945872}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PF_Oak_big Terrain
-  m_TagString: Untagged
+  m_TagString: TreeWIthMap
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -181,7 +181,7 @@ Transform:
   m_GameObject: {fileID: 1724154265968482}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 6, y: 6, z: 6}
   m_Children:
   - {fileID: 4591438982779820}
   - {fileID: 4119967966183312}
@@ -227,9 +227,9 @@ CapsuleCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.55
-  m_Height: 8
+  m_Height: 8.497366
   m_Direction: 1
-  m_Center: {x: -0.15, y: 3.5, z: -0.15}
+  m_Center: {x: -0.15, y: 3.2513173, z: -0.15}
 --- !u!1 &1800540137983010
 GameObject:
   m_ObjectHideFlags: 0
@@ -241,7 +241,7 @@ GameObject:
   - component: {fileID: 4591438982779820}
   - component: {fileID: 33377453169683522}
   - component: {fileID: 23254578880263630}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Oak big LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}

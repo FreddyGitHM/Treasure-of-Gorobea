@@ -5,15 +5,18 @@ TagManager:
   serializedVersion: 2
   tags:
   - Pickable
+  - Tree
+  - TreeWIthMap
+  - Terrain
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Terrain
   - Water
   - UI
-  - 
-  - 
+  - TreeWithMap
+  - Tree
   - 
   - 
   - 
