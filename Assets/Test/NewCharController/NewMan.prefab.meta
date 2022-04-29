@@ -1,5 +1,7 @@
 fileFormatVersion: 2
-guid: 57d7b2d95ed2849c4a1836f37910b893
+guid: ffb5d201e883e4044886f903e85c2e8f
+labels:
+- Controller
 PrefabImporter:
   externalObjects: {}
   userData: 
