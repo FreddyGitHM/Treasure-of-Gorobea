@@ -31,15 +31,18 @@ TagManager:
   - Interactable
   - AIAction
   - Pickable
+  - Tree
+  - TreeWithMap
+  - Terrain
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Terrain
   - Water
   - UI
-  - 
-  - 
+  - TreeWithMap
+  - Tree
   - Player
   - Enemy
   - CompanionAI
