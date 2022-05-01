@@ -69,7 +69,7 @@ public class RandomTreeMapGenerator : MonoBehaviour
         }
 
         // Instantiate TreeMap at that random position
-        // var treeMap = Instantiate(TreeWithMap, TreeWithMapPosition, Quaternion.identity);
+        var treeMap = Instantiate(TreeWithMap, TreeWithMapPosition, Quaternion.identity);
 
         return TreeWithMapPosition;
     }

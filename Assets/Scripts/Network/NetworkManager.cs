@@ -39,6 +39,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Vector3 spawnPos = SpawnPosition.Instance.getSpawnPosition();
                 Debug.Log("Position for player " + p.NickName + ": " + spawnPos);
 
+                // getting random rotation for hero
+                Quaternion spawnRot = SpawnPosition.Instance.getLookDirection(spawnPos, TreeMapPosition);
+
                 if(PhotonNetwork.LocalPlayer != p)
                 {
                     object[] data = new object[] { spawnPos, TreeMapPosition };
@@ -57,7 +60,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 else
                 {
                     //choose the Prefab to spawn
-                    player = PhotonNetwork.Instantiate("Man", spawnPos, Quaternion.LookRotation((TreeMapPosition-spawnPos).normalized, Vector3.up) );
+                    player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
                     MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
                     instantiated = true;
                 }
@@ -120,10 +123,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             //received the spawn position from masterClient
             case Codes.SPAWN_POSITION:
                 object[] data0 = (object[])eventData.CustomData;
-                Vector3 spawnPos = (Vector3)data0[0];
-                player = PhotonNetwork.Instantiate("Man", spawnPos, Quaternion.identity);
                 Vector3 TreeMapPosition = (Vector3)data0[1];
-                MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.LookRotation((TreeMapPosition-spawnPos).normalized, Vector3.up));
+                MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
+                Vector3 spawnPos = (Vector3)data0[0];
+                player = PhotonNetwork.Instantiate("Man", spawnPos, SpawnPosition.Instance.getLookDirection(spawnPos, TreeMapPosition));
                 instantiated = true;
                 break;
 
