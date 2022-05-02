@@ -88,15 +88,4 @@ public class RandomTreeMapGenerator : MonoBehaviour
             Gizmos.color = Color.blue;
         }
     }
-
-    private static Vector3 getSpawnPosition(){
-        
-        // Need to starting from TreeWithMapPosition in order to calculate randomPosition
-        // Vector2 randomPosition = new Vector2(TreeWithMapPosition.x, TreeWithMapPosition.z) + Random.insideUnitCircle.normalized * spawnDistance;
-        // Debug.Log("Random Position: " + randomPosition);
-
-        // randomPos = new Vector3((int)randomPosition.x, heightmap[(int) randomPosition.y, (int) randomPosition.x], (int)randomPosition.y);
-
-        return new Vector3();
-    }
 }

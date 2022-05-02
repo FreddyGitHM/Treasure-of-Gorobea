@@ -80,16 +80,21 @@ public class SpawnPosition : MonoBehaviour
         return new Vector3(result.x, heightmap[(int)result.y, (int)result.x] * td.size.y, result.y);
     }
 
-    public Quaternion getLookDirection(Vector3 position, Vector3 TreeMapPosition)
+    public Quaternion getLookDirection(Vector3 position)
     {
+        Debug.Log("[SpawnPosition]Tree map position " + RandomTreeMapGenerator.TreeWithMapPosition);
+
         // Direction from spawn position to tree map
-        Vector3 centerDir = (TreeMapPosition - position).normalized;
+        Vector3 centerDir = (RandomTreeMapGenerator.TreeWithMapPosition - position).normalized;
+        // Debug.DrawRay(position, centerDir*500, Color.green, 10);
 
         // Direction rotated 45 to the left of centerDir
         Vector3 leftDir = Quaternion.Euler(0, -45, 0) * centerDir;
+        // Debug.DrawRay(position, leftDir*500, Color.yellow, 10);
 
         // Direction rotated 45 to the right of centerDir
         Vector3 rightDir = Quaternion.Euler(0, 45, 0) * centerDir;
+        // Debug.DrawRay(position, rightDir*500, Color.yellow, 10);
 
         // Random direction between left and right one
         Vector3 randomDir = Vector3.Lerp(leftDir, rightDir, Random.Range(0f, 1f));

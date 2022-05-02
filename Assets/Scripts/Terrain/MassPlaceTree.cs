@@ -38,6 +38,8 @@ public class MassPlaceTree : MonoBehaviour
             DestroyAllTrees();
         }
 
+        #if UNITY_EDITOR
+
         for (int i = 0; i < numberOfTrees; i++){
 
             Selection.activeObject = PrefabUtility.InstantiatePrefab(chooseRandomTree(), transform);
@@ -48,6 +50,8 @@ public class MassPlaceTree : MonoBehaviour
         }
 
         Selection.activeGameObject = transform.gameObject;
+
+        #endif
 
         // Make sure to sync with physics engine in order to try to spawn Tree with map
         // Physics.SyncTransforms();
