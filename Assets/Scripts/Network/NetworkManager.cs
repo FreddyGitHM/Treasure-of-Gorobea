@@ -3,6 +3,11 @@ using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 using EventCodes;
+using Invector.vCharacterController;
+using Invector.vShooter;
+using Invector.vItemManager;
+using Invector.vMelee;
+using Invector.vCharacterController.vActions;
 
 
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
@@ -89,6 +94,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     void EnableComponents()
     {
+        /*
         player.GetComponent<BasicBehaviour>().enabled = true;
         player.GetComponent<MoveBehaviour>().enabled = true;
         player.GetComponent<PickUp>().enabled = true;
@@ -98,6 +104,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         camera.GetComponent<Camera>().enabled = true;
         camera.GetComponent<AudioListener>().enabled = true;
         camera.GetComponent<ThirdPersonOrbitCamBasic>().enabled = true;
+        */
+
+        player.GetComponent<vShooterMeleeInput>().enabled = true;
+        player.GetComponent<vShooterManager>().enabled = true;
+        player.GetComponent<vAmmoManager>().enabled = true;
+        player.GetComponent<vHeadTrack>().enabled = true;
+        player.GetComponent<vCollectShooterMeleeControl>().enabled = true;
+        player.GetComponent<vGenericAction>().enabled = true;
     }
 
 
