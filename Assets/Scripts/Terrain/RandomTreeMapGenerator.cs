@@ -84,6 +84,8 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
             Destroy(collider.gameObject);
         }
 
+        Debug.Log("Trees destroyed: " + trees.Count);
+
         if (trees.Count > 0)
         {
             object[] data = new object[] { trees.ToArray() };

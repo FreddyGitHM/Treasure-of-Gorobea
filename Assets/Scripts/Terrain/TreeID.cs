@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TreeID : MonoBehaviour
 {
-    private int treeID;
+    public int treeID;
 
     public void setTreeID(int treeID)
     {
