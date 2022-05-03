@@ -9,11 +9,11 @@ using Invector.vItemManager;
 using Invector.vMelee;
 using Invector.vCharacterController.vActions;
 
-
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     GameObject player; //local player
-    GameObject MapTree; // MapTree object
+    public GameObject MapTree; // MapTree object
+    GameObject TreasureChest;
     bool instantiated;
     bool ready;
 
@@ -27,27 +27,27 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         Debug.Log("Connected: " + PhotonNetwork.IsConnected);
         Debug.Log("Nickname: " + PhotonNetwork.NickName);
-        Debug.Log("Host: " + PhotonNetwork.IsMasterClient);        
+        Debug.Log("Host: " + PhotonNetwork.IsMasterClient);
 
-        if(PhotonNetwork.IsMasterClient)
-        {  
+        if (PhotonNetwork.IsMasterClient)
+        {
             Vector3 TreeMapPosition = RandomTreeMapGenerator.Instance.spawnTreeMap();
             Debug.Log("Calculating tree map poistion: " + TreeMapPosition);
 
-            Debug.Log("Calculating players spawn position with " +  PhotonNetwork.CurrentRoom.PlayerCount + " players...");
+            Debug.Log("Calculating players spawn position with " + PhotonNetwork.CurrentRoom.PlayerCount + " players...");
             SpawnPosition.Instance.calculateSpawnPositions(PhotonNetwork.CurrentRoom.PlayerCount);
 
             //send random position for players
-            foreach(Player p in PhotonNetwork.PlayerList)
+            foreach (Player p in PhotonNetwork.PlayerList)
             {
                 //set here the spawn position
                 Vector3 spawnPos = SpawnPosition.Instance.getSpawnPosition();
                 Debug.Log("Position for player " + p.NickName + ": " + spawnPos);
 
                 // getting random rotation for hero
-                Quaternion spawnRot =  SpawnPosition.Instance.getLookDirection(spawnPos);
+                Quaternion spawnRot = SpawnPosition.Instance.getLookDirection(spawnPos);
 
-                if(PhotonNetwork.LocalPlayer != p)
+                if (PhotonNetwork.LocalPlayer != p)
                 {
                     object[] data = new object[] { spawnPos, TreeMapPosition };
 
@@ -66,16 +66,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 {
                     //choose the Prefab to spawn
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
-                    MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
+                    MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
+                    // MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
                     instantiated = true;
                 }
             }
 
-            //debug pickup
-            PhotonNetwork.InstantiateRoomObject("PickableObject", new Vector3(15f, 0.5f, 60f), Quaternion.identity);
-
-            //debug hiding place
-            PhotonNetwork.InstantiateRoomObject("HidingPlace", new Vector3(21f, 0f, 25f), Quaternion.identity);
+            TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureSpawn.Instance.getTreasurePosition(), TreasureSpawn.Instance.getTreasureRotation());
         }
 
         //add this class for EventsHandler and IPunOwnershipCallbacks
@@ -84,7 +81,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     void Update()
     {
-        if(instantiated == true && ready == false)
+        if (instantiated == true && ready == false)
         {
             EnableComponents();
             ready = true;
@@ -119,7 +116,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     ////////////////////
     // Events handler // 
     ////////////////////
-    
+
     public override void OnEnable()
     {
         PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
@@ -132,13 +129,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     void OnEvent(EventData eventData)
     {
-        switch(eventData.Code)
+        switch (eventData.Code)
         {
             //received the spawn position from masterClient
             case Codes.SPAWN_POSITION:
                 object[] data0 = (object[])eventData.CustomData;
                 Vector3 TreeMapPosition = (Vector3)data0[1];
-                MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
+                // MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
+                MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
                 Vector3 spawnPos = (Vector3)data0[0];
                 player = PhotonNetwork.Instantiate("Man", spawnPos, SpawnPosition.Instance.getLookDirection(spawnPos));
                 instantiated = true;
@@ -159,7 +157,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 object[] data2 = (object[])eventData.CustomData;
                 GameObject otherPlayerGraphics = PhotonNetwork.GetPhotonView((int)data2[0]).gameObject.transform.GetChild(0).gameObject;
                 GameObject hidingPlace = PhotonNetwork.GetPhotonView((int)data2[1]).gameObject;
-                if(otherPlayerGraphics.activeSelf)
+                if (otherPlayerGraphics.activeSelf)
                 {
                     otherPlayerGraphics.SetActive(false);
                     hidingPlace.GetComponent<HidingPlace>().SetBusy(true);
@@ -169,6 +167,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     otherPlayerGraphics.SetActive(true);
                     hidingPlace.GetComponent<HidingPlace>().SetBusy(false);
                 }
+                break;
+
+            // received trees to destroy
+            case Codes.TREE_DESTROY:
+                object[] data3 = (object[])eventData.CustomData;
+                int[] treesID = (int[])data3[0];
+
+                GameObject[] trees = GameObject.FindGameObjectsWithTag("Tree");
+
+                foreach (GameObject tree in trees)
+                {
+                    if (treesID.Contains(tree.GetComponent<TreeID>().treeID))
+                    {
+                        Destroy(tree);
+                    }
+                }
+
                 break;
         }
     }
@@ -189,7 +204,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         string tag = targetView.gameObject.tag;
 
-        switch(tag)
+        switch (tag)
         {
             //sends to the new pick-up owner the viewID to handle the pick-up gameobject
             case "Pickable":

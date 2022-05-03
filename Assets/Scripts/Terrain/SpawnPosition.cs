@@ -82,8 +82,6 @@ public class SpawnPosition : MonoBehaviour
 
     public Quaternion getLookDirection(Vector3 position)
     {
-        Debug.Log("[SpawnPosition]Tree map position " + RandomTreeMapGenerator.TreeWithMapPosition);
-
         // Direction from spawn position to tree map
         Vector3 centerDir = (RandomTreeMapGenerator.TreeWithMapPosition - position).normalized;
         // Debug.DrawRay(position, centerDir*500, Color.green, 10);

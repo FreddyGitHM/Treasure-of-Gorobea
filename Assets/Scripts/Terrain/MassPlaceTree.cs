@@ -44,7 +44,9 @@ public class MassPlaceTree : MonoBehaviour
 
             Selection.activeObject = PrefabUtility.InstantiatePrefab(chooseRandomTree(), transform);
 
-            var tree = Selection.activeGameObject;
+            GameObject tree = Selection.activeGameObject;
+
+            tree.GetComponent<TreeID>().treeID = i;
 
             tree.transform.position = getlocation();
         }
