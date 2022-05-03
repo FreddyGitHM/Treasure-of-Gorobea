@@ -174,13 +174,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             // received trees to destroy
             case Codes.TREE_DESTROY:
                 object[] data3 = (object[])eventData.CustomData;
-                List<int> treesID = (List<int>)data3[0];
+                int[] treesID = (int[])data3[0];
 
                 GameObject[] trees = GameObject.FindGameObjectsWithTag("Tree");
 
                 foreach (GameObject tree in trees)
                 {
-                    if (treesID.Contains(tree.GetInstanceID()))
+                    if (treesID.Contains(tree.GetComponent<TreeID>().getTreeID()))
                     {
                         Destroy(tree);
                     }
