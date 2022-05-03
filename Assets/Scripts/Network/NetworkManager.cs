@@ -75,7 +75,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             }
 
             TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureSpawn.Instance.getTreasurePosition(), TreasureSpawn.Instance.getTreasureRotation());
-            TreasureChest.transform.rotation = Quaternion.LookRotation((TreeMapPosition - TreasureSpawn.Instance.getTreasurePosition()).normalized, Vector3.up);
         }
 
         //add this class for EventsHandler and IPunOwnershipCallbacks

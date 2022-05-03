@@ -75,20 +75,13 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
 
         List<int> trees = new List<int>();
 
-        // foreach (Collider collider in colliders)
-        // {
-        //     // Debug.Log("Destroying tree at position: " + collider.gameObject.transform.position);
-
-        //     trees.Add(collider.gameObject.GetComponent<TreeID>().getTreeID());
-
-        //     Destroy(collider.gameObject);
-        // }
-
-        foreach (GameObject tree in GameObject.FindGameObjectsWithTag("Tree"))
+        foreach (Collider collider in colliders)
         {
-            trees.Add(tree.GetComponent<TreeID>().getTreeID());
+            // Debug.Log("Destroying tree at position: " + collider.gameObject.transform.position);
 
-            Destroy(tree);
+            trees.Add(collider.gameObject.GetComponent<TreeID>().getTreeID());
+
+            Destroy(collider.gameObject);
         }
 
         if (trees.Count > 0)
