@@ -9,13 +9,10 @@ using Invector.vItemManager;
 using Invector.vMelee;
 using Invector.vCharacterController.vActions;
 
-using System.Collections.Generic;
-
-
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     GameObject player; //local player
-    GameObject MapTree; // MapTree object
+    public GameObject MapTree; // MapTree object
     GameObject TreasureChest;
     bool instantiated;
     bool ready;
@@ -69,7 +66,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 {
                     //choose the Prefab to spawn
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
-                    MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
+                    MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
+                    // MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
                     instantiated = true;
                 }
             }
@@ -137,7 +135,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             case Codes.SPAWN_POSITION:
                 object[] data0 = (object[])eventData.CustomData;
                 Vector3 TreeMapPosition = (Vector3)data0[1];
-                MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
+                // MapTree = PhotonNetwork.Instantiate("TreeMap", TreeMapPosition, Quaternion.identity);
+                MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
                 Vector3 spawnPos = (Vector3)data0[0];
                 player = PhotonNetwork.Instantiate("Man", spawnPos, SpawnPosition.Instance.getLookDirection(spawnPos));
                 instantiated = true;

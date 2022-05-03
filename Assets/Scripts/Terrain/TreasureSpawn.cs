@@ -77,10 +77,6 @@ public class TreasureSpawn : MonoBehaviour
 
         fitTerrain = Quaternion.FromToRotation(Vector3.up, hit.normal);
 
-        // Quaternion look = getTreasureRotation();
-
-        // var treasureChest = Instantiate(treasure, hit.point + Vector3.up * .7f, fitTerrain*look);
-
         return hit.point + Vector3.up * .7f;
 
     }
