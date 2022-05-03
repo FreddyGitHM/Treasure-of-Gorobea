@@ -14,6 +14,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     GameObject player; //local player
     GameObject MapTree; // MapTree object
+    GameObject TreasureChest; 
     bool instantiated;
     bool ready;
 
@@ -70,6 +71,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     instantiated = true;
                 }
             }
+
+            TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureSpawn.Instance.getTreasurePosition(), TreasureSpawn.Instance.getTreasureRotation());
+            TreasureChest.transform.rotation = Quaternion.LookRotation( (TreeMapPosition - TreasureSpawn.Instance.getTreasurePosition()).normalized, Vector3.up );
 
             //debug pickup
             PhotonNetwork.InstantiateRoomObject("PickableObject", new Vector3(15f, 0.5f, 60f), Quaternion.identity);
