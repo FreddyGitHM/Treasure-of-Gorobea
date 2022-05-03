@@ -95,7 +95,6 @@ GameObject:
   m_Component:
   - component: {fileID: 448142}
   - component: {fileID: 9594588}
-  - component: {fileID: 1987625317177599420}
   m_Layer: 0
   m_Name: Death_Chest
   m_TagString: Untagged
@@ -117,7 +116,7 @@ Transform:
   - {fileID: 410358}
   - {fileID: 422964}
   - {fileID: 489518}
-  - {fileID: 2498911918128442964}
+  - {fileID: 1946717624614774738}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -140,19 +139,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!65 &1987625317177599420
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 117430}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.314544, y: 1.1516905, z: 0.786849}
-  m_Center: {x: 0.0007830858, y: -0.034657955, z: -0.06277621}
 --- !u!1 &139130
 GameObject:
   m_ObjectHideFlags: 0
@@ -298,7 +284,7 @@ Transform:
   m_Father: {fileID: 410358}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &816530546585816517
+--- !u!1 &3597002284399777085
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -306,8 +292,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2498911918128442964}
-  - component: {fileID: 8773020351703618463}
+  - component: {fileID: 1946717624614774738}
+  - component: {fileID: 7228804916982955343}
   m_Layer: 0
   m_Name: Point light
   m_TagString: Untagged
@@ -315,13 +301,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2498911918128442964
+--- !u!4 &1946717624614774738
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 816530546585816517}
+  m_GameObject: {fileID: 3597002284399777085}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -329,13 +315,13 @@ Transform:
   m_Father: {fileID: 448142}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!108 &8773020351703618463
+--- !u!108 &7228804916982955343
 Light:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 816530546585816517}
+  m_GameObject: {fileID: 3597002284399777085}
   m_Enabled: 1
   serializedVersion: 10
   m_Type: 2

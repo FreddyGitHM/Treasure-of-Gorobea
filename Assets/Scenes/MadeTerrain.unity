@@ -4590,6 +4590,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b532571ce63de41b0e8506dc3f2e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  distance: 0
+  treasure: {fileID: 117430, guid: f56df44f2436f1f42821acb8fe1ec8d1, type: 3}
 --- !u!1001 &1210125999
 PrefabInstance:
   m_ObjectHideFlags: 0
