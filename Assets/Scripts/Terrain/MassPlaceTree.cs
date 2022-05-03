@@ -46,7 +46,7 @@ public class MassPlaceTree : MonoBehaviour
 
             GameObject tree = Selection.activeGameObject;
 
-            tree.GetComponent<TreeID>().setTreeID(i);
+            tree.GetComponent<TreeID>().treeID = i;
 
             tree.transform.position = getlocation();
         }

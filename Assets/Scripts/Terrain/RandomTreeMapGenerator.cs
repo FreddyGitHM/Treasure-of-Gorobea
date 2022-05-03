@@ -79,7 +79,7 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
         {
             // Debug.Log("Destroying tree at position: " + collider.gameObject.transform.position);
 
-            trees.Add(collider.gameObject.GetComponent<TreeID>().getTreeID());
+            trees.Add(collider.gameObject.GetComponent<TreeID>().treeID);
 
             Destroy(collider.gameObject);
         }

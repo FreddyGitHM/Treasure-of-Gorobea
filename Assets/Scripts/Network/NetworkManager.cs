@@ -178,7 +178,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
                 foreach (GameObject tree in trees)
                 {
-                    if (treesID.Contains(tree.GetComponent<TreeID>().getTreeID()))
+                    if (treesID.Contains(tree.GetComponent<TreeID>().treeID))
                     {
                         Destroy(tree);
                     }
