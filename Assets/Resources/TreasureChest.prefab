@@ -99,7 +99,7 @@ GameObject:
   - component: {fileID: 5343421665426020103}
   - component: {fileID: -7815948701644911370}
   m_Layer: 0
-  m_Name: Death_Chest
+  m_Name: TreasureChest
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
