@@ -838,6 +838,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 64000011289329728, guid: d971e1180ed0164429565de418045a27, type: 3}
+      propertyPath: m_Convex
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d971e1180ed0164429565de418045a27, type: 3}
 --- !u!4 &156951634 stripped
@@ -4515,7 +4519,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13b532571ce63de41b0e8506dc3f2e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  distance: 150
+  distance: 200
   treasure: {fileID: 117430, guid: f56df44f2436f1f42821acb8fe1ec8d1, type: 3}
 --- !u!1001 &1210125999
 PrefabInstance:

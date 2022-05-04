@@ -37,7 +37,7 @@ public class MassPlaceTree : MonoBehaviour
 
     private void placeTrees(){
 
-        if(numberOfTrees == 0 && !keepExistingTree){
+        if( (numberOfTrees == 0 && !keepExistingTree) || !keepExistingTree){
             DestroyAllTrees();
             lastTreeID = 0;
         }
