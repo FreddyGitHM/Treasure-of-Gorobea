@@ -1621,7 +1621,15 @@ namespace Invector.vCharacterController
                 return;
             }
 
-            var weaponSide =  (tpCamera.switchRight<0 ? -1 : 1);
+            //fix for camera activation at runtime
+            if(tpCamera != null)
+            {
+                var weaponSide = (tpCamera.switchRight < 0 ? -1 : 1);
+            }
+            else
+            {
+                var weaponSide = -1;
+            }
 
             if (CurrentActiveWeapon == null)
             {

@@ -64,7 +64,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 }
                 else
                 {
-                    //choose the Prefab to spawn
+                    GameObject mainCamera = GameObject.FindWithTag("MainCamera");
+                    mainCamera.SetActive(false);
+
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
                     MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
                     instantiated = true;
@@ -93,24 +95,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     void EnableComponents()
     {
-        /*
-        player.GetComponent<BasicBehaviour>().enabled = true;
-        player.GetComponent<MoveBehaviour>().enabled = true;
-        player.GetComponent<PickUp>().enabled = true;
-        player.GetComponent<Hide>().enabled = true;
-
-        GameObject camera = player.transform.GetComponentInChildren<Camera>().gameObject;
-        camera.GetComponent<Camera>().enabled = true;
-        camera.GetComponent<AudioListener>().enabled = true;
-        camera.GetComponent<ThirdPersonOrbitCamBasic>().enabled = true;
-        */
-
         player.GetComponent<vShooterMeleeInput>().enabled = true;
         player.GetComponent<vShooterManager>().enabled = true;
         player.GetComponent<vAmmoManager>().enabled = true;
         player.GetComponent<vHeadTrack>().enabled = true;
         player.GetComponent<vCollectShooterMeleeControl>().enabled = true;
         player.GetComponent<vGenericAction>().enabled = true;
+        player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
     }
 
 
@@ -135,6 +126,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             //received the spawn position from masterClient
             case Codes.SPAWN_POSITION:
+                GameObject mainCamera = GameObject.FindWithTag("MainCamera");
+                mainCamera.SetActive(false);
+
                 object[] data0 = (object[])eventData.CustomData;
                 Vector3 TreeMapPosition = (Vector3)data0[2];
                 MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
