@@ -9,6 +9,7 @@ using Invector.vItemManager;
 using Invector.vMelee;
 using Invector.vCharacterController.vActions;
 
+
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     GameObject player; //local player
@@ -96,6 +97,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     void EnableComponents()
     {
         player.GetComponent<vShooterMeleeInput>().enabled = true;
+        player.GetComponent<vThirdPersonController>().enabled = true;
         player.GetComponent<vShooterManager>().enabled = true;
         player.GetComponent<vAmmoManager>().enabled = true;
         player.GetComponent<vHeadTrack>().enabled = true;
@@ -180,6 +182,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     }
                 }
 
+                break;
+
+            // someone (i or another player) received a damage, update his health
+            case Codes.DAMAGE:
+                object[] data4 = (object[])eventData.CustomData;
+                GameObject damagedPlayer = PhotonNetwork.GetPhotonView((int)data4[0]).gameObject;
+                damagedPlayer.transform.Find("HealthController").GetComponent<Invector.vHealthController>().currentHealth = (float)data4[1];
                 break;
         }
     }

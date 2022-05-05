@@ -35,7 +35,7 @@ namespace Invector
             {
                 return _currentHealth;
             }
-            protected set
+            set
             {
                 if (_currentHealth != value)
                 {
