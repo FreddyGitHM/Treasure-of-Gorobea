@@ -7,14 +7,22 @@ using EventCodes;
 using System.Collections.Generic;
 using UnityEditor;
 
+using Invector.vCharacterController;
+using Invector.vShooter;
+using Invector.vItemManager;
+using Invector.vMelee;
+using Invector.vCharacterController.vActions;
+
 
 public class EventsCall : MonoBehaviourPunCallbacks
 {
     public GameObject player;
 
     private GameObject canvas;
+    private GameObject MainCamera;
 
-    private void Awake() {
+    private void Awake()
+    {
         // Searching for all objects in scene
         List<GameObject> GetAllObjectsOnlyInScene()
         {
@@ -37,9 +45,14 @@ public class EventsCall : MonoBehaviourPunCallbacks
                 canvas = gameObject;
                 Debug.Log("Death canvas find: " + gameObject.name);
             }
+            else if (gameObject.name == "Main Camera")
+            {
+                MainCamera = gameObject;
+                Debug.Log("Main Camera found: " + gameObject.name);
+            }
         }
     }
-    
+
     public void OnReceiveDamage()
     {
         int id = player.GetComponent<PhotonView>().ViewID;
@@ -62,8 +75,24 @@ public class EventsCall : MonoBehaviourPunCallbacks
         Debug.Log("[On Death]");
         if (canvas != null)
         {
+            player.GetComponent<vShooterMeleeInput>().enabled = false;
+            player.GetComponent<vThirdPersonController>().enabled = false;
+            player.GetComponent<vShooterManager>().enabled = false;
+            player.GetComponent<vAmmoManager>().enabled = false;
+            player.GetComponent<vHeadTrack>().enabled = false;
+            player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
+            player.GetComponent<vGenericAction>().enabled = false;
+            GameObject.Find("vThirdPersonCamera").SetActive(false);
+            MainCamera.SetActive(true);
+
+            SaveSystem.Save();
+
+            Destroy(GameObject.FindWithTag("GameController"));
             Debug.Log("Canvas Find");
             canvas.SetActive(true);
+
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.Confined;
         }
 
         PhotonNetwork.Disconnect();
