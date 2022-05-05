@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4611155393436506}
   - component: {fileID: 205205819014226750}
   - component: {fileID: 136338291386238716}
+  - component: {fileID: -4232864651897612808}
   m_Layer: 7
   m_Name: PF_Oak_medium Terrain
   m_TagString: Tree
@@ -76,6 +77,18 @@ CapsuleCollider:
   m_Height: 8
   m_Direction: 1
   m_Center: {x: 0.03, y: 3.5, z: -0.03}
+--- !u!114 &-4232864651897612808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1030635741597182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 32f285b4570f4a7c2bdcce40790704ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1491604294671092
 GameObject:
   m_ObjectHideFlags: 0

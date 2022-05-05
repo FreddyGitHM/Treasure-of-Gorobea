@@ -18,6 +18,9 @@ public class MassPlaceTree : MonoBehaviour
     public int numberOfTrees;
     public bool keepExistingTree = true;
 
+    // Parameter for keeping track of tree id
+    private int lastTreeID = 0;
+
     public void BeforePlaceTrees(){
 
         //Getting terrain information
@@ -34,19 +37,26 @@ public class MassPlaceTree : MonoBehaviour
 
     private void placeTrees(){
 
-        if(numberOfTrees == 0 || !keepExistingTree){
+        if( (numberOfTrees == 0 && !keepExistingTree) || !keepExistingTree){
             DestroyAllTrees();
+            lastTreeID = 0;
         }
 
         #if UNITY_EDITOR
 
-        for (int i = 0; i < numberOfTrees; i++){
+        for (int i = 1; i <= numberOfTrees; i++){
 
             Selection.activeObject = PrefabUtility.InstantiatePrefab(chooseRandomTree(), transform);
 
-            var tree = Selection.activeGameObject;
+            GameObject tree = Selection.activeGameObject;
 
             tree.transform.position = getlocation();
+
+            tree.GetComponent<TreeID>().treeID = i + lastTreeID;
+
+            if(i == numberOfTrees){
+                lastTreeID += i;
+            }
         }
 
         Selection.activeGameObject = transform.gameObject;
