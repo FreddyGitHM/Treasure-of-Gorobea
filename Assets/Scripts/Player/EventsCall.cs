@@ -1,12 +1,7 @@
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
-using ExitGames.Client.Photon;
-using EventCodes;
-
 using System.Collections.Generic;
 using UnityEditor;
-
 using Invector.vCharacterController;
 using Invector.vShooter;
 using Invector.vItemManager;
@@ -16,12 +11,10 @@ using Invector.vCharacterController.vActions;
 
 public class EventsCall : MonoBehaviourPunCallbacks
 {
-    public GameObject player;
+    GameObject canvas;
+    GameObject mainCamera;
 
-    private GameObject canvas;
-    private GameObject MainCamera;
-
-    private void Awake()
+    void Awake()
     {
         // Searching for all objects in scene
         List<GameObject> GetAllObjectsOnlyInScene()
@@ -47,27 +40,10 @@ public class EventsCall : MonoBehaviourPunCallbacks
             }
             else if (gameObject.name == "Main Camera")
             {
-                MainCamera = gameObject;
+                mainCamera = gameObject;
                 Debug.Log("Main Camera found: " + gameObject.name);
             }
         }
-    }
-
-    public void OnReceiveDamage()
-    {
-        int id = player.GetComponent<PhotonView>().ViewID;
-        float health = player.transform.Find("HealthController").GetComponent<Invector.vHealthController>().currentHealth;
-
-        object[] data = new object[] { id, health };
-
-        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
-        raiseEventOptions.Receivers = ReceiverGroup.Others;
-        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
-
-        SendOptions sendOptions = new SendOptions();
-        sendOptions.Reliability = true;
-
-        PhotonNetwork.RaiseEvent(Codes.DAMAGE, data, raiseEventOptions, sendOptions);
     }
 
     public void OnDeath()
@@ -75,15 +51,16 @@ public class EventsCall : MonoBehaviourPunCallbacks
         Debug.Log("[On Death]");
         if (canvas != null)
         {
-            player.GetComponent<vShooterMeleeInput>().enabled = false;
-            player.GetComponent<vThirdPersonController>().enabled = false;
-            player.GetComponent<vShooterManager>().enabled = false;
-            player.GetComponent<vAmmoManager>().enabled = false;
-            player.GetComponent<vHeadTrack>().enabled = false;
-            player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
-            player.GetComponent<vGenericAction>().enabled = false;
+            gameObject.GetComponent<vShooterMeleeInput>().enabled = false;
+            gameObject.GetComponent<vThirdPersonController>().enabled = false;
+            gameObject.GetComponent<vShooterManager>().enabled = false;
+            gameObject.GetComponent<vAmmoManager>().enabled = false;
+            gameObject.GetComponent<vHeadTrack>().enabled = false;
+            gameObject.GetComponent<vCollectShooterMeleeControl>().enabled = false;
+            gameObject.GetComponent<vGenericAction>().enabled = false;
             GameObject.Find("vThirdPersonCamera").SetActive(false);
-            MainCamera.SetActive(true);
+
+            mainCamera.SetActive(true);
 
             SaveSystem.Save();
 

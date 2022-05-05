@@ -189,6 +189,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 object[] data4 = (object[])eventData.CustomData;
                 GameObject damagedPlayer = PhotonNetwork.GetPhotonView((int)data4[0]).gameObject;
                 damagedPlayer.transform.Find("HealthController").GetComponent<Invector.vHealthController>().currentHealth = (float)data4[1];
+                damagedPlayer.GetComponent<vThirdPersonController>().currentHealth = (float)data4[1];
                 break;
         }
     }
