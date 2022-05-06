@@ -107,6 +107,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vHeadTrack>().enabled = true;
         player.GetComponent<vCollectShooterMeleeControl>().enabled = true;
         player.GetComponent<vGenericAction>().enabled = true;
+        player.transform.Find("Invector Components").Find("UI").gameObject.GetComponent<Canvas>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
     }
 
@@ -217,19 +218,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
                     player.GetComponent<vGenericAction>().enabled = false;
                     GameObject.Find("vThirdPersonCamera").SetActive(false);
-
                     mainCamera.GetComponent<Camera>().enabled = true;
 
                     SaveSystem.Save();
 
-                    Destroy(GameObject.FindWithTag("GameController"));
-                    Debug.Log("Canvas Find");
                     deathCanvas.GetComponent<Canvas>().enabled = true;
-
+                    mainCamera.GetComponent<Camera>().enabled = true;
                     Cursor.visible = true;
                     Cursor.lockState = CursorLockMode.Confined;
-
-                    PhotonNetwork.Disconnect();
                 }
                 else
                 {
