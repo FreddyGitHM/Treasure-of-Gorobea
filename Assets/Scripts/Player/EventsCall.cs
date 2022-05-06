@@ -1,21 +1,17 @@
 using UnityEngine;
 using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
+using EventCodes;
 using System.Collections.Generic;
 using UnityEditor;
-using Invector.vCharacterController;
-using Invector.vShooter;
-using Invector.vItemManager;
-using Invector.vMelee;
-using Invector.vCharacterController.vActions;
 
 
 public class EventsCall : MonoBehaviourPunCallbacks
 {
-    GameObject canvas;
-    GameObject mainCamera;
-
     void Awake()
     {
+        /*
         // Searching for all objects in scene
         List<GameObject> GetAllObjectsOnlyInScene()
         {
@@ -43,36 +39,23 @@ public class EventsCall : MonoBehaviourPunCallbacks
                 mainCamera = gameObject;
                 Debug.Log("Main Camera found: " + gameObject.name);
             }
-        }
+        }*/
     }
 
     public void OnDeath()
     {
-        Debug.Log("[On Death]");
-        if (canvas != null)
-        {
-            gameObject.GetComponent<vShooterMeleeInput>().enabled = false;
-            gameObject.GetComponent<vThirdPersonController>().enabled = false;
-            gameObject.GetComponent<vShooterManager>().enabled = false;
-            gameObject.GetComponent<vAmmoManager>().enabled = false;
-            gameObject.GetComponent<vHeadTrack>().enabled = false;
-            gameObject.GetComponent<vCollectShooterMeleeControl>().enabled = false;
-            gameObject.GetComponent<vGenericAction>().enabled = false;
-            GameObject.Find("vThirdPersonCamera").SetActive(false);
+        int id = gameObject.GetComponent<PhotonView>().ViewID; //death player id
 
-            mainCamera.SetActive(true);
+        object[] data = new object[] { id };
 
-            SaveSystem.Save();
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+        raiseEventOptions.Receivers = ReceiverGroup.Others;
+        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
 
-            Destroy(GameObject.FindWithTag("GameController"));
-            Debug.Log("Canvas Find");
-            canvas.SetActive(true);
+        SendOptions sendOptions = new SendOptions();
+        sendOptions.Reliability = true;
 
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
-        }
-
-        PhotonNetwork.Disconnect();
+        PhotonNetwork.RaiseEvent(Codes.DEATH, data, raiseEventOptions, sendOptions);
     }
 
 }

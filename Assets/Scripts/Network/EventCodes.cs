@@ -7,5 +7,6 @@
         public const byte HIDE = 2;
         public const byte TREE_DESTROY = 3;
         public const byte DAMAGE = 4;
+        public const byte DEATH = 5;
     }
 }

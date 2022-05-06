@@ -18,11 +18,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     GameObject TreasureChest;
     bool instantiated;
     bool ready;
+    GameObject mainCamera;
+    GameObject deathCanvas;
 
     void Awake()
     {
         instantiated = false;
         ready = false;
+        mainCamera = GameObject.FindWithTag("MainCamera");
+        deathCanvas = GameObject.FindWithTag("DeathCanvas");
     }
 
     void Start()
@@ -66,8 +70,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 }
                 else
                 {
-                    GameObject mainCamera = GameObject.FindWithTag("MainCamera");
-                    mainCamera.SetActive(false);
+                    mainCamera.GetComponent<Camera>().enabled = false;
 
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
                     MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
@@ -104,7 +107,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vHeadTrack>().enabled = true;
         player.GetComponent<vCollectShooterMeleeControl>().enabled = true;
         player.GetComponent<vGenericAction>().enabled = true;
-        player.GetComponent<EventsCall>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
     }
 
@@ -130,8 +132,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             //received the spawn position from masterClient
             case Codes.SPAWN_POSITION:
-                GameObject mainCamera = GameObject.FindWithTag("MainCamera");
-                mainCamera.SetActive(false);
+                mainCamera.GetComponent<Camera>().enabled = false;
 
                 object[] data0 = (object[])eventData.CustomData;
                 Vector3 TreeMapPosition = (Vector3)data0[2];
@@ -183,7 +184,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                         Destroy(tree);
                     }
                 }
-
                 break;
 
             // someone (i or another player) received a damage, update his health
@@ -200,7 +200,41 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
                     damagedPlayerHealthSlider.value = newHealth;
                 }
+                break;
 
+            // someone (i or another player) is dead
+            case Codes.DEATH:
+                object[] data5 = (object[])eventData.CustomData;
+                GameObject deathPlayer = PhotonNetwork.GetPhotonView((int)data5[0]).gameObject;
+
+                if(deathPlayer.GetComponent<PhotonView>().IsMine)
+                {
+                    player.GetComponent<vShooterMeleeInput>().enabled = false;
+                    player.GetComponent<vThirdPersonController>().enabled = false;
+                    player.GetComponent<vShooterManager>().enabled = false;
+                    player.GetComponent<vAmmoManager>().enabled = false;
+                    player.GetComponent<vHeadTrack>().enabled = false;
+                    player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
+                    player.GetComponent<vGenericAction>().enabled = false;
+                    GameObject.Find("vThirdPersonCamera").SetActive(false);
+
+                    mainCamera.GetComponent<Camera>().enabled = true;
+
+                    SaveSystem.Save();
+
+                    Destroy(GameObject.FindWithTag("GameController"));
+                    Debug.Log("Canvas Find");
+                    deathCanvas.GetComponent<Canvas>().enabled = true;
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.Confined;
+
+                    PhotonNetwork.Disconnect();
+                }
+                else
+                {
+                    Debug.Log(deathPlayer.GetComponent<PhotonView>().ViewID + " is dead");
+                }
                 break;
         }
     }
