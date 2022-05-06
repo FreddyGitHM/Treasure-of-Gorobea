@@ -8,9 +8,10 @@ using Invector.vShooter;
 using Invector.vItemManager;
 using Invector.vMelee;
 using Invector.vCharacterController.vActions;
+using UnityEngine.UI;
 
 
-public class Network : MonoBehaviour
+public class Network : MonoBehaviourPunCallbacks
 {
 
     GameObject player;
@@ -42,6 +43,42 @@ public class Network : MonoBehaviour
         player.GetComponent<vGenericAction>().enabled = true;
         player.GetComponent<EventsCall>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
+
+        PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public override void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    public override void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
+
+    void OnEvent(EventData eventData)
+    {
+        switch (eventData.Code)
+        {
+            // someone (i or another player) received a damage, update his health
+            case Codes.DAMAGE:
+                Debug.Log("hit");
+                object[] data4 = (object[])eventData.CustomData;
+                GameObject damagedPlayer = PhotonNetwork.GetPhotonView((int)data4[0]).gameObject;
+                float newHealth = (float)data4[1];
+
+                damagedPlayer.transform.Find("HealthController").GetComponent<Invector.vHealthController>().currentHealth = newHealth;
+                damagedPlayer.GetComponent<vThirdPersonController>().currentHealth = newHealth;
+
+                if (damagedPlayer.GetComponent<PhotonView>().IsMine)
+                {
+                    Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
+                    damagedPlayerHealthSlider.value = newHealth;
+                }
+
+                break;
+        }
     }
 
 }

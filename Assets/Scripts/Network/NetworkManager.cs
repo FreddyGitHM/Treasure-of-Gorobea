@@ -8,6 +8,7 @@ using Invector.vShooter;
 using Invector.vItemManager;
 using Invector.vMelee;
 using Invector.vCharacterController.vActions;
+using UnityEngine.UI;
 
 
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
@@ -189,8 +190,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             case Codes.DAMAGE:
                 object[] data4 = (object[])eventData.CustomData;
                 GameObject damagedPlayer = PhotonNetwork.GetPhotonView((int)data4[0]).gameObject;
-                damagedPlayer.transform.Find("HealthController").GetComponent<Invector.vHealthController>().currentHealth = (float)data4[1];
-                damagedPlayer.GetComponent<vThirdPersonController>().currentHealth = (float)data4[1];
+                float newHealth = (float)data4[1];
+
+                damagedPlayer.transform.Find("HealthController").GetComponent<Invector.vHealthController>().currentHealth = newHealth;
+                damagedPlayer.GetComponent<vThirdPersonController>().currentHealth = newHealth;
+
+                if(damagedPlayer.GetComponent<PhotonView>().IsMine)
+                {
+                    Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
+                    damagedPlayerHealthSlider.value = newHealth;
+                }
+
                 break;
         }
     }
