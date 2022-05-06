@@ -1,13 +1,17 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
-public class DeathMenu : MonoBehaviour
+
+public class DeathMenu : MonoBehaviourPun
 {
     public void OnClick(){
-        // Destroy terrain
-        GameObject terrain = GameObject.Find("Large Map");
-        DestroyImmediate(terrain);
+        PhotonNetwork.Disconnect();
+
+        DestroyImmediate(GameObject.FindWithTag("GameController"));
+        DestroyImmediate(GameObject.Find("Large Map"));
 
         SceneManager.LoadScene("Menu");
-    }    
+    }
+    
 }
