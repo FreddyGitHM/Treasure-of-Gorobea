@@ -1,65 +1,130 @@
 using UnityEngine;
 using Photon.Pun;
-using Photon.Realtime;
-using ExitGames.Client.Photon;
-using EventCodes;
-using Invector.vCharacterController;
-using Invector.vShooter;
-using Invector.vItemManager;
-using Invector.vMelee;
-using Invector.vCharacterController.vActions;
 
 
 public class AnimationSync : MonoBehaviourPunCallbacks, IPunObservable
 {
-    Animator animator;
     int id;
+    Animator animator;
 
-    /*
-    public bool idleRandomTrigger;
-    public bool weakAttack;
-    public bool strongAttack;
-    public bool triggerRecoil;
-    public bool triggerReaction;
-    public bool resetState;
-    public bool reload;
-    public bool cancelReload;
-    public bool shoot;*/
+    bool idleRandomTrigger;
+    bool weakAttack;
+    bool strongAttack;
+    bool triggerRecoil;
+    bool triggerReaction;
+    bool resetState;
+    bool reload;
+    bool cancelReload;
+    bool shoot;
 
     void Awake()
     {
         id = GetComponent<PhotonView>().ViewID;
         animator = gameObject.GetComponent<Animator>();
+
+        idleRandomTrigger = false;
+        weakAttack = false;
+        strongAttack = false;
+        triggerRecoil = false;
+        triggerReaction = false;
+        resetState = false;
+        reload = false;
+        cancelReload = false;
+        shoot = false;
     }
 
-    void Start()
+    void FixedUpdate()
     {
-        /*
-        idleRandomTrigger = animator.GetBool("IdleRandomTrigger");
-        weakAttack = animator.GetBool("WeakAttack");
-        strongAttack = animator.GetBool("StrongAttack");
-        triggerRecoil = animator.GetBool("TriggerRecoil");
-        triggerReaction = animator.GetBool("TriggerReaction");
-        resetState = animator.GetBool("ResetState");
-        reload = animator.GetBool("Reload");
-        cancelReload = animator.GetBool("CancelReload");
-        shoot = animator.GetBool("Shoot");*/
+        if (idleRandomTrigger == false)
+        {
+            idleRandomTrigger = animator.GetBool("IdleRandomTrigger");
+        }
+        if (weakAttack == false)
+        {
+            weakAttack = animator.GetBool("WeakAttack");
+        }
+        if (strongAttack == false)
+        {
+            strongAttack = animator.GetBool("StrongAttack");
+        }
+        if (triggerRecoil == false)
+        {
+            triggerRecoil = animator.GetBool("TriggerRecoil");
+        }
+        if (triggerReaction == false)
+        {
+            triggerReaction = animator.GetBool("TriggerReaction");
+        }
+        if (resetState == false)
+        {
+            resetState = animator.GetBool("ResetState");
+        }
+        if (reload == false)
+        {
+            reload = animator.GetBool("Reload");
+        }
+        if (cancelReload == false)
+        {
+            cancelReload = animator.GetBool("CancelReload");
+        }
+        if (shoot == false)
+        {
+            shoot = animator.GetBool("Shoot");
+        }
     }
+
 
     public void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if(stream.IsWriting)
+        if (stream.IsWriting)
         {
             stream.SendNext(id);
-            stream.SendNext(animator.GetBool("IdleRandomTrigger"));
-            stream.SendNext(animator.GetBool("WeakAttack"));
-            stream.SendNext(animator.GetBool("StrongAttack"));
-            stream.SendNext(animator.GetBool("TriggerRecoil"));
-            stream.SendNext(animator.GetBool("TriggerReaction"));
-            stream.SendNext(animator.GetBool("ResetState"));
-            stream.SendNext(animator.GetBool("Reload"));
-            stream.SendNext(animator.GetBool("CancelReload"));
-            stream.SendNext(animator.GetBool("Shoot"));
+            stream.SendNext(idleRandomTrigger);
+            stream.SendNext(weakAttack);
+            stream.SendNext(strongAttack);
+            stream.SendNext(triggerRecoil);
+            stream.SendNext(triggerReaction);
+            stream.SendNext(resetState);
+            stream.SendNext(reload);
+            stream.SendNext(cancelReload);
+            stream.SendNext(shoot);
+
+            if (idleRandomTrigger)
+            {
+                idleRandomTrigger = false;
+            }
+            if (weakAttack)
+            {
+                weakAttack = false;
+            }
+            if (strongAttack)
+            {
+                strongAttack = false;
+            }
+            if (triggerRecoil)
+            {
+                triggerRecoil = false;
+            }
+            if (triggerReaction)
+            {
+                triggerReaction = false;
+            }
+            if (resetState)
+            {
+                resetState = false;
+            }
+            if (reload)
+            {
+                reload = false;
+            }
+            if (cancelReload)
+            {
+                cancelReload = false;
+            }
+            if (shoot)
+            {
+                shoot = false;
+            }
         }
         else
         {
