@@ -103,6 +103,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vHeadTrack>().enabled = true;
         player.GetComponent<vCollectShooterMeleeControl>().enabled = true;
         player.GetComponent<vGenericAction>().enabled = true;
+        player.GetComponent<EventsCall>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
     }
 
