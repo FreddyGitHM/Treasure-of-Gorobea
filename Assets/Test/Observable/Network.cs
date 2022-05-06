@@ -15,6 +15,14 @@ public class Network : MonoBehaviourPunCallbacks
 {
 
     GameObject player;
+    GameObject mainCamera;
+    GameObject deathCanvas;
+
+    void Awake()
+    {
+        mainCamera = GameObject.FindWithTag("MainCamera");
+        deathCanvas = GameObject.FindWithTag("DeathCanvas");
+    }
 
     void Start()
     {
@@ -22,8 +30,7 @@ public class Network : MonoBehaviourPunCallbacks
         Debug.Log("Nickname: " + PhotonNetwork.NickName);
         Debug.Log("Host: " + PhotonNetwork.IsMasterClient);
 
-        GameObject mainCamera = GameObject.FindWithTag("MainCamera");
-        mainCamera.SetActive(false);
+        mainCamera.GetComponent<Camera>().enabled = false;
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -41,7 +48,6 @@ public class Network : MonoBehaviourPunCallbacks
         player.GetComponent<vHeadTrack>().enabled = true;
         player.GetComponent<vCollectShooterMeleeControl>().enabled = true;
         player.GetComponent<vGenericAction>().enabled = true;
-        player.GetComponent<EventsCall>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
 
         PhotonNetwork.AddCallbackTarget(this);
@@ -71,10 +77,44 @@ public class Network : MonoBehaviourPunCallbacks
                 damagedPlayer.transform.Find("HealthController").GetComponent<Invector.vHealthController>().currentHealth = newHealth;
                 damagedPlayer.GetComponent<vThirdPersonController>().currentHealth = newHealth;
 
-                if (damagedPlayer.GetComponent<PhotonView>().IsMine)
+                if(damagedPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
                     damagedPlayerHealthSlider.value = newHealth;
+                }
+
+                break;
+            case Codes.DEATH:
+                object[] data5 = (object[])eventData.CustomData;
+                GameObject deathPlayer = PhotonNetwork.GetPhotonView((int)data5[0]).gameObject;
+
+                if(deathPlayer.GetComponent<PhotonView>().IsMine)
+                {
+                    player.GetComponent<vShooterMeleeInput>().enabled = false;
+                    player.GetComponent<vThirdPersonController>().enabled = false;
+                    player.GetComponent<vShooterManager>().enabled = false;
+                    player.GetComponent<vAmmoManager>().enabled = false;
+                    player.GetComponent<vHeadTrack>().enabled = false;
+                    player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
+                    player.GetComponent<vGenericAction>().enabled = false;
+                    GameObject.Find("vThirdPersonCamera").SetActive(false);
+
+                    mainCamera.GetComponent<Camera>().enabled = true;
+
+                    SaveSystem.Save();
+
+                    Destroy(GameObject.FindWithTag("GameController"));
+                    Debug.Log("Canvas Find");
+                    deathCanvas.GetComponent<Canvas>().enabled = true;
+
+                    Cursor.visible = true;
+                    Cursor.lockState = CursorLockMode.Confined;
+
+                    PhotonNetwork.Disconnect();
+                }
+                else
+                {
+                    Debug.Log(deathPlayer.GetComponent<PhotonView>().ViewID);
                 }
 
                 break;
