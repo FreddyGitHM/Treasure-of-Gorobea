@@ -112,6 +112,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
     }
 
+    public GameObject GetPlayer()
+    {
+        return player;
+    }
+
 
 
     ////////////////////

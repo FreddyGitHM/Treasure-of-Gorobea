@@ -3,6 +3,7 @@ using Photon.Pun;
 using Photon.Realtime;
 using ExitGames.Client.Photon;
 using EventCodes;
+using Invector.vCharacterController;
 
 
 public class EventsCall : MonoBehaviourPunCallbacks
@@ -11,6 +12,8 @@ public class EventsCall : MonoBehaviourPunCallbacks
 
     public void OnDeath()
     {
+        gameObject.transform.Find("HealthController").GetComponent<vDamageReceiver>().enabled = false;
+
         int id = gameObject.GetComponent<PhotonView>().ViewID; //death player id
 
         object[] data = new object[] { id };

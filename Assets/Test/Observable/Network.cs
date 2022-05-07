@@ -148,6 +148,11 @@ public class Network : MonoBehaviourPunCallbacks
         mainCamera.GetComponent<Camera>().enabled = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
-    }    
+    }
+
+    public GameObject GetPlayer()
+    {
+        return player;
+    }
 
 }
