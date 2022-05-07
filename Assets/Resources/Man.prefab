@@ -5275,6 +5275,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cf80492ba341e473ab1535ac2c320822, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  weapon: {fileID: 8683448950558486656}
 --- !u!114 &1806765206657992471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13963,7 +13964,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openCloseEvents: 0
   openCloseWindow: 1
-  selectedToolbar: 2
+  selectedToolbar: 5
   weaponCategory: Rifle
   shootFrequency: 0.125
   isInfinityAmmo: 0
@@ -14004,6 +14005,18 @@ MonoBehaviour:
       - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: 
         m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6714560979643478179}
+        m_TargetAssemblyTypeName: EventsCall, Assembly-CSharp
+        m_MethodName: OnShot
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

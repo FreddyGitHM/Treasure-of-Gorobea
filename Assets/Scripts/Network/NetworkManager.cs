@@ -232,6 +232,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     Debug.Log(deathPlayer.GetComponent<PhotonView>().ViewID + " is dead");
                 }
                 break;
+
+            //someone has shot
+            case Codes.SHOT:
+                object[] data6 = (object[])eventData.CustomData;
+                GameObject shootingPlayer = PhotonNetwork.GetPhotonView((int)data6[0]).gameObject;
+
+                AudioSource audioSource = shootingPlayer.GetComponent<EventsCall>().weapon.transform.Find("renderer").Find("AudioSource").GetComponent<AudioSource>();
+                AudioClip shotClip = shootingPlayer.GetComponent<EventsCall>().weapon.GetComponent<vShooterWeapon>().fireClip;
+                audioSource.PlayOneShot(shotClip);
+
+                ParticleSystem[] particleSystems = shootingPlayer.GetComponent<EventsCall>().weapon.transform.Find("renderer").Find("Particles").GetComponentsInChildren<ParticleSystem>();
+                foreach (ParticleSystem ps in particleSystems)
+                {
+                    ps.Play();
+                }
+                break;
         }
     }
 
