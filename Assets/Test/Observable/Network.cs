@@ -9,7 +9,7 @@ using Invector.vItemManager;
 using Invector.vMelee;
 using Invector.vCharacterController.vActions;
 using UnityEngine.UI;
-
+using System.Collections;
 
 public class Network : MonoBehaviourPunCallbacks
 {
@@ -92,7 +92,7 @@ public class Network : MonoBehaviourPunCallbacks
                 object[] data5 = (object[])eventData.CustomData;
                 GameObject deathPlayer = PhotonNetwork.GetPhotonView((int)data5[0]).gameObject;
 
-                if(deathPlayer.GetComponent<PhotonView>().IsMine)
+                if (deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     player.GetComponent<vShooterMeleeInput>().enabled = false;
                     player.GetComponent<vThirdPersonController>().enabled = false;
@@ -101,14 +101,16 @@ public class Network : MonoBehaviourPunCallbacks
                     player.GetComponent<vHeadTrack>().enabled = false;
                     player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
                     player.GetComponent<vGenericAction>().enabled = false;
-                    GameObject.Find("vThirdPersonCamera").SetActive(false);
 
                     SaveSystem.Save();
+                }
 
-                    deathCanvas.GetComponent<Canvas>().enabled = true;
-                    mainCamera.GetComponent<Camera>().enabled = true;
-                    Cursor.visible = true;
-                    Cursor.lockState = CursorLockMode.Confined;
+                Animator animator = deathPlayer.GetComponent<Animator>();
+                animator.SetBool("isDead", true);
+
+                if(deathPlayer.GetComponent<PhotonView>().IsMine)
+                {
+                    StartCoroutine(LoadDeathMenu());
                 }
                 else
                 {
@@ -137,5 +139,15 @@ public class Network : MonoBehaviourPunCallbacks
                 break;
         }
     }
+
+    IEnumerator LoadDeathMenu()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+        GameObject.Find("vThirdPersonCamera").SetActive(false);
+        deathCanvas.GetComponent<Canvas>().enabled = true;
+        mainCamera.GetComponent<Camera>().enabled = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+    }    
 
 }
