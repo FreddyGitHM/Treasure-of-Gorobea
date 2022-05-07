@@ -206,6 +206,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 {
                     Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
                     damagedPlayerHealthSlider.value = newHealth;
+                    StartCoroutine(ShowDamageImage());
                 }
                 break;
 
@@ -256,6 +257,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 }
                 break;
         }
+    }
+
+    IEnumerator ShowDamageImage()
+    {
+        Image damageImage = player.transform.Find("Invector Components").Find("UI").Find("HUD").Find("damageImage").GetComponent<Image>();
+        damageImage.enabled = true;
+
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        damageImage.enabled = false;
     }
 
     IEnumerator LoadDeathMenu()
