@@ -51,7 +51,7 @@ TagManager:
   - CompanionAI
   - Triggers
   - StopMove
-  - 
+  - Minimap
   - HeadTrack
   - BodyPart
   - BlockAIRayCast

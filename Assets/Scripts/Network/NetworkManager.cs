@@ -110,6 +110,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vGenericAction>().enabled = true;
         player.transform.Find("Invector Components").Find("UI").gameObject.GetComponent<Canvas>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
+        player.transform.Find("MinimapCamera").GetComponent<Camera>().enabled = true;
+        player.transform.Find("Minimap Player Icon").GetComponent<SpriteRenderer>().enabled = true;
     }
 
     public GameObject GetPlayer()
