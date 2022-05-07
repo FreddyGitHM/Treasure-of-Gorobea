@@ -17,12 +17,13 @@ public class DamageEvent : MonoBehaviourPunCallbacks
     Color originalAimColor;
     Color hitAimColor;
 
-    void Awake()
+    void Start()
     {
         player = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
         //player = GameObject.FindWithTag("NetworkManager").GetComponent<Network>().GetPlayer(); //debug
         originalAimColor = new Color(1f, 1f, 1f, 0.73f);
         hitAimColor = new Color(1f, 0f, 0f, 0.73f);
+        Debug.Log(player.activeSelf);
     }
 
     public void OnReceiveDamage()
