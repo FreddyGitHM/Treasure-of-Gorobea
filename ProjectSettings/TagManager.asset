@@ -36,6 +36,7 @@ TagManager:
   - Terrain
   - TreeWIthMap
   - DeathCanvas
+  - NetworkManager
   layers:
   - Default
   - TransparentFX

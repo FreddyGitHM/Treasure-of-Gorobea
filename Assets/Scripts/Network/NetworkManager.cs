@@ -9,6 +9,7 @@ using Invector.vItemManager;
 using Invector.vMelee;
 using Invector.vCharacterController.vActions;
 using UnityEngine.UI;
+using System.Collections;
 
 
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
@@ -111,6 +112,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
     }
 
+    public GameObject GetPlayer()
+    {
+        return player;
+    }
+
 
 
     ////////////////////
@@ -200,6 +206,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 {
                     Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
                     damagedPlayerHealthSlider.value = newHealth;
+                    StartCoroutine(ShowDamageImage());
                 }
                 break;
 
@@ -217,19 +224,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     player.GetComponent<vHeadTrack>().enabled = false;
                     player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
                     player.GetComponent<vGenericAction>().enabled = false;
-                    GameObject.Find("vThirdPersonCamera").SetActive(false);
-                    mainCamera.GetComponent<Camera>().enabled = true;
 
                     SaveSystem.Save();
+                }
 
-                    deathCanvas.GetComponent<Canvas>().enabled = true;
-                    mainCamera.GetComponent<Camera>().enabled = true;
-                    Cursor.visible = true;
-                    Cursor.lockState = CursorLockMode.Confined;
+                Animator animator = deathPlayer.GetComponent<Animator>();
+                animator.SetBool("isDead", true);
+
+                if(deathPlayer.GetComponent<PhotonView>().IsMine)
+                {
+                    StartCoroutine(LoadDeathMenu());
                 }
                 else
                 {
-                    Debug.Log(deathPlayer.GetComponent<PhotonView>().ViewID + " is dead");
+                    Debug.Log("Player " + deathPlayer.GetComponent<PhotonView>().ViewID + " killed");
                 }
                 break;
 
@@ -249,6 +257,27 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 }
                 break;
         }
+    }
+
+    IEnumerator ShowDamageImage()
+    {
+        Image damageImage = player.transform.Find("Invector Components").Find("UI").Find("HUD").Find("damageImage").GetComponent<Image>();
+        damageImage.enabled = true;
+
+        yield return new WaitForSecondsRealtime(0.5f);
+
+        damageImage.enabled = false;
+    }
+
+    IEnumerator LoadDeathMenu()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+
+        GameObject.Find("vThirdPersonCamera").SetActive(false);
+        deathCanvas.GetComponent<Canvas>().enabled = true;
+        mainCamera.GetComponent<Camera>().enabled = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
 
