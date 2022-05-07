@@ -50,15 +50,15 @@ LODGroup:
   m_AnimateCrossFading: 1
   m_LastLODIsBillboard: 0
   m_LODs:
-  - screenRelativeHeight: 0.20203394
+  - screenRelativeHeight: 0.0313319
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23857731743086720}
-  - screenRelativeHeight: 0.09650192
+  - screenRelativeHeight: 0.020982508
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 23441414889606296}
-  - screenRelativeHeight: 0.0149977505
+  - screenRelativeHeight: 0.0052195857
     fadeTransitionWidth: 0
     renderers:
     - renderer: {fileID: 227371215263905574}
@@ -89,6 +89,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32f285b4570f4a7c2bdcce40790704ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  treeID: 0
 --- !u!1 &1491604294671092
 GameObject:
   m_ObjectHideFlags: 0
