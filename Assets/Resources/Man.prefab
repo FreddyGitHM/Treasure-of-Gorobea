@@ -9184,6 +9184,7 @@ GameObject:
   - component: {fileID: 675774444387995099}
   - component: {fileID: 675774444387995098}
   - component: {fileID: 675774444387995097}
+  - component: {fileID: 7531941960114396459}
   m_Layer: 5
   m_Name: AimCenter
   m_TagString: Untagged
@@ -9263,6 +9264,18 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 0, y: 0}
   m_UseGraphicAlpha: 1
+--- !u!114 &7531941960114396459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675774444387995103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dde2b00740cbfe69db3f24f36274ede3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &675774444429785277
 GameObject:
   m_ObjectHideFlags: 0
@@ -13022,6 +13035,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 385337ecf70184860841290977e25f94, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hitFeedback: {fileID: 8300000, guid: 5bf70ae8e138f0444961a41e089c2f02, type: 3}
 --- !u!1 &6060638733691391230
 GameObject:
   m_ObjectHideFlags: 0
