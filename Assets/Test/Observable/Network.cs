@@ -94,6 +94,9 @@ public class Network : MonoBehaviourPunCallbacks
                 object[] data5 = (object[])eventData.CustomData;
                 GameObject deathPlayer = PhotonNetwork.GetPhotonView((int)data5[0]).gameObject;
 
+                deathPlayer.GetComponent<Rigidbody>().useGravity = false;
+                deathPlayer.transform.Find("HealthController").GetComponent<CapsuleCollider>().enabled = false;
+
                 if (deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     player.GetComponent<vShooterMeleeInput>().enabled = false;

@@ -218,7 +218,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 object[] data5 = (object[])eventData.CustomData;
                 GameObject deathPlayer = PhotonNetwork.GetPhotonView((int)data5[0]).gameObject;
 
-                if(deathPlayer.GetComponent<PhotonView>().IsMine)
+                deathPlayer.GetComponent<Rigidbody>().useGravity = false;
+                deathPlayer.transform.Find("HealthController").GetComponent<CapsuleCollider>().enabled = false;
+
+                if (deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     player.GetComponent<vShooterMeleeInput>().enabled = false;
                     player.GetComponent<vThirdPersonController>().enabled = false;
