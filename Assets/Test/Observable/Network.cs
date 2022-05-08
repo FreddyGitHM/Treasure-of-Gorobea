@@ -85,7 +85,8 @@ public class Network : MonoBehaviourPunCallbacks
                 {
                     Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
                     damagedPlayerHealthSlider.value = newHealth;
-                    StartCoroutine(ShowDamageImage());
+                    vHUDController vHUDController = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").GetComponent<vHUDController>();
+                    vHUDController.damaged = true;
                 }
 
                 break;
