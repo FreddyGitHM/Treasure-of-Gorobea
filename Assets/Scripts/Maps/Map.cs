@@ -32,7 +32,7 @@ public class Map : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.M))
+        if (Input.GetButtonDown("Back"))
         {
             MapCanvas.enabled = !MapCanvas.enabled;
 
