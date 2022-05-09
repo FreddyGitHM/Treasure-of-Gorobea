@@ -16,6 +16,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 {
     GameObject player; //local player
     public GameObject MapTree; // MapTree object
+    public GameObject MapCamera;
     GameObject TreasureChest;
     bool instantiated;
     bool ready;
@@ -75,6 +76,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
                     MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
+                    MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
                     instantiated = true;
                 }
             }
@@ -82,7 +84,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             // Spawning the treasure chest
             Vector3 TreasureChestPosition = TreasureSpawn.Instance.getTreasurePosition();
             Quaternion TreasureChestRotation = TreasureSpawn.Instance.getTreasureRotation();
-            TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureChestPosition, TreasureChestRotation );
+            TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureChestPosition, TreasureChestRotation);
         }
 
         //add this class for EventsHandler and IPunOwnershipCallbacks
@@ -110,8 +112,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vGenericAction>().enabled = true;
         player.transform.Find("Invector Components").Find("UI").gameObject.GetComponent<Canvas>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
-        player.transform.Find("MinimapCamera").GetComponent<Camera>().enabled = true;
-        player.transform.Find("Minimap Player Icon").GetComponent<SpriteRenderer>().enabled = true;
+        player.transform.Find("Minimap/MinimapCamera").GetComponent<Camera>().enabled = true;
+        player.transform.Find("Minimap/Minimap Player Icon").GetComponent<SpriteRenderer>().enabled = true;
     }
 
     public GameObject GetPlayer()
@@ -149,6 +151,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Vector3 spawnPos = (Vector3)data0[0];
                 Quaternion spawnRot = (Quaternion)data0[1];
                 player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
                 instantiated = true;
                 break;
 
@@ -204,7 +207,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 damagedPlayer.transform.Find("HealthController").GetComponent<Invector.vHealthController>().currentHealth = newHealth;
                 damagedPlayer.GetComponent<vThirdPersonController>().currentHealth = newHealth;
 
-                if(damagedPlayer.GetComponent<PhotonView>().IsMine)
+                if (damagedPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
                     damagedPlayerHealthSlider.value = newHealth;
@@ -237,7 +240,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Animator animator = deathPlayer.GetComponent<Animator>();
                 animator.SetBool("isDead", true);
 
-                if(deathPlayer.GetComponent<PhotonView>().IsMine)
+                if (deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     StartCoroutine(LoadDeathMenu());
                 }
