@@ -33,7 +33,7 @@ public class DamageEvent : MonoBehaviourPunCallbacks
 
         gameObject.transform.parent.GetComponent<vThirdPersonController>().currentHealth = health;
 
-        object[] data = new object[] { id, health };
+        object[] data = new object[] { id, health, player.GetComponent<PhotonView>().OwnerActorNr };
 
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
         raiseEventOptions.Receivers = ReceiverGroup.Others;

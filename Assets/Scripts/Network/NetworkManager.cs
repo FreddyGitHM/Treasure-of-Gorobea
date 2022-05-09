@@ -10,6 +10,7 @@ using Invector.vMelee;
 using Invector.vCharacterController.vActions;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
@@ -22,6 +23,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     bool ready;
     GameObject mainCamera;
     GameObject deathCanvas;
+
+    //match info
+    TextMeshProUGUI timeText;
+    TextMeshProUGUI playerText;
+    TextMeshProUGUI killText;
+    int matchLength;
+    float timeLeft;
+    int playerIdLastShot;
+    int kills;
 
     void Awake()
     {
@@ -96,8 +106,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (instantiated == true && ready == false)
         {
             EnableComponents();
+            InitMatchInfo();
             ready = true;
             Debug.Log("Ready!");
+        }
+        if(ready)
+        {
+            if(timeLeft < 0)
+            {
+                Debug.Log("TIME UP!");
+            }
+            timeLeft -= Time.deltaTime;
+            timeText.text = "TIME REMAINING: " + GetTimer(timeLeft);
+            playerText.text = "PLAYER(S) ALIVE: " + PhotonNetwork.CurrentRoom.PlayerCount;
+            killText.text = "KILL(S): " + kills;
         }
     }
 
@@ -114,6 +136,40 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
         player.transform.Find("Minimap/MinimapCamera").GetComponent<Camera>().enabled = true;
         player.transform.Find("Minimap/Minimap Player Icon").GetComponent<SpriteRenderer>().enabled = true;
+    }
+
+    void InitMatchInfo()
+    {
+        GameObject infoMatch = player.transform.Find("Minimap/Minimap Canvas/Minimap/MatchInfo").gameObject;
+        timeText = infoMatch.transform.Find("TimeText").GetComponent<TextMeshProUGUI>();
+        timeText.enabled = true;
+        playerText = infoMatch.transform.Find("PlayerText").GetComponent<TextMeshProUGUI>();
+        playerText.enabled = true;
+        killText = infoMatch.transform.Find("KillText").GetComponent<TextMeshProUGUI>();
+        killText.enabled = true;
+        matchLength = 1200;
+        timeLeft = matchLength;
+        kills = 0;
+
+        timeText.text = "TIME REMAINING: " + GetTimer(timeLeft);
+        playerText.text = "PLAYER(S) ALIVE: " + PhotonNetwork.CurrentRoom.PlayerCount; //disconnection and killing calc
+        killText.text = "KILL(S): " + kills;
+    }
+
+    string GetTimer(float seconds)
+    {
+        int sec = (int)seconds;
+        string minString = (sec / 60).ToString();
+        if(minString.Length == 1)
+        {
+            minString = "0" + minString;
+        }
+        string secString = (sec % 60).ToString();
+        if(secString.Length == 1)
+        {
+            secString = "0" + secString;
+        }
+        return minString + ":" + secString;
     }
 
     public GameObject GetPlayer()
@@ -213,6 +269,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     damagedPlayerHealthSlider.value = newHealth;
                     vHUDController vHUDController = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").GetComponent<vHUDController>();
                     vHUDController.damaged = true;
+
+                    playerIdLastShot = (int)data4[2];
                 }
                 break;
 
@@ -233,6 +291,18 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     player.GetComponent<vHeadTrack>().enabled = false;
                     player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
                     player.GetComponent<vGenericAction>().enabled = false;
+
+                    //tell to my killer that he has killed me
+                    object[] data = new object[] {};
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+                    int[] receivers = { playerIdLastShot };
+                    raiseEventOptions.TargetActors = receivers;
+                    raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+                    SendOptions sendOptions = new SendOptions();
+                    sendOptions.Reliability = true;
+
+                    PhotonNetwork.RaiseEvent(Codes.KILL, data, raiseEventOptions, sendOptions);
 
                     SaveSystem.Save();
                 }
@@ -264,6 +334,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 {
                     ps.Play();
                 }
+                break;
+
+            //i have killed someone, update my stat
+            case Codes.KILL:
+                kills++;
                 break;
         }
     }
