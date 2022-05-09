@@ -6,7 +6,7 @@ public class Map : MonoBehaviour
     private GameObject player;
     private GameObject FullscreenMapImage;
     private Canvas MapCanvas;
-    private Camera camera;
+    private Camera MapCamera;
 
     public float scroolSpeed;
 
@@ -27,7 +27,7 @@ public class Map : MonoBehaviour
 
         MapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
 
-        camera = GetComponent<Camera>();
+        MapCamera = GetComponent<Camera>();
     }
 
     private void Update()
@@ -44,15 +44,15 @@ public class Map : MonoBehaviour
 
         if (!MapCanvas.enabled)
         {
-            camera.orthographicSize = CameraSize;
+            MapCamera.orthographicSize = CameraSize;
         }
         else
         {
             if (Input.GetAxis("Mouse ScrollWheel") != 0f)
             {
-                if (camera.orthographicSize + Input.GetAxis("Mouse ScrollWheel") * scroolSpeed <= CameraSize)
+                if (MapCamera.orthographicSize - Input.GetAxis("Mouse ScrollWheel") * scroolSpeed <= CameraSize)
                 {
-                    camera.orthographicSize += Input.GetAxis("Mouse ScrollWheel") * scroolSpeed;
+                    MapCamera.orthographicSize -= Input.GetAxis("Mouse ScrollWheel") * scroolSpeed;
                 }
 
             }
