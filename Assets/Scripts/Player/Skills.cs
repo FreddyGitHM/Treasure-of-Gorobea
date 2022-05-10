@@ -21,7 +21,7 @@ public class Skills : MonoBehaviour
     public int speedRunningTime;
 
     [Header("Silent Footsteps")]
-    [Range(0.05f, 1f)]
+    [Range(0f, 1f)]
     public float volumeMultiplier;
     [Range(5, 20)]
     public int silentFootstepsRunningTime;

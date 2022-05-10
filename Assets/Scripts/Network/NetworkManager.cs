@@ -22,8 +22,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     GameObject TreasureChest;
     bool instantiated;
     bool ready;
+    bool victory;
     GameObject mainCamera;
     GameObject deathCanvas;
+    GameObject winCanvas;
 
     //match info
     TextMeshProUGUI timeText;
@@ -39,8 +41,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         instantiated = false;
         ready = false;
+        victory = false;
         mainCamera = GameObject.FindWithTag("MainCamera");
         deathCanvas = GameObject.FindWithTag("DeathCanvas");
+        winCanvas = GameObject.FindWithTag("WinCanvas");
         playersIdList = new List<int>();
     }
 
@@ -116,6 +120,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             EnableComponents();
             InitMatchInfo();
+            //StartCoroutine(VictoryCheck());
             ready = true;
             Debug.Log("Ready!");
         }
@@ -195,6 +200,56 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             secString = "0" + secString;
         }
         return minString + ":" + secString;
+    }
+
+    IEnumerator VictoryCheck()
+    {
+        while(victory == false)
+        {
+            if(playersIdList.Count == 1)
+            {
+                Debug.Log("YOU WIN!");
+                player.GetComponent<vShooterMeleeInput>().enabled = false;
+                player.GetComponent<vThirdPersonController>().enabled = false;
+                player.GetComponent<vShooterManager>().enabled = false;
+                player.GetComponent<vAmmoManager>().enabled = false;
+                player.GetComponent<vHeadTrack>().enabled = false;
+                player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
+                player.GetComponent<vGenericAction>().enabled = false;
+                player.GetComponent<Skills>().enabled = false;
+
+                SaveSystem.Save();
+
+                if(playersIdList.Count > 1)
+                {
+                    //tell to the others that i won
+                    object[] data = new object[] { };
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+                    raiseEventOptions.Receivers = ReceiverGroup.Others;
+                    raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+                    SendOptions sendOptions = new SendOptions();
+                    sendOptions.Reliability = true;
+
+                    //PhotonNetwork.RaiseEvent(Codes.KILL, data, raiseEventOptions, sendOptions);
+                }
+
+                StartCoroutine(LoadWinMenu());
+                victory = true;
+            }
+            yield return new WaitForSecondsRealtime(0.5f);
+        }
+    }
+
+    IEnumerator LoadWinMenu()
+    {
+        yield return new WaitForSecondsRealtime(5f);
+
+        GameObject.Find("vThirdPersonCamera").SetActive(false);
+        winCanvas.GetComponent<Canvas>().enabled = true;
+        mainCamera.GetComponent<Camera>().enabled = true;
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
     public GameObject GetPlayer()
@@ -319,6 +374,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     player.GetComponent<vHeadTrack>().enabled = false;
                     player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
                     player.GetComponent<vGenericAction>().enabled = false;
+                    player.GetComponent<Skills>().enabled = false;
 
                     //tell to my killer that he has killed me
                     object[] data = new object[] {};
