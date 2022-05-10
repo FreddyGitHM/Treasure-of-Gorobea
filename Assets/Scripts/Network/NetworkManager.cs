@@ -156,6 +156,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vHeadTrack>().enabled = true;
         player.GetComponent<vCollectShooterMeleeControl>().enabled = true;
         player.GetComponent<vGenericAction>().enabled = true;
+        player.GetComponent<Skills>().enabled = true;
         player.transform.Find("Invector Components").Find("UI").gameObject.GetComponent<Canvas>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
         player.transform.Find("Minimap/MinimapCamera").GetComponent<Camera>().enabled = true;
