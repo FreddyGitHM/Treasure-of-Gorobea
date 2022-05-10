@@ -10,6 +10,7 @@ using Invector.vMelee;
 using Invector.vCharacterController.vActions;
 using UnityEngine.UI;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
 
 
@@ -30,6 +31,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     TextMeshProUGUI killText;
     int matchLength;
     float timeLeft;
+    List<int> playersIdList;
     int playerIdLastShot;
     int kills;
 
@@ -39,6 +41,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         ready = false;
         mainCamera = GameObject.FindWithTag("MainCamera");
         deathCanvas = GameObject.FindWithTag("DeathCanvas");
+        playersIdList = new List<int>();
     }
 
     void Start()
@@ -46,6 +49,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Debug.Log("Connected: " + PhotonNetwork.IsConnected);
         Debug.Log("Nickname: " + PhotonNetwork.NickName);
         Debug.Log("Host: " + PhotonNetwork.IsMasterClient);
+
+        //initialize players list
+        foreach (Player p in PhotonNetwork.PlayerList)
+        {
+            playersIdList.Add(p.ActorNumber);
+        }
 
         if (PhotonNetwork.IsMasterClient)
         {
@@ -118,7 +127,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             }
             timeLeft -= Time.deltaTime;
             timeText.text = "TIME REMAINING: " + GetTimer(timeLeft);
-            playerText.text = "PLAYER(S) ALIVE: " + PhotonNetwork.CurrentRoom.PlayerCount;
+            
+            List<int> currentPlayersInRoom = new List<int>();
+            foreach (Player p in PhotonNetwork.PlayerList)
+            {
+                currentPlayersInRoom.Add(p.ActorNumber);
+            }
+            foreach (int id in playersIdList)
+            {
+                if(!currentPlayersInRoom.Contains(id))
+                {
+                    playersIdList.Remove(id);
+                    break;
+                }
+            }
+            playerText.text = "PLAYER(S) ALIVE: " + playersIdList.Count;
+
             killText.text = "KILL(S): " + kills;
         }
     }
@@ -152,7 +176,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         kills = 0;
 
         timeText.text = "TIME REMAINING: " + GetTimer(timeLeft);
-        playerText.text = "PLAYER(S) ALIVE: " + PhotonNetwork.CurrentRoom.PlayerCount; //disconnection and killing calc
+        playerText.text = "PLAYER(S) ALIVE: " + playersIdList.Count;
         killText.text = "KILL(S): " + kills;
     }
 
@@ -278,6 +302,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             case Codes.DEATH:
                 object[] data5 = (object[])eventData.CustomData;
                 GameObject deathPlayer = PhotonNetwork.GetPhotonView((int)data5[0]).gameObject;
+
+                //remove killed player from the list
+                playersIdList.Remove(deathPlayer.GetComponent<PhotonView>().OwnerActorNr);
 
                 deathPlayer.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
                 deathPlayer.transform.Find("HealthController").GetComponent<CapsuleCollider>().enabled = false;
