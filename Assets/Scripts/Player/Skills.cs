@@ -105,4 +105,9 @@ public class Skills : MonoBehaviour
         skillImage.color = grey;
     }
 
+    public void IncrChargingLevel(int n)
+    {
+        chargingLevel += n;
+    }
+
 }
