@@ -5521,6 +5521,10 @@ MonoBehaviour:
   - {fileID: 2800000, guid: bebeac5f741b4ac4d92b94e2e23c6844, type: 3}
   - {fileID: 2800000, guid: 840d5a16ba60fce479d81fddb3674409, type: 3}
   chargingSpeed: 10
+  speedMultiplier: 1.8
+  speedRunningTime: 10
+  volumeMultiplier: 0.1
+  silentFootstepsRunningTime: 10
 --- !u!114 &6720641366752904748
 MonoBehaviour:
   m_ObjectHideFlags: 0

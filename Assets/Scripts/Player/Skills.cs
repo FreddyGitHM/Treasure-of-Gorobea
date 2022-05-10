@@ -14,10 +14,22 @@ public class Skills : MonoBehaviour
     [Range(0.1f, 10f)]
     public float chargingSpeed;
 
+    [Header("Speed")]
+    [Range(1f, 2f)]
+    public float speedMultiplier;
+    [Range(5, 20)]
+    public int speedRunningTime;
+
+    [Header("Silent Footsteps")]
+    [Range(0.05f, 1f)]
+    public float volumeMultiplier;
+    [Range(5, 20)]
+    public int silentFootstepsRunningTime;
+
     int chargingLevel;
     bool rechargeable;
 
-    //gui
+    //GUI
     Texture2D selectedIcon;
     RawImage skillImage;
     Slider slider;
@@ -67,11 +79,11 @@ public class Skills : MonoBehaviour
         switch(skill.ToString())
         {
             case "Speed":
-                StartCoroutine(IncrSpeed());
+                StartCoroutine(IncrSpeed(speedRunningTime));
                 break;
 
             case "SilentFootsteps":
-                StartCoroutine(ReduceFootstepNoise());
+                StartCoroutine(ReduceFootstepNoise(silentFootstepsRunningTime));
                 break;
         }
     }
@@ -85,22 +97,22 @@ public class Skills : MonoBehaviour
         }
     }
 
-    IEnumerator IncrSpeed()
+    IEnumerator IncrSpeed(int runningTime)
     {
         vThirdPersonController thirdPersonController = gameObject.GetComponent<vThirdPersonController>();
         float normalSpeed = thirdPersonController.speedMultiplier;
-        thirdPersonController.speedMultiplier = 2 * normalSpeed;
-        yield return new WaitForSecondsRealtime(10f);
+        thirdPersonController.speedMultiplier = speedMultiplier * normalSpeed;
+        yield return new WaitForSecondsRealtime(runningTime);
         thirdPersonController.speedMultiplier = normalSpeed;
         skillImage.color = grey;
     }
 
-    IEnumerator ReduceFootstepNoise()
+    IEnumerator ReduceFootstepNoise(int runningTime)
     {
         vFootStep footStep = gameObject.GetComponent<vFootStep>();
         float normalVolume = footStep.Volume;
-        footStep.Volume = 0.2f * normalVolume;
-        yield return new WaitForSecondsRealtime(10f);
+        footStep.Volume = volumeMultiplier * normalVolume;
+        yield return new WaitForSecondsRealtime(runningTime);
         footStep.Volume = normalVolume;
         skillImage.color = grey;
     }
