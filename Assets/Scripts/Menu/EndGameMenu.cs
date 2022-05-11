@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using Photon.Pun;
 
 
-public class DeathMenu : MonoBehaviourPun
+public class EndGameMenu : MonoBehaviourPun
 {
     public void OnClick(){
         PhotonNetwork.Disconnect();

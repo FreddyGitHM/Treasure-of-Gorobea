@@ -35,9 +35,8 @@ TagManager:
   - TreeWithMap
   - Terrain
   - TreeWIthMap
-  - DeathCanvas
   - NetworkManager
-  - WinCanvas
+  - EndGameCanvas
   layers:
   - Default
   - TransparentFX
