@@ -8,6 +8,7 @@ public class Map : MonoBehaviour
     private Canvas MapCanvas;
     private Camera MapCamera;
     private Terrain terrain;
+    private Canvas MinimapCanvas;
 
     // Zoom parameters
     private float MaxZoom;
@@ -26,10 +27,17 @@ public class Map : MonoBehaviour
         MapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
         MapCamera = GetComponent<Camera>();
         terrain = GameObject.FindGameObjectWithTag("Terrain").GetComponent<Terrain>();
+        MinimapCanvas = player.transform.Find("Minimap/Minimap Canvas").GetComponent<Canvas>();
     }
 
     private void Start()
     {
+        // Setting camera position according to terrain size
+        MapCamera.transform.position = terrain.GetPosition() + Vector3.one * terrain.terrainData.size.x * .5f;
+
+        // Setting ortographic size to the half of terrain width and height
+        MapCamera.orthographicSize = terrain.terrainData.size.x * .5f;
+
         // Setting values for zoom
         MaxZoom = MapCamera.orthographicSize;
 
@@ -44,15 +52,18 @@ public class Map : MonoBehaviour
 
         if (MapCanvas.enabled)
         {
+            DisableMinimap();
+
             DisableShooterInput();
 
-            // Map zoom
             MapZoom();
 
             MapMovement();
         }
         else
         {
+            EnableMinimap();
+
             EnableShooterInput();
         }
     }
@@ -74,6 +85,16 @@ public class Map : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.None;
         }
+    }
+
+    private void DisableMinimap()
+    {
+        MinimapCanvas.enabled = false;
+    }
+
+    private void EnableMinimap()
+    {
+        MinimapCanvas.enabled = true;
     }
 
     private void DisableShooterInput()
