@@ -340,12 +340,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 if (otherPlayerGraphics.activeSelf)
                 {
                     otherPlayerGraphics.SetActive(false);
-                    hidingPlace.GetComponent<HidingPlace>().SetBusy(true);
+                    //hidingPlace.GetComponent<HidingPlace>().SetBusy(true);
                 }
                 else
                 {
                     otherPlayerGraphics.SetActive(true);
-                    hidingPlace.GetComponent<HidingPlace>().SetBusy(false);
+                    //hidingPlace.GetComponent<HidingPlace>().SetBusy(false);
                 }
                 break;
 
