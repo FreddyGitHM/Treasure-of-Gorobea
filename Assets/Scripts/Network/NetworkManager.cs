@@ -12,6 +12,7 @@ using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Invector;
 
 
 public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
@@ -453,7 +454,25 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             case Codes.KILL:
                 kills++;
                 break;
+
+            //someone used the skill "silent footsteps"
+            case Codes.SILENT_FOOTSTEPS:
+                object[] data7 = (object[])eventData.CustomData;
+                GameObject silentPlayer = PhotonNetwork.GetPhotonView((int)data7[0]).gameObject;
+                float normalVolume = (float)data7[1];
+                float volumeMultiplier = (float)data7[2];
+                int runningTime = (int)data7[3];
+                StartCoroutine(ReduceFootstepNoise(silentPlayer, normalVolume, volumeMultiplier, runningTime));
+                break;
         }
+    }
+
+    IEnumerator ReduceFootstepNoise(GameObject player, float normalVolume, float volumeMultiplier, int runningTime)
+    {
+        vFootStep footStep = player.GetComponent<vFootStep>();
+        footStep.Volume = volumeMultiplier * normalVolume;
+        yield return new WaitForSecondsRealtime(runningTime);
+        footStep.Volume = normalVolume;
     }
 
 

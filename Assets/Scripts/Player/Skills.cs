@@ -4,9 +4,13 @@ using Invector.vCharacterController;
 using Invector;
 using UnityEngine.UI;
 using System;
+using Photon.Pun;
+using Photon.Realtime;
+using ExitGames.Client.Photon;
+using EventCodes;
 
 
-public class Skills : MonoBehaviour
+public class Skills : MonoBehaviourPunCallbacks
 {
     public enum Skill { Speed, SilentFootsteps }
     public Skill skill;
@@ -111,6 +115,19 @@ public class Skills : MonoBehaviour
     {
         vFootStep footStep = gameObject.GetComponent<vFootStep>();
         float normalVolume = footStep.Volume;
+
+        //send message to the others to reduce my footstep sound
+        object[] data = new object[] { gameObject.GetComponent<PhotonView>().ViewID, normalVolume, volumeMultiplier, runningTime };
+
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+        raiseEventOptions.Receivers = ReceiverGroup.Others;
+        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+        SendOptions sendOptions = new SendOptions();
+        sendOptions.Reliability = true;
+
+        PhotonNetwork.RaiseEvent(Codes.SILENT_FOOTSTEPS, data, raiseEventOptions, sendOptions);
+
         footStep.Volume = volumeMultiplier * normalVolume;
         yield return new WaitForSecondsRealtime(runningTime);
         footStep.Volume = normalVolume;

@@ -10,5 +10,6 @@
         public const byte DEATH = 5;
         public const byte SHOT = 6;
         public const byte KILL = 7;
+        public const byte SILENT_FOOTSTEPS = 8;
     }
 }
