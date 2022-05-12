@@ -77,6 +77,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             Vector3 TreeMapPosition = RandomTreeMapGenerator.Instance.spawnTreeMap();
             Debug.Log("Calculating tree map poistion: " + TreeMapPosition);
 
+            // Spawning the treasure chest
+            Vector3 TreasureChestPosition = TreasureSpawn.Instance.getTreasurePosition();
+            Quaternion TreasureChestRotation = TreasureSpawn.Instance.getTreasureRotation();
+            TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureChestPosition, TreasureChestRotation);
+
             Debug.Log("Calculating players spawn position with " + PhotonNetwork.CurrentRoom.PlayerCount + " players...");
             SpawnPosition.Instance.calculateSpawnPositions(PhotonNetwork.CurrentRoom.PlayerCount);
 
@@ -110,7 +115,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     mainCamera.GetComponent<Camera>().enabled = false;
 
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
-                    
+
                     MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
                     GameObject MinimapTreeMapSprite = MapTree.transform.Find("Minimap TreeMap Sprite").gameObject;
                     MinimapTreeMapSprite.transform.parent = MapTree.transform.parent;
@@ -119,11 +124,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     instantiated = true;
                 }
             }
-
-            // Spawning the treasure chest
-            Vector3 TreasureChestPosition = TreasureSpawn.Instance.getTreasurePosition();
-            Quaternion TreasureChestRotation = TreasureSpawn.Instance.getTreasureRotation();
-            TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureChestPosition, TreasureChestRotation);
         }
 
         //add this class for EventsHandler and IPunOwnershipCallbacks
@@ -140,15 +140,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             ready = true;
             Debug.Log("Ready!");
         }
-        if(ready)
+        if (ready)
         {
-            if(timeLeft < 0)
+            if (timeLeft < 0)
             {
                 Debug.Log("TIME UP!");
             }
             timeLeft -= Time.deltaTime;
             timeText.text = "TIME REMAINING: " + GetTimer(timeLeft);
-            
+
             List<int> currentPlayersInRoom = new List<int>();
             foreach (Player p in PhotonNetwork.PlayerList)
             {
@@ -156,7 +156,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             }
             foreach (int id in playersIdList)
             {
-                if(!currentPlayersInRoom.Contains(id))
+                if (!currentPlayersInRoom.Contains(id))
                 {
                     playersIdList.Remove(id);
                     break;
@@ -181,7 +181,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.transform.Find("Invector Components").Find("UI").gameObject.GetComponent<Canvas>().enabled = true;
         player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
         player.transform.Find("Minimap/MinimapCamera").GetComponent<Camera>().enabled = true;
-        player.transform.Find("Minimap/Minimap Player Icon").GetComponent<SpriteRenderer>().enabled = true;
+        player.transform.Find("Minimap/Player Marker").GetComponent<SpriteRenderer>().enabled = true;
     }
 
     void InitMatchInfo()
@@ -206,12 +206,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         int sec = (int)seconds;
         string minString = (sec / 60).ToString();
-        if(minString.Length == 1)
+        if (minString.Length == 1)
         {
             minString = "0" + minString;
         }
         string secString = (sec % 60).ToString();
-        if(secString.Length == 1)
+        if (secString.Length == 1)
         {
             secString = "0" + secString;
         }
@@ -220,9 +220,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator VictoryCheck()
     {
-        while(victory == false && dead == false)
+        while (victory == false && dead == false)
         {
-            if(playersIdList.Count == 1 || chestOpened)
+            if (playersIdList.Count == 1 || chestOpened)
             {
                 Debug.Log("YOU WIN!");
                 player.GetComponent<vShooterMeleeInput>().enabled = false;
@@ -234,7 +234,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 player.GetComponent<vGenericAction>().enabled = false;
                 player.GetComponent<Skills>().enabled = false;
 
-                if(playersIdList.Count > 1)
+                if (playersIdList.Count > 1)
                 {
                     //tell to the others that i won
                     object[] data = new object[] { };
@@ -265,11 +265,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         endGameCanvas.transform.Find("Background/Kills").GetComponent<TextMeshProUGUI>().text = "KILL(S): " + kills;
 
         int xp = kills * xpKill;
-        if(mapTaken)
+        if (mapTaken)
         {
             xp += xpMap;
         }
-        if(chestOpened)
+        if (chestOpened)
         {
             xp += xpChest;
         }
@@ -322,6 +322,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Vector3 spawnPos = (Vector3)data0[0];
                 Quaternion spawnRot = (Quaternion)data0[1];
                 player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                GameObject MinimapTreeMapSprite = MapTree.transform.Find("Minimap TreeMap Sprite").gameObject;
+                MinimapTreeMapSprite.transform.parent = MapTree.transform.parent;
                 MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
                 instantiated = true;
                 break;
@@ -400,7 +402,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 deathPlayer.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
                 deathPlayer.transform.Find("HealthController").GetComponent<CapsuleCollider>().enabled = false;
 
-                if(deathPlayer.GetComponent<PhotonView>().IsMine)
+                if (deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     dead = true;
                     player.GetComponent<vShooterMeleeInput>().enabled = false;
@@ -413,7 +415,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     player.GetComponent<Skills>().enabled = false;
 
                     //tell to my killer that he has killed me
-                    object[] data = new object[] {};
+                    object[] data = new object[] { };
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
                     int[] receivers = { playerIdLastShot };
                     raiseEventOptions.TargetActors = receivers;
@@ -428,7 +430,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Animator animator = deathPlayer.GetComponent<Animator>();
                 animator.SetBool("isDead", true);
 
-                if(deathPlayer.GetComponent<PhotonView>().IsMine && victory == false)
+                if (deathPlayer.GetComponent<PhotonView>().IsMine && victory == false)
                 {
                     StartCoroutine(LoadEndGameMenu("YOU DIED"));
                 }

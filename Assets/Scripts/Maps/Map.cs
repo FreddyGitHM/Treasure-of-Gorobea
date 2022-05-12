@@ -9,6 +9,8 @@ public class Map : MonoBehaviour
     private Camera MapCamera;
     private Terrain terrain;
     private Canvas MinimapCanvas;
+    private Vector3 TreasurePosition;
+    private GameObject TreasureMapSprite;
 
     // Zoom parameters
     private float MaxZoom;
@@ -28,6 +30,8 @@ public class Map : MonoBehaviour
         MapCamera = GetComponent<Camera>();
         terrain = GameObject.FindGameObjectWithTag("Terrain").GetComponent<Terrain>();
         MinimapCanvas = player.transform.Find("Minimap/Minimap Canvas").GetComponent<Canvas>();
+        TreasurePosition = GameObject.Find("TreasureChest(Clone)").transform.position;
+        TreasureMapSprite = GameObject.Find("Map Treasure Sprite");
     }
 
     private void Start()
@@ -43,6 +47,9 @@ public class Map : MonoBehaviour
 
         MinMovement = MapCamera.orthographicSize;
         MaxMovement = terrain.terrainData.size.x - MapCamera.orthographicSize;
+
+        TreasureMapSprite.transform.position = TreasurePosition + Vector3.up * 5;
+        TreasureMapSprite.GetComponent<SpriteRenderer>().enabled = true;
     }
 
     private void Update()
