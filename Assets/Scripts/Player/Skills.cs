@@ -1,7 +1,6 @@
 using System.Collections;
 using UnityEngine;
 using Invector.vCharacterController;
-using Invector;
 using UnityEngine.UI;
 using System;
 using Photon.Pun;
@@ -26,7 +25,7 @@ public class Skills : MonoBehaviourPunCallbacks
 
     [Header("Silent Footsteps")]
     [Range(0f, 1f)]
-    public float volumeMultiplier;
+    public float silentStepsVolume;
     [Range(5, 20)]
     public int silentFootstepsRunningTime;
 
@@ -113,11 +112,8 @@ public class Skills : MonoBehaviourPunCallbacks
 
     IEnumerator ReduceFootstepNoise(int runningTime)
     {
-        vFootStep footStep = gameObject.GetComponent<vFootStep>();
-        float normalVolume = footStep.Volume;
-
         //send message to the others to reduce my footstep sound
-        object[] data = new object[] { gameObject.GetComponent<PhotonView>().ViewID, normalVolume, volumeMultiplier, runningTime };
+        object[] data = new object[] { gameObject.GetComponent<PhotonView>().ViewID, silentStepsVolume, runningTime };
 
         RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
         raiseEventOptions.Receivers = ReceiverGroup.Others;
@@ -128,9 +124,11 @@ public class Skills : MonoBehaviourPunCallbacks
 
         PhotonNetwork.RaiseEvent(Codes.SILENT_FOOTSTEPS, data, raiseEventOptions, sendOptions);
 
-        footStep.Volume = volumeMultiplier * normalVolume;
+        FootStepVolumes footStepVolumes = gameObject.GetComponent<FootStepVolumes>();
+        footStepVolumes.SetSilentStepsVolume(silentStepsVolume);
+        footStepVolumes.SetSilentStepsActive(true);
         yield return new WaitForSecondsRealtime(runningTime);
-        footStep.Volume = normalVolume;
+        footStepVolumes.SetSilentStepsActive(false);
         skillImage.color = grey;
     }
 
