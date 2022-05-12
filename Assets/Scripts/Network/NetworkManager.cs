@@ -288,6 +288,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         return player;
     }
 
+    public void SetMapTaken(bool b)
+    {
+        mapTaken = b;
+    }
+
 
 
     ////////////////////
