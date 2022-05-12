@@ -23,7 +23,7 @@ public class TreasureChest : MonoBehaviour
         {
             player = networkManager.GetPlayer();
         }
-        if(Input.GetKeyDown(KeyCode.E) && pickable && opened == false && networkManager.GetMapTaken())
+        if(Input.GetKeyDown(KeyCode.E) && pickable && opened == false)
         {
             opened = true;
             GameObject.FindWithTag("TreasureChest").GetComponent<Animator>().SetBool("Opening", true);
@@ -33,7 +33,7 @@ public class TreasureChest : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag.Equals("Enemy") && other.gameObject.transform.parent.GetComponent<PhotonView>().IsMine && opened == false)
+        if (other.gameObject.tag.Equals("Enemy") && other.gameObject.transform.parent.GetComponent<PhotonView>().IsMine && opened == false && networkManager.GetMapTaken())
         {
             pickable = true;
             player.transform.Find("Invector Components/UI/HUD/treasureMap/takeText").GetComponent<TextMeshProUGUI>().enabled = true;
@@ -42,7 +42,7 @@ public class TreasureChest : MonoBehaviour
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag.Equals("Enemy") && other.gameObject.transform.parent.GetComponent<PhotonView>().IsMine && opened == false)
+        if (other.gameObject.tag.Equals("Enemy") && other.gameObject.transform.parent.GetComponent<PhotonView>().IsMine && opened == false && networkManager.GetMapTaken())
         {
             pickable = false;
             player.transform.Find("Invector Components/UI/HUD/treasureMap/takeText").GetComponent<TextMeshProUGUI>().enabled = false;

@@ -237,15 +237,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (playersIdList.Count == 1 || chestOpened)
             {
                 Debug.Log("YOU WIN!");
-                player.GetComponent<vShooterMeleeInput>().enabled = false;
-                player.GetComponent<vThirdPersonController>().enabled = false;
-                player.GetComponent<vShooterManager>().enabled = false;
-                player.GetComponent<vAmmoManager>().enabled = false;
-                player.GetComponent<vHeadTrack>().enabled = false;
-                player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
-                player.GetComponent<vGenericAction>().enabled = false;
-                player.GetComponent<Skills>().enabled = false;
-
+                
                 if (playersIdList.Count > 1)
                 {
                     //tell to the others that i won
@@ -269,6 +261,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator LoadEndGameMenu(string text)
     {
+        player.GetComponent<vShooterMeleeInput>().enabled = false;
+        player.GetComponent<vThirdPersonController>().enabled = false;
+        player.GetComponent<vShooterManager>().enabled = false;
+        player.GetComponent<vAmmoManager>().enabled = false;
+        player.GetComponent<vHeadTrack>().enabled = false;
+        player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
+        player.GetComponent<vGenericAction>().enabled = false;
+        player.GetComponent<Skills>().enabled = false;
+
         yield return new WaitForSecondsRealtime(5f);
 
         GameObject.Find("vThirdPersonCamera").SetActive(false);
@@ -457,14 +458,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 if (deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
                     dead = true;
-                    player.GetComponent<vShooterMeleeInput>().enabled = false;
-                    player.GetComponent<vThirdPersonController>().enabled = false;
-                    player.GetComponent<vShooterManager>().enabled = false;
-                    player.GetComponent<vAmmoManager>().enabled = false;
-                    player.GetComponent<vHeadTrack>().enabled = false;
-                    player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
-                    player.GetComponent<vGenericAction>().enabled = false;
-                    player.GetComponent<Skills>().enabled = false;
 
                     //tell to my killer that he has killed me
                     object[] data = new object[] { };
