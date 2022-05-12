@@ -143,7 +143,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             EnableComponents();
             InitMatchInfo();
-            //StartCoroutine(VictoryCheck());
+            StartCoroutine(VictoryCheck());
             StartCoroutine(CampingCheck());
             ready = true;
             Debug.Log("Ready!");
@@ -257,7 +257,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     SendOptions sendOptions = new SendOptions();
                     sendOptions.Reliability = true;
 
-                    //PhotonNetwork.RaiseEvent(Codes.KILL, data, raiseEventOptions, sendOptions);
+                    PhotonNetwork.RaiseEvent(Codes.MATCH_FINISHED, data, raiseEventOptions, sendOptions);
                 }
 
                 StartCoroutine(LoadEndGameMenu("YOU WIN!"));
@@ -327,9 +327,19 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         return player;
     }
 
+    public bool GetMapTaken()
+    {
+        return mapTaken;
+    }
+
     public void SetMapTaken(bool b)
     {
         mapTaken = b;
+    }
+
+    public void SetChestOpened(bool b)
+    {
+        chestOpened = b;
     }
 
 
@@ -517,6 +527,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 object[] data8 = (object[])eventData.CustomData;
                 GameObject spottedPlayer = PhotonNetwork.GetPhotonView((int)data8[0]).gameObject;
                 StartCoroutine(SpotPlayer(spottedPlayer));
+                break;
+
+            //someone has opened the chest
+            case Codes.MATCH_FINISHED:
+                StartCoroutine(LoadEndGameMenu("YOU LOSE!"));
+                victory = true;
                 break;
         }
     }

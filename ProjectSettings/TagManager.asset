@@ -37,6 +37,7 @@ TagManager:
   - TreeWIthMap
   - NetworkManager
   - EndGameCanvas
+  - TreasureChest
   layers:
   - Default
   - TransparentFX

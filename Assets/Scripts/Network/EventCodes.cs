@@ -12,5 +12,6 @@
         public const byte KILL = 7;
         public const byte SILENT_FOOTSTEPS = 8;
         public const byte SPOT_PLAYER = 9;
+        public const byte MATCH_FINISHED = 10;
     }
 }
