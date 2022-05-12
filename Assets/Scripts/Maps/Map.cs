@@ -89,6 +89,7 @@ public class Map : MonoBehaviour
         if (!MapCanvas.enabled)
         {
             MapCamera.orthographicSize = MaxZoom;
+            MapCamera.transform.position = terrain.GetPosition() + Vector3.one * terrain.terrainData.size.x * .5f;
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.None;
         }
@@ -107,11 +108,13 @@ public class Map : MonoBehaviour
     private void DisableShooterInput()
     {
         player.GetComponent<vShooterMeleeInput>().SetLockShooterInput(true);
+        player.GetComponent<vShooterMeleeInput>().SetLockCameraInput(true);
     }
 
     private void EnableShooterInput()
     {
         player.GetComponent<vShooterMeleeInput>().SetLockShooterInput(false);
+        player.GetComponent<vShooterMeleeInput>().SetLockCameraInput(false);
     }
 
     private void MapZoom()
