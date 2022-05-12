@@ -343,6 +343,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         chestOpened = b;
     }
 
+    public bool GetVictory()
+    {
+        return victory;
+    }
+
 
 
     ////////////////////
