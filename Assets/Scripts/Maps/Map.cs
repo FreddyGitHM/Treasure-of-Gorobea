@@ -48,7 +48,7 @@ public class Map : MonoBehaviour
         MinMovement = MapCamera.orthographicSize;
         MaxMovement = terrain.terrainData.size.x - MapCamera.orthographicSize;
 
-        TreasureMapSprite.transform.position = TreasurePosition + Vector3.up * 5;
+        TreasureMapSprite.transform.position = TreasurePosition + Vector3.up * 20;
         TreasureMapSprite.GetComponent<SpriteRenderer>().enabled = true;
     }
 
