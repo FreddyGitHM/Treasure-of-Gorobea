@@ -51,14 +51,14 @@ TagManager:
   - CompanionAI
   - Triggers
   - StopMove
-  - Minimap
+  - Map
   - HeadTrack
   - BodyPart
   - BlockAIRayCast
   - Pushable
   - CoverPoint
-  - 
-  - 
+  - Minimap
+  - Map&Minimap
   - 
   - 
   - 

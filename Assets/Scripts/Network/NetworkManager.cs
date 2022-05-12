@@ -110,7 +110,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     mainCamera.GetComponent<Camera>().enabled = false;
 
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                    
                     MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
+                    GameObject MinimapTreeMapSprite = MapTree.transform.Find("Minimap TreeMap Sprite").gameObject;
+                    MinimapTreeMapSprite.transform.parent = MapTree.transform.parent;
+
                     MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
                     instantiated = true;
                 }
