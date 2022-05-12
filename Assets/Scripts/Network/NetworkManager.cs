@@ -20,6 +20,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public int xpKill;
     public int xpMap;
     public int xpChest;
+    public float minDistance;
+    public float spotTime;
 
     GameObject player; //local player
     public GameObject MapTree; // MapTree object
@@ -28,6 +30,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     bool instantiated;
     bool ready;
     GameObject mainCamera;
+    Vector3 playerPos;
+    float distanceCovered;
 
     //match info
     TextMeshProUGUI timeText;
@@ -51,6 +55,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         instantiated = false;
         ready = false;
         mainCamera = GameObject.FindWithTag("MainCamera");
+        distanceCovered = 0f;
         playersIdList = new List<int>();
 
         endGameCanvas = GameObject.FindWithTag("EndGameCanvas");
@@ -110,6 +115,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     mainCamera.GetComponent<Camera>().enabled = false;
 
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                    playerPos = spawnPos;
                     MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
                     MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
                     instantiated = true;
@@ -133,11 +139,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             EnableComponents();
             InitMatchInfo();
             //StartCoroutine(VictoryCheck());
+            StartCoroutine(CampingCheck());
             ready = true;
             Debug.Log("Ready!");
         }
         if(ready)
         {
+            distanceCovered += (player.transform.position - playerPos).magnitude;
+            playerPos = player.transform.position;
+
             if(timeLeft < 0)
             {
                 Debug.Log("TIME UP!");
@@ -283,6 +293,29 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Cursor.lockState = CursorLockMode.Confined;
     }
 
+    IEnumerator CampingCheck()
+    {
+        while(dead == false || chestOpened == false || victory == false)
+        {
+            yield return new WaitForSecondsRealtime(10f);
+            if(distanceCovered < minDistance)
+            {
+                //send a message to the others for showing my player in the map
+                object[] data = new object[] { player.GetComponent<PhotonView>().ViewID };
+                RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+                raiseEventOptions.Receivers = ReceiverGroup.Others;
+                raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+                SendOptions sendOptions = new SendOptions();
+                sendOptions.Reliability = true;
+
+                PhotonNetwork.RaiseEvent(Codes.SPOT_PLAYER, data, raiseEventOptions, sendOptions);
+            }
+            //Debug.Log(distanceCovered);
+            distanceCovered = 0f;
+        }
+    }
+
     public GameObject GetPlayer()
     {
         return player;
@@ -323,6 +356,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Vector3 spawnPos = (Vector3)data0[0];
                 Quaternion spawnRot = (Quaternion)data0[1];
                 player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                playerPos = spawnPos;
                 MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
                 instantiated = true;
                 break;
@@ -468,6 +502,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 int runningTime = (int)data7[2];
                 StartCoroutine(ReduceFootstepNoise(silentPlayer, silentStepsVolume, runningTime));
                 break;
+
+            //someone is camping, show him in the map
+            case Codes.SPOT_PLAYER:
+                object[] data8 = (object[])eventData.CustomData;
+                GameObject spottedPlayer = PhotonNetwork.GetPhotonView((int)data8[0]).gameObject;
+                StartCoroutine(SpotPlayer(spottedPlayer));
+                break;
         }
     }
 
@@ -478,6 +519,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         footStepVolumes.SetSilentStepsActive(true);
         yield return new WaitForSecondsRealtime(runningTime);
         footStepVolumes.SetSilentStepsActive(false);
+    }
+
+    IEnumerator SpotPlayer(GameObject spottedPlayer)
+    {
+        //show red point on map
+        yield return new WaitForSecondsRealtime(spotTime);
+        //hide red point on map
     }
 
 

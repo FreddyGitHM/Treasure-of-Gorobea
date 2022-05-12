@@ -7537,6 +7537,8 @@ MonoBehaviour:
   xpKill: 50
   xpMap: 100
   xpChest: 300
+  minDistance: 20
+  spotTime: 5
   MapTree: {fileID: 1724154265968482, guid: 367ebf3baebce4a2c8ee9d24d1625cfb, type: 3}
   MapCamera: {fileID: 7956578094368146965, guid: d98de021f79a85c769f6a74bb85dac4b, type: 3}
 --- !u!4 &198277887
