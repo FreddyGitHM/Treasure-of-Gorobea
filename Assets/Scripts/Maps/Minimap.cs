@@ -23,7 +23,6 @@ public class Minimap : MonoBehaviour
         TreasurePosition = GameObject.Find("TreasureChest(Clone)").transform.position;
         TreasureMinimapSprite = GameObject.Find("Minimap Treasure Sprite");
         TreasurePosition = RandomTreasureZonePosition();
-        TreasureMinimapSprite.GetComponent<SpriteRenderer>().enabled = true;
     }
 
     private void Update()

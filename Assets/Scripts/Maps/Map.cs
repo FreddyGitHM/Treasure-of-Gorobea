@@ -56,7 +56,6 @@ public class Map : MonoBehaviour
         MaxMovement = terrain.terrainData.size.x - MapCamera.orthographicSize;
 
         TreasureMapSprite.transform.position = RandomTreasureZonePosition();
-        TreasureMapSprite.GetComponent<SpriteRenderer>().enabled = true;
     }
 
     private void Update()

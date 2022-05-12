@@ -26,6 +26,9 @@ public class TreasureMap : MonoBehaviour
             player.transform.Find("Invector Components/UI/HUD/treasureMap").GetComponent<RawImage>().color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
             player.transform.Find("Invector Components/UI/HUD/treasureMap/takeText").GetComponent<TextMeshProUGUI>().enabled = false;
             GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().SetMapTaken(true);
+
+            GameObject.Find("Map Treasure Sprite").GetComponent<SpriteRenderer>().enabled = true;
+            GameObject.Find("Minimap Treasure Sprite").GetComponent<SpriteRenderer>().enabled = true;
         }
     }
 
