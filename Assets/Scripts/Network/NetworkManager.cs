@@ -546,9 +546,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator SpotPlayer(GameObject spottedPlayer)
     {
-        //show red point on map
+        spottedPlayer.transform.Find("Minimap/Spotted Player").GetComponent<SpriteRenderer>().enabled = true;
         yield return new WaitForSecondsRealtime(spotTime);
-        //hide red point on map
+        spottedPlayer.transform.Find("Minimap/Spotted Player").GetComponent<SpriteRenderer>().enabled = false;
     }
 
 
