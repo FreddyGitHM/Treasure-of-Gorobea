@@ -14348,7 +14348,7 @@ GameObject:
   - component: {fileID: 988913412473984317}
   - component: {fileID: 1848558281405558246}
   m_Layer: 20
-  m_Name: Spotter Player
+  m_Name: Spotted Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
