@@ -9,7 +9,8 @@ public class Minimap : MonoBehaviour
     private Vector3 TreasurePosition;
     private GameObject TreasureMinimapSprite;
 
-    public float MinimapSize;
+    public float MinimapTreeSize;
+    public float MinimapTreasureSize;
 
     private void Start()
     {
@@ -21,6 +22,7 @@ public class Minimap : MonoBehaviour
 
         TreasurePosition = GameObject.Find("TreasureChest(Clone)").transform.position;
         TreasureMinimapSprite = GameObject.Find("Minimap Treasure Sprite");
+        TreasurePosition = RandomTreasureZonePosition();
         TreasureMinimapSprite.GetComponent<SpriteRenderer>().enabled = true;
     }
 
@@ -37,22 +39,28 @@ public class Minimap : MonoBehaviour
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
+    private Vector3 RandomTreasureZonePosition()
+    {
+        return new Vector3(TreasurePosition.x + Map.RandomX, MinimapCamera.transform.position.y - 10, TreasurePosition.z + Map.RandomY);
+    }
+
     private Vector3 ClampTreeMapPosition(Vector3 TreeMapPos)
     {
         return
         new Vector3(
-            Mathf.Clamp(TreeMapPos.x, MinimapCamera.transform.position.x - MinimapSize, MinimapCamera.transform.position.x + MinimapSize),
+            Mathf.Clamp(TreeMapPos.x, MinimapCamera.transform.position.x - MinimapTreeSize, MinimapCamera.transform.position.x + MinimapTreeSize),
             MinimapCamera.transform.position.y - 10,
-            Mathf.Clamp(TreeMapPos.z, MinimapCamera.transform.position.z - MinimapSize, MinimapCamera.transform.position.z + MinimapSize)
+            Mathf.Clamp(TreeMapPos.z, MinimapCamera.transform.position.z - MinimapTreeSize, MinimapCamera.transform.position.z + MinimapTreeSize)
         );
     }
 
-    private Vector3 ClampTreasurePosition(Vector3 TreasurePos){
+    private Vector3 ClampTreasurePosition(Vector3 TreasurePos)
+    {
         return
         new Vector3(
-            Mathf.Clamp(TreasurePos.x, MinimapCamera.transform.position.x - MinimapSize, MinimapCamera.transform.position.x + MinimapSize),
+            Mathf.Clamp(TreasurePos.x, MinimapCamera.transform.position.x - MinimapTreasureSize, MinimapCamera.transform.position.x + MinimapTreasureSize),
             MinimapCamera.transform.position.y - 10,
-            Mathf.Clamp(TreasurePos.z, MinimapCamera.transform.position.z - MinimapSize, MinimapCamera.transform.position.z + MinimapSize)
+            Mathf.Clamp(TreasurePos.z, MinimapCamera.transform.position.z - MinimapTreasureSize, MinimapCamera.transform.position.z + MinimapTreasureSize)
         );
     }
 }

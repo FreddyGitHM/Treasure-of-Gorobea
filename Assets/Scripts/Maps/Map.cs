@@ -22,6 +22,9 @@ public class Map : MonoBehaviour
     private float MinMovement;
     private float MaxMovement;
 
+    public static float RandomX;
+    public static float RandomY;
+
     private void Awake()
     {
         FullscreenMapImage = GameObject.Find("FullscreenMap");
@@ -32,6 +35,10 @@ public class Map : MonoBehaviour
         MinimapCanvas = player.transform.Find("Minimap/Minimap Canvas").GetComponent<Canvas>();
         TreasurePosition = GameObject.Find("TreasureChest(Clone)").transform.position;
         TreasureMapSprite = GameObject.Find("Map Treasure Sprite");
+
+        Vector3 SpriteSize = TreasureMapSprite.transform.localScale * .5f;
+        RandomX = Random.Range(-SpriteSize.x, SpriteSize.x);
+        RandomY = Random.Range(-SpriteSize.z, SpriteSize.z);
     }
 
     private void Start()
@@ -48,7 +55,7 @@ public class Map : MonoBehaviour
         MinMovement = MapCamera.orthographicSize;
         MaxMovement = terrain.terrainData.size.x - MapCamera.orthographicSize;
 
-        TreasureMapSprite.transform.position = TreasurePosition + Vector3.up * 20;
+        TreasureMapSprite.transform.position = RandomTreasureZonePosition();
         TreasureMapSprite.GetComponent<SpriteRenderer>().enabled = true;
     }
 
@@ -73,6 +80,11 @@ public class Map : MonoBehaviour
 
             EnableShooterInput();
         }
+    }
+
+    private Vector3 RandomTreasureZonePosition()
+    {
+        return new Vector3(TreasurePosition.x + RandomX, MapCamera.transform.position.y - 50, TreasurePosition.z + RandomY);
     }
 
     private void OpenCloseMap()

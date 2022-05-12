@@ -121,6 +121,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     MinimapTreeMapSprite.transform.parent = MapTree.transform.parent;
 
                     MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
+
                     instantiated = true;
                 }
             }
