@@ -20,6 +20,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public int xpKill;
     public int xpMap;
     public int xpChest;
+    public float minDistance;
+    public float spotTime;
 
     GameObject player; //local player
     public GameObject MapTree; // MapTree object
@@ -28,6 +30,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     bool instantiated;
     bool ready;
     GameObject mainCamera;
+    Vector3 playerPos;
+    float distanceCovered;
 
     //match info
     TextMeshProUGUI timeText;
@@ -51,6 +55,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         instantiated = false;
         ready = false;
         mainCamera = GameObject.FindWithTag("MainCamera");
+        distanceCovered = 0f;
         playersIdList = new List<int>();
 
         endGameCanvas = GameObject.FindWithTag("EndGameCanvas");
@@ -115,6 +120,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     mainCamera.GetComponent<Camera>().enabled = false;
 
                     player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                    playerPos = spawnPos;
 
                     MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
                     GameObject MinimapTreeMapSprite = MapTree.transform.Find("Minimap TreeMap Sprite").gameObject;
@@ -138,11 +144,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             EnableComponents();
             InitMatchInfo();
             //StartCoroutine(VictoryCheck());
+            StartCoroutine(CampingCheck());
             ready = true;
             Debug.Log("Ready!");
         }
         if (ready)
         {
+            distanceCovered += (player.transform.position - playerPos).magnitude;
+            playerPos = player.transform.position;
+
             if (timeLeft < 0)
             {
                 Debug.Log("TIME UP!");
@@ -289,9 +299,37 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Cursor.lockState = CursorLockMode.Confined;
     }
 
+    IEnumerator CampingCheck()
+    {
+        while(dead == false || chestOpened == false || victory == false)
+        {
+            yield return new WaitForSecondsRealtime(10f);
+            if(distanceCovered < minDistance)
+            {
+                //send a message to the others for showing my player in the map
+                object[] data = new object[] { player.GetComponent<PhotonView>().ViewID };
+                RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+                raiseEventOptions.Receivers = ReceiverGroup.Others;
+                raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+                SendOptions sendOptions = new SendOptions();
+                sendOptions.Reliability = true;
+
+                PhotonNetwork.RaiseEvent(Codes.SPOT_PLAYER, data, raiseEventOptions, sendOptions);
+            }
+            //Debug.Log(distanceCovered);
+            distanceCovered = 0f;
+        }
+    }
+
     public GameObject GetPlayer()
     {
         return player;
+    }
+
+    public void SetMapTaken(bool b)
+    {
+        mapTaken = b;
     }
 
 
@@ -324,6 +362,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Vector3 spawnPos = (Vector3)data0[0];
                 Quaternion spawnRot = (Quaternion)data0[1];
                 player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                playerPos = spawnPos;
+
                 GameObject MinimapTreeMapSprite = MapTree.transform.Find("Minimap TreeMap Sprite").gameObject;
                 MinimapTreeMapSprite.transform.parent = MapTree.transform.parent;
                 MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
@@ -467,20 +507,34 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             case Codes.SILENT_FOOTSTEPS:
                 object[] data7 = (object[])eventData.CustomData;
                 GameObject silentPlayer = PhotonNetwork.GetPhotonView((int)data7[0]).gameObject;
-                float normalVolume = (float)data7[1];
-                float volumeMultiplier = (float)data7[2];
-                int runningTime = (int)data7[3];
-                StartCoroutine(ReduceFootstepNoise(silentPlayer, normalVolume, volumeMultiplier, runningTime));
+                float silentStepsVolume = (float)data7[1];
+                int runningTime = (int)data7[2];
+                StartCoroutine(ReduceFootstepNoise(silentPlayer, silentStepsVolume, runningTime));
+                break;
+
+            //someone is camping, show him in the map
+            case Codes.SPOT_PLAYER:
+                object[] data8 = (object[])eventData.CustomData;
+                GameObject spottedPlayer = PhotonNetwork.GetPhotonView((int)data8[0]).gameObject;
+                StartCoroutine(SpotPlayer(spottedPlayer));
                 break;
         }
     }
 
-    IEnumerator ReduceFootstepNoise(GameObject player, float normalVolume, float volumeMultiplier, int runningTime)
+    IEnumerator ReduceFootstepNoise(GameObject player, float silentStepsVolume, int runningTime)
     {
-        vFootStep footStep = player.GetComponent<vFootStep>();
-        footStep.Volume = volumeMultiplier * normalVolume;
+        FootStepVolumes footStepVolumes = player.GetComponent<FootStepVolumes>();
+        footStepVolumes.SetSilentStepsVolume(silentStepsVolume);
+        footStepVolumes.SetSilentStepsActive(true);
         yield return new WaitForSecondsRealtime(runningTime);
-        footStep.Volume = normalVolume;
+        footStepVolumes.SetSilentStepsActive(false);
+    }
+
+    IEnumerator SpotPlayer(GameObject spottedPlayer)
+    {
+        //show red point on map
+        yield return new WaitForSecondsRealtime(spotTime);
+        //hide red point on map
     }
 
 
