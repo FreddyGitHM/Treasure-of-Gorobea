@@ -48,7 +48,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     bool matchEnded;
     bool mapTaken;
     bool chestOpened;
-    bool dead;
     float exitCountdown;
 
     void Awake()
@@ -63,7 +62,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         matchEnded = false;
         mapTaken = false;
         chestOpened = false;
-        dead = false;
         exitCountdown = 35f;
     }
 
@@ -187,7 +185,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if(matchEnded)
         {
             exitCountdown -= Time.deltaTime;
-            if (exitCountdown <= 0f)
+            if(exitCountdown <= 0f)
             {
                 endGameCanvas.GetComponent<EndGameMenu>().OnClick();
                 exitCountdown = 0f;
@@ -249,13 +247,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator VictoryCheck()
     {
-        while (matchEnded == false && dead == false)
+        while(matchEnded == false)
         {
-            if (/*playersIdList.Count == 1 ||*/ chestOpened)
+            if(playersIdList.Count == 1 || chestOpened)
             {
                 Debug.Log("YOU WIN!");
                 
-                if (playersIdList.Count > 1)
+                if(playersIdList.Count > 1)
                 {
                     //tell to the others that i won
                     object[] data = new object[] { };
@@ -319,7 +317,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator CampingCheck()
     {
-        while(dead == false || chestOpened == false || matchEnded == false)
+        while(matchEnded == false)
         {
             yield return new WaitForSecondsRealtime(10f);
             if(distanceCovered < minDistance)
@@ -477,10 +475,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 deathPlayer.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
                 deathPlayer.transform.Find("HealthController").GetComponent<CapsuleCollider>().enabled = false;
 
-                if (deathPlayer.GetComponent<PhotonView>().IsMine)
+                if(deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
-                    dead = true;
-
                     //tell to my killer that he has killed me
                     object[] data = new object[] { };
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
@@ -497,7 +493,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Animator animator = deathPlayer.GetComponent<Animator>();
                 animator.SetBool("isDead", true);
 
-                if (deathPlayer.GetComponent<PhotonView>().IsMine && matchEnded == false)
+                if(deathPlayer.GetComponent<PhotonView>().IsMine && matchEnded == false)
                 {
                     StartCoroutine(LoadEndGameMenu("YOU DIED"));
                     matchEnded = true;
