@@ -45,10 +45,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     //endgame info
     GameObject endGameCanvas;
-    bool victory;
+    bool matchEnded;
     bool mapTaken;
     bool chestOpened;
     bool dead;
+    float exitCountdown;
 
     void Awake()
     {
@@ -59,10 +60,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         playersIdList = new List<int>();
 
         endGameCanvas = GameObject.FindWithTag("EndGameCanvas");
-        victory = false;
+        matchEnded = false;
         mapTaken = false;
         chestOpened = false;
         dead = false;
+        exitCountdown = 35f;
     }
 
     void Start()
@@ -139,7 +141,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     void Update()
     {
-        if (instantiated == true && ready == false)
+        if(instantiated == true && ready == false)
         {
             EnableComponents();
             InitMatchInfo();
@@ -148,24 +150,28 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             ready = true;
             Debug.Log("Ready!");
         }
-        if (ready)
+
+        if(ready && matchEnded == false)
         {
             distanceCovered += (player.transform.position - playerPos).magnitude;
             playerPos = player.transform.position;
 
-            if (timeLeft < 0)
+            timeLeft -= Time.deltaTime;
+            if(timeLeft <= 0)
             {
                 Debug.Log("TIME UP!");
+                StartCoroutine(LoadEndGameMenu("TIME UP"));
+                matchEnded = true;
+                timeLeft = 0f;
             }
-            timeLeft -= Time.deltaTime;
             timeText.text = "TIME REMAINING: " + GetTimer(timeLeft);
 
             List<int> currentPlayersInRoom = new List<int>();
-            foreach (Player p in PhotonNetwork.PlayerList)
+            foreach(Player p in PhotonNetwork.PlayerList)
             {
                 currentPlayersInRoom.Add(p.ActorNumber);
             }
-            foreach (int id in playersIdList)
+            foreach(int id in playersIdList)
             {
                 if (!currentPlayersInRoom.Contains(id))
                 {
@@ -177,6 +183,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
             killText.text = "KILL(S): " + kills;
         }
+
+        if(matchEnded)
+        {
+            exitCountdown -= Time.deltaTime;
+            if (exitCountdown <= 0f)
+            {
+                endGameCanvas.GetComponent<EndGameMenu>().OnClick();
+                exitCountdown = 0f;
+            }
+            endGameCanvas.transform.Find("Background/Countdown").GetComponent<TextMeshProUGUI>().text = GetTimer(exitCountdown);
+        }    
     }
 
     void EnableComponents()
@@ -232,9 +249,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator VictoryCheck()
     {
-        while (victory == false && dead == false)
+        while (matchEnded == false && dead == false)
         {
-            if (playersIdList.Count == 1 || chestOpened)
+            if (/*playersIdList.Count == 1 ||*/ chestOpened)
             {
                 Debug.Log("YOU WIN!");
                 
@@ -253,7 +270,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 }
 
                 StartCoroutine(LoadEndGameMenu("YOU WIN!"));
-                victory = true;
+                matchEnded = true;
             }
             yield return new WaitForSecondsRealtime(0.5f);
         }
@@ -302,7 +319,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator CampingCheck()
     {
-        while(dead == false || chestOpened == false || victory == false)
+        while(dead == false || chestOpened == false || matchEnded == false)
         {
             yield return new WaitForSecondsRealtime(10f);
             if(distanceCovered < minDistance)
@@ -343,9 +360,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         chestOpened = b;
     }
 
-    public bool GetVictory()
+    public bool GetMatchEnded()
     {
-        return victory;
+        return matchEnded;
     }
 
 
@@ -480,9 +497,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 Animator animator = deathPlayer.GetComponent<Animator>();
                 animator.SetBool("isDead", true);
 
-                if (deathPlayer.GetComponent<PhotonView>().IsMine && victory == false)
+                if (deathPlayer.GetComponent<PhotonView>().IsMine && matchEnded == false)
                 {
                     StartCoroutine(LoadEndGameMenu("YOU DIED"));
+                    matchEnded = true;
                 }
                 else
                 {
@@ -530,7 +548,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             //someone has opened the chest
             case Codes.MATCH_FINISHED:
                 StartCoroutine(LoadEndGameMenu("YOU LOSE!"));
-                victory = true;
+                matchEnded = true;
                 break;
         }
     }
