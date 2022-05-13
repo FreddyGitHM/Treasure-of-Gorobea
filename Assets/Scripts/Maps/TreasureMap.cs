@@ -44,6 +44,12 @@ public class TreasureMap : MonoBehaviour
             pickable = true;
             player.transform.Find("Invector Components/UI/HUD/treasureMap/takeText").GetComponent<TextMeshProUGUI>().enabled = true;
         }
+
+        //move up the treasure map if it's colliding with the terrain
+        if(other.gameObject.layer == LayerMask.NameToLayer("Terrain"))
+        {
+            gameObject.transform.position += new Vector3(0f, 0.1f, 0f);
+        }
     }
 
     void OnTriggerExit(Collider other)
