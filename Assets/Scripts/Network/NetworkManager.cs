@@ -234,7 +234,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         while (victory == false && dead == false)
         {
-            if (playersIdList.Count == 1 || chestOpened)
+            if (/*playersIdList.Count == 1 || */ chestOpened)
             {
                 Debug.Log("YOU WIN!");
                 
