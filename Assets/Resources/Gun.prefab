@@ -52,8 +52,8 @@ MonoBehaviour:
   selectedToolbar: 0
   weaponCategory: Pistol
   shootFrequency: 0.25
-  isInfinityAmmo: 1
-  ammo: 7
+  isInfinityAmmo: 0
+  ammo: 10
   ignoreTags:
   - Player
   hitLayer:
@@ -63,14 +63,14 @@ MonoBehaviour:
   muzzle: {fileID: 741257031644427495}
   projectilesPerShot: 1
   dispersion: 0
-  velocity: 310
+  velocity: 600
   damageByDistance: 1
   minDamageDistance: 8
   maxDamageDistance: 50
   minDamage: 15
-  maxDamage: 36
+  maxDamage: 25
   source: {fileID: 741257030830883922}
-  fireClip: {fileID: 8300000, guid: ef1015be63ea9a94e9842b72298f9a5f, type: 3}
+  fireClip: {fileID: 8300000, guid: 89c2c5f4150b6436b925a35ad4c6753c, type: 3}
   emptyClip: {fileID: 8300000, guid: 9c5ac02550d31504ebb57020dde8e988, type: 3}
   testShootEffect: 0
   lightOnShot: {fileID: 741257031893538967}
@@ -113,10 +113,10 @@ MonoBehaviour:
   automaticWeapon: 0
   reloadTime: 1
   reloadOneByOne: 0
-  clipSize: 8
+  clipSize: 10
   dontUseReload: 0
-  autoReload: 0
-  ammoID: 14
+  autoReload: 1
+  ammoID: 0
   moveSetID: 1
   upperBodyID: 1
   shotID: 1
@@ -143,15 +143,15 @@ MonoBehaviour:
   handIKTarget: {fileID: 741257032005681816}
   aimReference: {fileID: 741257030927487724}
   cameraStability: 0.5
-  recoilRight: 0.5
-  recoilLeft: -0.5
-  recoilUp: 2
+  recoilRight: 0
+  recoilLeft: 0
+  recoilUp: 0
   reloadSource: {fileID: 741257030830883922}
   reloadClip: {fileID: 8300000, guid: cc03a3bc3d3003c428240bcd6e12c487, type: 3}
   finishReloadClip: {fileID: 0}
   onlyUseScopeUIView: 0
   useUI: 0
-  scopeID: 1
+  scopeID: 2
   scopeShootAnimationWeight: 1
   scopeZoom: 0
   backGroundScopeZoom: 15
@@ -471,7 +471,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -3989,7 +3989,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -4042,7 +4042,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -4095,7 +4095,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -4148,7 +4148,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -8863,7 +8863,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -8916,7 +8916,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startSizeZ:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 1
       minScalar: 1
       maxCurve:
@@ -8969,7 +8969,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationX:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
@@ -9022,7 +9022,7 @@ ParticleSystem:
         m_RotationOrder: 4
     startRotationY:
       serializedVersion: 2
-      minMaxState: 0
+      minMaxState: 3
       scalar: 0
       minScalar: 0
       maxCurve:
