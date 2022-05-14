@@ -3834,11 +3834,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   openCloseEvents: 0
   openCloseWindow: 1
-  selectedToolbar: 8
-  weaponCategory: Pistol
-  shootFrequency: 0.25
-  isInfinityAmmo: 1
-  ammo: 3
+  selectedToolbar: 0
+  weaponCategory: Rifle
+  shootFrequency: 0.125
+  isInfinityAmmo: 0
+  ammo: 20
   ignoreTags:
   - Player
   hitLayer:
@@ -3848,14 +3848,14 @@ MonoBehaviour:
   muzzle: {fileID: 7336820369811887626}
   projectilesPerShot: 1
   dispersion: 0
-  velocity: 310
+  velocity: 900
   damageByDistance: 1
   minDamageDistance: 8
   maxDamageDistance: 50
-  minDamage: 15
-  maxDamage: 36
+  minDamage: 10
+  maxDamage: 15
   source: {fileID: 7336820369803978842}
-  fireClip: {fileID: 8300000, guid: ef1015be63ea9a94e9842b72298f9a5f, type: 3}
+  fireClip: {fileID: 8300000, guid: 89c2c5f4150b6436b925a35ad4c6753c, type: 3}
   emptyClip: {fileID: 8300000, guid: 9c5ac02550d31504ebb57020dde8e988, type: 3}
   testShootEffect: 0
   lightOnShot: {fileID: 7336820369818385306}
@@ -3883,13 +3883,13 @@ MonoBehaviour:
   chargeDamageMultiplier: 2
   changeVelocityByCharge: 1
   chargeVelocityMultiplier: 2
-  automaticWeapon: 0
+  automaticWeapon: 1
   reloadTime: 1
   reloadOneByOne: 0
-  clipSize: 8
+  clipSize: 20
   dontUseReload: 0
-  autoReload: 0
-  ammoID: 14
+  autoReload: 1
+  ammoID: 1
   moveSetID: 1
   upperBodyID: 1
   shotID: 1
@@ -3916,15 +3916,15 @@ MonoBehaviour:
   handIKTarget: {fileID: 7336820369811896460}
   aimReference: {fileID: 7336820369811896042}
   cameraStability: 0.5
-  recoilRight: 0.5
-  recoilLeft: -0.5
-  recoilUp: 2
+  recoilRight: 0
+  recoilLeft: 0
+  recoilUp: 0
   reloadSource: {fileID: 7336820369803978842}
   reloadClip: {fileID: 8300000, guid: cc03a3bc3d3003c428240bcd6e12c487, type: 3}
   finishReloadClip: {fileID: 0}
   onlyUseScopeUIView: 0
   useUI: 0
-  scopeID: 1
+  scopeID: 2
   scopeShootAnimationWeight: 1
   scopeZoom: 0
   backGroundScopeZoom: 15
@@ -21694,7 +21694,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.8
   m_Pitch: 1
   Loop: 0
   Mute: 0

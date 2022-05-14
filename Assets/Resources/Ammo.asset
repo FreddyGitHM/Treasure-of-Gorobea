@@ -13,4 +13,12 @@ MonoBehaviour:
   m_Name: Ammo
   m_EditorClassIdentifier: 
   itemListDatas: []
-  ammos: []
+  ammos:
+  - ammoName: Gun
+    ammoID: 0
+    _count: 60
+    ammoItems: []
+  - ammoName: MP7
+    ammoID: 1
+    _count: 120
+    ammoItems: []
