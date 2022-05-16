@@ -17,7 +17,7 @@ public class Minimap : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
         MinimapCamera = player.transform.Find("Minimap/MinimapCamera").gameObject;
 
-        TreeMapPosition = GameObject.Find("PF_Oak_big Terrain(Clone)").transform.position;
+        TreeMapPosition = GameObject.Find("TreeMap(Clone)").transform.position;
         MinimapTreeMapSprite = GameObject.Find("Minimap TreeMap Sprite");
 
         TreasurePosition = GameObject.Find("TreasureChest(Clone)").transform.position;

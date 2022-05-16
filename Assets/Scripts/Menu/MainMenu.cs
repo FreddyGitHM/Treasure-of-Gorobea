@@ -41,7 +41,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     void Awake()
     {
-        Application.targetFrameRate = 60;
+        // Application.targetFrameRate = 60;
 
         loading = true;
         SaveSystem.Load();

@@ -34,7 +34,6 @@ TagManager:
   - Tree
   - TreeWithMap
   - Terrain
-  - TreeWIthMap
   - NetworkManager
   - EndGameCanvas
   - TreasureChest
