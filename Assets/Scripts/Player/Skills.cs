@@ -59,6 +59,10 @@ public class Skills : MonoBehaviourPunCallbacks
 
     void Update()
     {
+        if(chargingLevel > 100)
+        {
+            chargingLevel = 100;
+        }
         slider.value = chargingLevel;
         if(chargingLevel == 100)
         {

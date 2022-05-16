@@ -523,6 +523,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             //i have killed someone, update my stat
             case Codes.KILL:
                 kills++;
+                player.GetComponent<Skills>().IncrChargingLevel(25);
                 break;
 
             //someone used the skill "silent footsteps"

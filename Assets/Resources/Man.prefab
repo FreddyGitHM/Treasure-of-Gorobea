@@ -5609,7 +5609,7 @@ MonoBehaviour:
   skillIcons:
   - {fileID: 2800000, guid: bebeac5f741b4ac4d92b94e2e23c6844, type: 3}
   - {fileID: 2800000, guid: 840d5a16ba60fce479d81fddb3674409, type: 3}
-  chargingSpeed: 10
+  chargingSpeed: 0.333
   speedMultiplier: 1.8
   speedRunningTime: 10
   silentStepsVolume: 0.1
