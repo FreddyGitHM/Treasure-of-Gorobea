@@ -33,19 +33,33 @@ public class TreasureChest : MonoBehaviour
 
     void OnTriggerStay(Collider other)
     {
-        if (other.gameObject.tag.Equals("Enemy") && other.gameObject.transform.parent.GetComponent<PhotonView>().IsMine && opened == false && networkManager.GetMapTaken())
+        if(other.gameObject.tag.Equals("Enemy") && other.gameObject.transform.parent.GetComponent<PhotonView>().IsMine && opened == false)
         {
-            pickable = true;
-            player.transform.Find("Invector Components/UI/HUD/treasureMap/takeText").GetComponent<TextMeshProUGUI>().enabled = true;
+            if(networkManager.GetMapTaken())
+            {
+                pickable = true;
+                player.transform.Find("Invector Components/UI/HUD/treasureMap/openText").GetComponent<TextMeshProUGUI>().enabled = true;
+            }
+            else
+            {
+                player.transform.Find("Invector Components/UI/HUD/treasureMap/closeText").GetComponent<TextMeshProUGUI>().enabled = true;
+            }
         }
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag.Equals("Enemy") && other.gameObject.transform.parent.GetComponent<PhotonView>().IsMine && opened == false && networkManager.GetMapTaken())
+        if(other.gameObject.tag.Equals("Enemy") && other.gameObject.transform.parent.GetComponent<PhotonView>().IsMine && opened == false)
         {
-            pickable = false;
-            player.transform.Find("Invector Components/UI/HUD/treasureMap/takeText").GetComponent<TextMeshProUGUI>().enabled = false;
+            if(networkManager.GetMapTaken())
+            {
+                pickable = false;
+                player.transform.Find("Invector Components/UI/HUD/treasureMap/openText").GetComponent<TextMeshProUGUI>().enabled = false;
+            }
+            else
+            {
+                player.transform.Find("Invector Components/UI/HUD/treasureMap/closeText").GetComponent<TextMeshProUGUI>().enabled = false;
+            }
         }
     }
 
