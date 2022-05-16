@@ -26,7 +26,7 @@ public class SaveData
         this.username = username;
         level = 1;
         xp = 0;
-        coins = 0;
+        coins = 5;
         skinSelected = 0;
         skinsAvailable = new List<int>();
         skinsAvailable.Add(0);

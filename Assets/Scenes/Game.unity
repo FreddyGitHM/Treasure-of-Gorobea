@@ -7534,9 +7534,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80e02be209d834bf39db820623cb474d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  xpKill: 50
-  xpMap: 100
-  xpChest: 300
+  xpKill: 150
+  xpMap: 500
+  xpChest: 2500
   minDistance: 20
   spotTime: 5
   MapTree: {fileID: 1724154265968482, guid: 367ebf3baebce4a2c8ee9d24d1625cfb, type: 3}
