@@ -180,6 +180,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             playerText.text = "PLAYER(S) ALIVE: " + playersIdList.Count;
 
             killText.text = "KILL(S): " + kills;
+
+            if(Input.GetButtonDown("Escape"))
+            {
+                Debug.Log("exit to main menu");
+                endGameCanvas.GetComponent<EndGameMenu>().OnClick();
+            }
         }
 
         if(matchEnded)
