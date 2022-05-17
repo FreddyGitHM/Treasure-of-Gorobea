@@ -50,6 +50,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     bool chestOpened;
     float exitCountdown;
 
+    //fps counter
+    public bool showFps;
+    TextMeshProUGUI fpsText;
+
     void Awake()
     {
         instantiated = false;
@@ -63,6 +67,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         mapTaken = false;
         chestOpened = false;
         exitCountdown = 35f;
+
+        fpsText = GameObject.Find("FPSCanvas/Text").GetComponent<TextMeshProUGUI>();
     }
 
     void Start()
@@ -197,7 +203,16 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 exitCountdown = 0f;
             }
             endGameCanvas.transform.Find("Background/Countdown").GetComponent<TextMeshProUGUI>().text = GetTimer(exitCountdown);
-        }    
+        }
+
+        if(showFps)
+        {
+            fpsText.text = ((int)(Time.frameCount / Time.time)).ToString();
+        }
+        else
+        {
+            fpsText.text = "";
+        }
     }
 
     void EnableComponents()
