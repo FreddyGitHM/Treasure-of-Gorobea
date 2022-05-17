@@ -37,6 +37,7 @@ TagManager:
   - NetworkManager
   - EndGameCanvas
   - TreasureChest
+  - TreeWIthMap
   layers:
   - Default
   - TransparentFX
@@ -59,7 +60,7 @@ TagManager:
   - CoverPoint
   - Minimap
   - Map&Minimap
-  - 
+  - Bushes
   - 
   - 
   - 
