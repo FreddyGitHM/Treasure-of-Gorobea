@@ -63,6 +63,10 @@ public class MassPlaceTree : MonoBehaviour
             GameObject tree = Selection.activeGameObject;
 
             tree.transform.position = getlocation();
+            tree.transform.rotation = Quaternion.AngleAxis(RandomRotation(), Vector3.up);
+            tree.transform.Find("Minimap icon").transform.rotation = Quaternion.identity;
+            tree.transform.Find("Minimap icon").transform.rotation = Quaternion.AngleAxis(90, Vector3.right);
+            tree.transform.localScale = RandomScale();
             Physics.SyncTransforms();
 
             tree.GetComponent<TreeID>().treeID = i + lastTreeID;
@@ -116,6 +120,20 @@ public class MassPlaceTree : MonoBehaviour
         {
             DestroyImmediate(tree);
         }
+    }
+
+    private int RandomRotation()
+    {
+        int rotation = Random.Range(0, 361);
+        Debug.Log("Rotation: " + rotation);
+        return rotation;
+    }
+
+    private Vector3 RandomScale()
+    {
+        float scale = Random.Range(1.8f, 2.2f);
+        Debug.Log("Scale: " + scale);
+        return Vector3.one * scale;
     }
 
     private void OnDrawGizmos()
