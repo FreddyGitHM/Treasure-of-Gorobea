@@ -17,6 +17,7 @@ public class SpawnPosition : MonoBehaviour
 
     // Distance of the spawn positions from the tree with map, radius of the circle
     public int spawnDistance = 350;
+    public int MediumMapSpawnDistance = 175;
 
     // Stack for putting inside spawn positions
     Stack positions;

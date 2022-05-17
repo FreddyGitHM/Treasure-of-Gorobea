@@ -125,14 +125,12 @@ public class MassPlaceTree : MonoBehaviour
     private int RandomRotation()
     {
         int rotation = Random.Range(0, 361);
-        Debug.Log("Rotation: " + rotation);
         return rotation;
     }
 
     private Vector3 RandomScale()
     {
         float scale = Random.Range(1.8f, 2.2f);
-        Debug.Log("Scale: " + scale);
         return Vector3.one * scale;
     }
 

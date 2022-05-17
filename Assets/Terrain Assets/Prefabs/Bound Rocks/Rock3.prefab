@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3385546400174522306}
   - component: {fileID: 657270229437631240}
   - component: {fileID: 8231993395058565769}
-  m_Layer: 0
+  m_Layer: 21
   m_Name: Rock3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1306021603837897437}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
