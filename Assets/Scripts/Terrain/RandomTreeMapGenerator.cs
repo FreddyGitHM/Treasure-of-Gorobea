@@ -61,6 +61,8 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
 
         // Initialize start value
         start = true;
+
+        spawnTreeMap();
     }
 
     public Vector3 spawnTreeMap()
