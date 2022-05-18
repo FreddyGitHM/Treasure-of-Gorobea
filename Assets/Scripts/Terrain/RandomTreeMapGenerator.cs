@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,7 +27,6 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
 
     // Radius of the circle where will spawn tree with a map inside it
     public float radius = 180f;
-    public float MediumMapRadius = 60f;
 
     // Boolean value for OnDrawGizmos
     bool start;
@@ -51,7 +49,7 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
     {
 
         //Getting terrain information
-        terrain = GetComponent<Terrain>();
+        terrain = Terrain.activeTerrain;
         td = terrain.terrainData;
         x = td.heightmapResolution;
         y = td.heightmapResolution;
@@ -61,8 +59,6 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
 
         // Initialize start value
         start = true;
-
-        spawnTreeMap();
     }
 
     public Vector3 spawnTreeMap()
@@ -102,7 +98,7 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
         }
 
         // Instantiate TreeMap at that random position
-        var treeMap = Instantiate(TreeWithMap, TreeWithMapPosition, Quaternion.identity);
+        // var treeMap = Instantiate(TreeWithMap, TreeWithMapPosition, Quaternion.identity);
 
         return TreeWithMapPosition;
     }

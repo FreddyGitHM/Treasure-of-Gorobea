@@ -237,7 +237,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if (/*playersIdList.Count == 1 || */ chestOpened)
             {
                 Debug.Log("YOU WIN!");
-                
+
                 if (playersIdList.Count > 1)
                 {
                     //tell to the others that i won
@@ -302,10 +302,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator CampingCheck()
     {
-        while(dead == false || chestOpened == false || victory == false)
+        while (dead == false || chestOpened == false || victory == false)
         {
             yield return new WaitForSecondsRealtime(10f);
-            if(distanceCovered < minDistance)
+            if (distanceCovered < minDistance)
             {
                 //send a message to the others for showing my player in the map
                 object[] data = new object[] { player.GetComponent<PhotonView>().ViewID };

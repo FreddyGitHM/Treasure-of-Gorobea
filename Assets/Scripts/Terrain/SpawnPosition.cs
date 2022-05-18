@@ -17,7 +17,6 @@ public class SpawnPosition : MonoBehaviour
 
     // Distance of the spawn positions from the tree with map, radius of the circle
     public int spawnDistance = 350;
-    public int MediumMapSpawnDistance = 175;
 
     // Stack for putting inside spawn positions
     Stack positions;
@@ -43,7 +42,7 @@ public class SpawnPosition : MonoBehaviour
     {
 
         //Getting terrain information
-        terrain = GetComponent<Terrain>();
+        terrain = Terrain.activeTerrain;
         td = terrain.terrainData;
         x = td.heightmapResolution;
         y = td.heightmapResolution;

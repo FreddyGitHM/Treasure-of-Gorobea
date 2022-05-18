@@ -47,7 +47,7 @@ public class TreasureSpawn : MonoBehaviour
     void Start()
     {
         //Getting terrain information
-        terrain = GetComponent<Terrain>();
+        terrain = Terrain.activeTerrain;
         td = terrain.terrainData;
         x = td.heightmapResolution;
         y = td.heightmapResolution;
@@ -56,8 +56,6 @@ public class TreasureSpawn : MonoBehaviour
         heightmap = td.GetHeights(0, 0, x, y);
 
         start = true;
-
-        getTreasurePosition();
     }
 
     public Vector3 getTreasurePosition()
@@ -66,7 +64,7 @@ public class TreasureSpawn : MonoBehaviour
         Vector2 treeMapPos = new Vector2(RandomTreeMapGenerator.TreeWithMapPosition.x, RandomTreeMapGenerator.TreeWithMapPosition.z);
 
         // Random point on terrain (Tested on large map) --- 60 x-60 range for large map --- 40 x-40 range for medium map
-        treasurePosition = new Vector2(Random.Range(40, x - 40), Random.Range(40, y - 40));
+        treasurePosition = new Vector2(Random.Range(60, x - 60), Random.Range(60, y - 60));
 
         // Treasure position in world coordinates
         TreasurePosition = new Vector3(treasurePosition.x, heightmap[(int)treasurePosition.y, (int)treasurePosition.x] * td.size.y, treasurePosition.y) + Vector3.up * .65f;
@@ -77,7 +75,7 @@ public class TreasureSpawn : MonoBehaviour
         // 
         while (Vector2.Distance(treasurePosition, treeMapPos) < distance || colliders.Length > 0)
         {
-            treasurePosition = new Vector2(Random.Range(40, x - 40), Random.Range(40, y - 40));
+            treasurePosition = new Vector2(Random.Range(60, x - 60), Random.Range(60, y - 60));
             TreasurePosition = new Vector3(treasurePosition.x, heightmap[(int)treasurePosition.y, (int)treasurePosition.x] * td.size.y, treasurePosition.y) + Vector3.up * .65f;
             colliders = Physics.OverlapBox(TreasurePosition, new Vector3(1, 1, 1), Quaternion.identity, ~LayerMask.GetMask("Terrain"));
         }
@@ -89,10 +87,9 @@ public class TreasureSpawn : MonoBehaviour
 
         fitTerrain = Quaternion.FromToRotation(Vector3.up, hit.normal);
 
-        treasure = Instantiate(treasure, hit.point + Vector3.up * .65f, getTreasureRotation());
+        // treasure = Instantiate(treasure, hit.point + Vector3.up * .65f, getTreasureRotation());
 
         return hit.point + Vector3.up * .65f;
-
     }
 
     public Quaternion getTreasureRotation()

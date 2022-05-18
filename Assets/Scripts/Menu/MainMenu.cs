@@ -15,7 +15,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public Dropdown qualityDropdown;
     public Slider volumeSlider;
     public TextMeshProUGUI roomText;
-    public string nextScene; //the scene to be loaded
 
     bool loading;
     GameStatus gameStatus;
@@ -58,7 +57,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     void Start()
     {
         List<string> options = new List<string>();
-        for(int i=0; i<resolutions.Length; i++)
+        for (int i = 0; i < resolutions.Length; i++)
         {
             string option = resolutions[i].width + " x " + resolutions[i].height;
             options.Add(option);
@@ -73,7 +72,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         qualityDropdown.RefreshShownValue();
 
         volumeSlider.value = gameStatus.volume;
-        
+
         loading = false;
     }
 
@@ -81,7 +80,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, gameStatus.fullScreen);
-        if(!loading)
+        if (!loading)
         {
             gameStatus.resolutionIndex = resolutionIndex;
             SaveSystem.Save();
@@ -91,7 +90,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public void SetFullscreen(bool isFullScreen)
     {
         Screen.fullScreen = isFullScreen;
-        if(!loading)
+        if (!loading)
         {
             gameStatus.fullScreen = isFullScreen;
             SaveSystem.Save();
@@ -101,7 +100,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public void SetQuality(int qualityIndex)
     {
         QualitySettings.SetQualityLevel(qualityIndex);
-        if(!loading)
+        if (!loading)
         {
             gameStatus.qualityIndex = qualityIndex;
             SaveSystem.Save();
@@ -111,7 +110,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public void SetVolume(float volume)
     {
         audioMixer.SetFloat("volume", volume);
-        if(!loading)
+        if (!loading)
         {
             gameStatus.volume = volume;
             SaveSystem.Save();
@@ -168,18 +167,18 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     void Update()
     {
-        if(roomJoined)
+        if (roomJoined)
         {
-            if(PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber())
+            if (PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber())
             {
                 roomText.text = "MATCH STARTS IN: " + (int)countdown + " s.";
                 countdown -= Time.deltaTime;
-                if(countdown <= 0f)
+                if (countdown <= 0f)
                 {
-                    if(starting == false && PhotonNetwork.IsMasterClient)
+                    if (starting == false && PhotonNetwork.IsMasterClient)
                     {
-                         starting = true;
-                         StartMatch();
+                        starting = true;
+                        StartMatch();
                     }
                 }
             }
@@ -193,8 +192,16 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     void StartMatch()
     {
-        PhotonNetwork.CurrentRoom.IsOpen = false;  
-        PhotonNetwork.LoadLevel(nextScene);
+        PhotonNetwork.CurrentRoom.IsOpen = false;
+
+        if (PhotonNetwork.CurrentRoom.PlayerCount > 8)
+        {
+            PhotonNetwork.LoadLevel(1);
+        }
+        else
+        {
+            PhotonNetwork.LoadLevel(2);
+        }
 
         // Hiding previous panel of loading screen
         // previousLoadingScreen.SetActive(false);
