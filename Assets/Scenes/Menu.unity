@@ -3581,7 +3581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameVersion: 0.0.1
   maxPlayersNumber: 8
-  minPlayersNumber: 1
+  minPlayersNumber: 2
   countdown: 4
 --- !u!1 &1484528948
 GameObject:
@@ -3941,7 +3941,6 @@ MonoBehaviour:
   qualityDropdown: {fileID: 1484528950}
   volumeSlider: {fileID: 762202956}
   roomText: {fileID: 2082891748}
-  nextScene: Game
 --- !u!1 &1562340825
 GameObject:
   m_ObjectHideFlags: 0
