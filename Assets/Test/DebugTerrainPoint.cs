@@ -26,7 +26,7 @@ public class DebugTerrainPoint : MonoBehaviour
         //Initialize heighmap
         heightmap = td.GetHeights(0, 0, x, y);
 
-        TerrainPoints = new Vector2Int[60, y];
+        TerrainPoints = new Vector2Int[40, y];
 
         fillTerrainPoints();
 
@@ -35,7 +35,7 @@ public class DebugTerrainPoint : MonoBehaviour
 
     private void fillTerrainPoints()
     {
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < 40; i++)
         {
             for (int j = 0; j < y; j++)
             {

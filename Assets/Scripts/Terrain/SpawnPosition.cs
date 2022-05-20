@@ -42,7 +42,7 @@ public class SpawnPosition : MonoBehaviour
     {
 
         //Getting terrain information
-        terrain = GetComponent<Terrain>();
+        terrain = Terrain.activeTerrain;
         td = terrain.terrainData;
         x = td.heightmapResolution;
         y = td.heightmapResolution;

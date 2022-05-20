@@ -341,7 +341,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         while(matchEnded == false)
         {
             yield return new WaitForSecondsRealtime(10f);
-            if(distanceCovered < minDistance)
+            if (distanceCovered < minDistance)
             {
                 //send a message to the others for showing my player in the map
                 object[] data = new object[] { player.GetComponent<PhotonView>().ViewID };
