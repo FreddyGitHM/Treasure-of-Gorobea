@@ -11,6 +11,9 @@ public class EndGameMenu : MonoBehaviourPun
         DestroyImmediate(GameObject.FindWithTag("GameController"));
         DestroyImmediate(GameObject.Find("Large Map"));
 
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.Confined;
+
         SceneManager.LoadScene("Menu");
     }
     
