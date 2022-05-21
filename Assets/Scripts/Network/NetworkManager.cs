@@ -239,7 +239,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     void LateUpdate()
     {
-        if(fixAmmoDisplay == false)
+        if(fixAmmoDisplay == false && ready)
         {
             int ammoId = player.GetComponent<EventsCall>().weapon.GetComponent<vShooterWeapon>().ammoID;
             List<vAmmo> ammoList = player.GetComponent<vAmmoManager>().ammoListData.ammos;
