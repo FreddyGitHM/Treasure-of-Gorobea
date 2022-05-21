@@ -9,7 +9,7 @@ public class EndGameMenu : MonoBehaviourPun
         PhotonNetwork.Disconnect();
 
         DestroyImmediate(GameObject.FindWithTag("GameController"));
-        DestroyImmediate(GameObject.Find("Large Map"));
+        DestroyImmediate(GameObject.FindWithTag("Terrain"));
 
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
