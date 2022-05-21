@@ -11349,7 +11349,7 @@ MonoBehaviour:
   behindTargetSmoothRotation: 1
   lockCamera: 0
   offsetMouse: {x: 0, y: 0}
-  indexList: 0
+  indexList: 1
   indexLookPoint: 0
   offSetPlayerPivot: 0
   distance: 5
@@ -11379,7 +11379,7 @@ MonoBehaviour:
     fixedAngle: {x: 0, y: 0}
     lookPoints: []
     cameraMode: 0
-  CameraStateList: {fileID: 11400000, guid: 8616a8d80006bfb4d9069ea692c278da, type: 2}
+  CameraStateList: {fileID: 11400000, guid: 08d781d2411aa4a41b60c84b60c87c98, type: 2}
   lockTarget: {fileID: 0}
   movementSpeed: {x: 0, y: 0}
   lerpState:
