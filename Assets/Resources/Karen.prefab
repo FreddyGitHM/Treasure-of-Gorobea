@@ -7404,7 +7404,7 @@ MonoBehaviour:
     - Player
   blockAimLayer:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   useCancelReload: 1
   ignoreReacionIDList: ffffffff
   useCheckAim: 1
