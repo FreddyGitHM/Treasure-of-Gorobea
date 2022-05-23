@@ -3581,7 +3581,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameVersion: 0.0.1
   maxPlayersNumber: 8
-  minPlayersNumber: 1
+  minPlayersNumber: 3
   countdown: 4
 --- !u!1 &1484528948
 GameObject:
