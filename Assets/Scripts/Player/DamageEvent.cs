@@ -17,12 +17,23 @@ public class DamageEvent : MonoBehaviourPunCallbacks
     Color originalAimColor;
     Color hitAimColor;
 
+    bool firstTime;
+
     void Start()
     {
-        player = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
+        // player = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
         //player = GameObject.FindWithTag("NetworkManager").GetComponent<Network>().GetPlayer(); //debug
+        firstTime = true;
         originalAimColor = new Color(1f, 1f, 1f, 0.73f);
         hitAimColor = new Color(1f, 0f, 0f, 0.73f);
+    }
+
+    void Update()
+    {
+        if(GameObject.FindWithTag("NetworkManager") != null && firstTime){
+            GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
+            firstTime = false;
+        }
     }
 
     public void OnReceiveDamage()
@@ -51,7 +62,7 @@ public class DamageEvent : MonoBehaviourPunCallbacks
         {
             StartCoroutine(ChangeAimCenterColor());
         }
-        
+
     }
 
     IEnumerator ChangeAimCenterColor()
@@ -60,7 +71,7 @@ public class DamageEvent : MonoBehaviourPunCallbacks
         {
             aimCenter.GetComponent<Image>().color = hitAimColor;
         }
-        
+
         yield return new WaitForSecondsRealtime(0.5f);
 
         if(aimCenter != null)

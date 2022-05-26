@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16f3029fdffa2a3689dab02e9bb3159, type: 3}
+  m_Name: Natasha
+  m_EditorClassIdentifier: 
+  HeroName: NATASHA
+  Hero: {fileID: 8842717592427806413, guid: da516f722cc9f4345998f5b3845c6aeb, type: 3}
+  HeroDescription: Born in Moscow in Russia, an expert on counter-terrorism.
+  AbilitySprite: {fileID: 21300000, guid: 840d5a16ba60fce479d81fddb3674409, type: 3}
+  AbilityName: SILENT STEPS
+  AbilityDescription: When the player activates the silent steps skill for 10 seconds,
+    they will move with a noise reduction of 80%, this will allow them to act more
+    stealthily and get closer to enemies more easily.

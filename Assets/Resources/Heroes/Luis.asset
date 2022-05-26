@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e16f3029fdffa2a3689dab02e9bb3159, type: 3}
+  m_Name: Luis
+  m_EditorClassIdentifier: 
+  HeroName: LUIS
+  Hero: {fileID: 675774443656745868, guid: f56bc390c4b844a53a7e3752506d9949, type: 3}
+  HeroDescription: Born in ... (top secret) ... in America, is a US Army sniper trained
+    to carry out high-risk operations in top secret locations.
+  AbilitySprite: {fileID: 21300000, guid: bebeac5f741b4ac4d92b94e2e23c6844, type: 3}
+  AbilityName: FAST RUN
+  AbilityDescription: When the player activates the Fast Run skill for 10 seconds
+    they will move 80% faster.

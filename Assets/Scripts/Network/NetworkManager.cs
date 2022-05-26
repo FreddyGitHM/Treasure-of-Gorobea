@@ -73,6 +73,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         fpsText = GameObject.Find("FPSCanvas/Text").GetComponent<TextMeshProUGUI>();
 
         fixAmmoDisplay = false;
+
     }
 
     void Start()
@@ -129,7 +130,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 {
                     mainCamera.GetComponent<Camera>().enabled = false;
 
-                    player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                    player = PhotonNetwork.Instantiate(HeroManager.selectedHero, spawnPos, spawnRot);
                     playerPos = spawnPos;
 
                     MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
@@ -234,7 +235,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.transform.Find("Minimap/MinimapCamera").GetComponent<Camera>().enabled = true;
         player.transform.Find("Minimap/Player Marker").GetComponent<SpriteRenderer>().enabled = true;
         player.transform.Find("Minimap/Minimap Canvas").GetComponent<Canvas>().enabled = true;
-        
+
     }
 
     void LateUpdate()
@@ -296,7 +297,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             if(/*playersIdList.Count == 1 ||*/ chestOpened)
             {
                 Debug.Log("YOU WIN!");
-                
+
                 if(playersIdList.Count > 1)
                 {
                     //tell to the others that i won
@@ -410,7 +411,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
 
     ////////////////////
-    // Events handler // 
+    // Events handler //
     ////////////////////
 
     public override void OnEnable()
@@ -436,7 +437,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
                 Vector3 spawnPos = (Vector3)data0[0];
                 Quaternion spawnRot = (Quaternion)data0[1];
-                player = PhotonNetwork.Instantiate("Man", spawnPos, spawnRot);
+                player = PhotonNetwork.Instantiate(HeroManager.selectedHero, spawnPos, spawnRot);
                 playerPos = spawnPos;
 
                 GameObject MinimapTreeMapSprite = MapTree.transform.Find("Minimap TreeMap Sprite").gameObject;
