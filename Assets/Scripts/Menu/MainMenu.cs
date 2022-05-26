@@ -5,6 +5,8 @@ using UnityEngine.UI;
 using Photon.Pun;
 using Photon.Realtime;
 using TMPro;
+using EventCodes;
+using ExitGames.Client.Photon;
 
 
 public class MainMenu : MonoBehaviourPunCallbacks
@@ -19,6 +21,11 @@ public class MainMenu : MonoBehaviourPunCallbacks
     bool loading;
     GameStatus gameStatus;
     Resolution[] resolutions;
+
+    // Matchmaking timer
+    private float MatchmakingTimer = 6f;
+    private float ResetTimer = 3f;
+    private bool canStart = false;
 
     //quick-match
     RoomManager roomManager;
@@ -74,6 +81,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
         volumeSlider.value = gameStatus.volume;
 
         loading = false;
+
+        //add this class for EventsHandler and IPunOwnershipCallbacks
+        PhotonNetwork.AddCallbackTarget(this);
     }
 
     public void SetResolution(int resolutionIndex)
@@ -169,10 +179,26 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         if (roomJoined)
         {
-            if (PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber())
+            if (PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber() && canStart)
             {
-                roomText.text = "MATCH STARTS IN: " + (int)countdown + " s.";
-                countdown -= Time.deltaTime;
+                if (PhotonNetwork.IsMasterClient)
+                {
+                    string text = "MATCH STARTS IN: " + (int)countdown + " s.";
+                    roomText.text = text;
+
+                    object[] data = new object[] { text };
+                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+                    raiseEventOptions.Receivers = ReceiverGroup.Others;
+                    raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+                    SendOptions sendOptions = new SendOptions();
+                    sendOptions.Reliability = true;
+
+                    PhotonNetwork.RaiseEvent(Codes.TIMER, data, raiseEventOptions, sendOptions);
+
+                    countdown -= Time.deltaTime;
+                }
+
                 if (countdown <= 0f)
                 {
                     if (starting == false && PhotonNetwork.IsMasterClient)
@@ -184,7 +210,56 @@ public class MainMenu : MonoBehaviourPunCallbacks
             }
             else
             {
-                roomText.text = "WAITING FOR OTHER PLAYERS...";
+                if (MatchmakingTimer <= 0f)
+                {
+                    if (ResetTimer <= 0)
+                    {
+                        MatchmakingTimer = 6f;
+                        ResetTimer = 3f;
+                    }
+                    else if (PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber())
+                    {
+                        canStart = true;
+                    }
+                    else if(PhotonNetwork.IsMasterClient)
+                    {
+                        string text = "NOT ENOUGH PLAYER FOUND, RESTARTING TIMER...";
+                        roomText.text = text;
+
+                        object[] data = new object[] { text };
+                        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+                        raiseEventOptions.Receivers = ReceiverGroup.Others;
+                        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+                        SendOptions sendOptions = new SendOptions();
+                        sendOptions.Reliability = true;
+
+                        PhotonNetwork.RaiseEvent(Codes.TIMER, data, raiseEventOptions, sendOptions);
+
+                        ResetTimer -= Time.deltaTime;
+                    }
+                }
+                else
+                {
+                    if (PhotonNetwork.IsMasterClient)
+                    {
+                        string text = "WAITING FOR OTHER PLAYERS..." + "\n" + (int)MatchmakingTimer + " s.";
+                        roomText.text = text;
+
+                        object[] data = new object[] { text };
+                        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+                        raiseEventOptions.Receivers = ReceiverGroup.Others;
+                        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+                        SendOptions sendOptions = new SendOptions();
+                        sendOptions.Reliability = true;
+
+                        PhotonNetwork.RaiseEvent(Codes.TIMER, data, raiseEventOptions, sendOptions);
+
+                        MatchmakingTimer -= Time.deltaTime;
+                    }
+                }
+
                 countdown = roomManager.Countdown();
             }
         }
@@ -239,6 +314,29 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.Log("Room joining failed");
+    }
+
+    ////////////////////
+    // Events handler // 
+    ////////////////////
+
+    public override void OnEnable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived += OnEvent;
+    }
+
+    public override void OnDisable()
+    {
+        PhotonNetwork.NetworkingClient.EventReceived -= OnEvent;
+    }
+
+    void OnEvent(EventData eventData)
+    {
+        if (eventData.Code == Codes.TIMER)
+        {
+            object[] data0 = (object[])eventData.CustomData;
+            roomText.text = (string)data0[0];
+        }
     }
 
 }
