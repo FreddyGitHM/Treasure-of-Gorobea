@@ -7,6 +7,8 @@ public class Heroes : ScriptableObject
 {
     public string HeroName;
     public GameObject Hero;
+    public Sprite HeroSprite;
+    public Sprite HeroSpriteSelected;
     [TextArea(1, 10)] public string HeroDescription;
 
     public Sprite AbilitySprite;

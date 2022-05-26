@@ -8,6 +8,7 @@ using Photon.Pun;
 
 public class HeroManager : MonoBehaviour
 {
+    public int previousIndex;
     public int currentIndex;
     public Heroes[] heroes;
     public TextMeshProUGUI Name;
@@ -17,18 +18,20 @@ public class HeroManager : MonoBehaviour
     public TextMeshProUGUI AbilityText;
     public GameObject SpawnPosition;
     public static string selectedHero;
+    private GameObject Button;
 
     void Start()
     {
+        currentIndex = 0;
         changeCharacter(0);
-        selectedHero = heroes[currentIndex].HeroName;
+        SetSelectedHero();
     }
 
     public void changeCharacter(int index)
     {
-        DeletePreviousModel();
+        previousIndex = currentIndex;
 
-        currentIndex = index;
+        DeletePreviousModel();
 
         GameObject hero = Instantiate(heroes[index].Hero, SpawnPosition.transform.position + Vector3.back * 3, Quaternion.AngleAxis(180f, Vector3.up));
         DisableComponent(hero);
@@ -40,11 +43,20 @@ public class HeroManager : MonoBehaviour
         AbilitySprite.GetComponent<Image>().sprite = heroes[index].AbilitySprite;
         AbilityTitle.text = heroes[index].AbilityName;
         AbilityText.text = heroes[index].AbilityDescription;
+
+        currentIndex = index;
     }
 
     public void SetSelectedHero()
     {
+        // Find previous selected hero button
+        GameObject PreviousButton = GameObject.Find(heroes[previousIndex].HeroName + "Button");
+        PreviousButton.GetComponent<Image>().sprite = heroes[previousIndex].HeroSprite;
+
         selectedHero = heroes[currentIndex].HeroName;
+
+        Button = GameObject.Find(heroes[currentIndex].HeroName + "Button");
+        Button.GetComponent<Image>().sprite = heroes[currentIndex].HeroSpriteSelected;
     }
 
     private void DeletePreviousModel()

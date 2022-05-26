@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   HeroName: LUIS
   Hero: {fileID: 675774443656745868, guid: f56bc390c4b844a53a7e3752506d9949, type: 3}
+  HeroSprite: {fileID: 21300000, guid: 958ef13a6bc250de78dc06f4f0ce8120, type: 3}
+  HeroSpriteSelected: {fileID: 21300000, guid: 531991e5cd66dba99b88cf3dd9e71461, type: 3}
   HeroDescription: Born in ... (top secret) ... in America, is a US Army sniper trained
     to carry out high-risk operations in top secret locations.
   AbilitySprite: {fileID: 21300000, guid: bebeac5f741b4ac4d92b94e2e23c6844, type: 3}
