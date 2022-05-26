@@ -19,11 +19,13 @@ public class HeroManager : MonoBehaviour
     public GameObject SpawnPosition;
     public static string selectedHero;
     private GameObject Button;
+    private GameStatus gameStatus;
 
     void Start()
     {
-        currentIndex = 0;
-        changeCharacter(0);
+        gameStatus = GameObject.FindWithTag("GameController").GetComponent<GameStatus>();
+        currentIndex = gameStatus.HeroSelected;
+        changeCharacter(gameStatus.HeroSelected);
         SetSelectedHero();
     }
 
@@ -57,6 +59,9 @@ public class HeroManager : MonoBehaviour
 
         Button = GameObject.Find(heroes[currentIndex].HeroName + "Button");
         Button.GetComponent<Image>().sprite = heroes[currentIndex].HeroSpriteSelected;
+
+        gameStatus.HeroSelected = currentIndex;
+        SaveSystem.Save();
     }
 
     private void DeletePreviousModel()

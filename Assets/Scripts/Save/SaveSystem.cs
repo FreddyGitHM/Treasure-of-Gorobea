@@ -31,6 +31,7 @@ public static class SaveSystem
         gameStatus.fullScreen = saveData.fullScreen;
         gameStatus.qualityIndex = saveData.qualityIndex;
         gameStatus.volume = saveData.volume;
+        gameStatus.HeroSelected = saveData.HeroSelected;
 
         Debug.Log("Loaded");
     }
@@ -54,6 +55,7 @@ public static class SaveSystem
         saveData.fullScreen = gameStatus.fullScreen;
         saveData.qualityIndex = gameStatus.qualityIndex;
         saveData.volume = gameStatus.volume;
+        saveData.HeroSelected = gameStatus.HeroSelected;
 
         SaveFile(saveData);
 

@@ -17,6 +17,7 @@ public class SaveData
     public bool fullScreen;
     public int qualityIndex;
     public float volume;
+    public int HeroSelected;
 
     public SaveData() {}
 
@@ -45,6 +46,7 @@ public class SaveData
         fullScreen = Screen.fullScreen;
         qualityIndex = 1;
         volume = 0.5f;
+        HeroSelected = 0;
     }
 
 }

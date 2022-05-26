@@ -18,10 +18,11 @@ public class GameStatus : MonoBehaviour
     public bool fullScreen;
     public int qualityIndex;
     public float volume;
+    public int HeroSelected;
 
     void Awake()
     {
-        DontDestroyOnLoad(transform.gameObject);    
+        DontDestroyOnLoad(transform.gameObject);
     }
 
 }
