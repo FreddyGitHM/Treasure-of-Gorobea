@@ -198,7 +198,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
                     {
                         DisableHeroCanvas();
                         SendMessage(1);
-                        
+
                         SendMessage("MATCH STARTS IN: " + (int)countdown + " s.", Codes.TIMER);
                         countdown -= Time.deltaTime;
                     }
@@ -206,7 +206,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
                     {
                         ShowHeroConvas();
                         SendMessage(0);
-                        
+
                         SendMessage("HERO SELECTION END IN " + (int)HeroSelectionTimer + " s.", Codes.HEROTIMER);
                         HeroSelectionTimer -= Time.deltaTime;
                     }
@@ -261,10 +261,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         heroCanvas.GetComponent<Canvas>().enabled = true;
         canvasCamera.SetActive(true);
-        
+
         // Disable return to main menu button
         exitButton.SetActive(false);
-        
+
         // Activate hero selection countdown text
         countdownText.enabled = true;
     }
@@ -273,7 +273,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         menuCanvas.GetComponent<Canvas>().enabled = true;
         mainCamera.SetActive(true);
-
+        
+        GameObject backButton = GameObject.Find("Back Button");
+        backButton.GetComponent<Image>().enabled = false;
+        backButton.GetComponent<Button>().enabled = false;
+        backButton.transform.Find("Text").GetComponent<TextMeshProUGUI>().enabled = false;
+        
         heroCanvas.GetComponent<Canvas>().enabled = false;
         canvasCamera.SetActive(false);
 
@@ -339,6 +344,11 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void ExitRoom()
     {
+        MatchmakingTimer = 6f;
+        ResetTimer = 3f;
+        HeroSelectionTimer = 10f;
+        canStart = false;
+
         roomJoined = false;
         starting = false;
         countdown = roomManager.Countdown();
@@ -385,14 +395,16 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         switch (eventData.Code)
         {
-            case Codes.TIMER: 
+            case Codes.TIMER:
                 object[] data0 = (object[])eventData.CustomData;
                 roomText.text = (string)data0[0];
                 break;
-            
+
             case Codes.HEROTIMER:
+                object[] data2 = (object[])eventData.CustomData;
+                countdownText.text = (string)data2[0];
                 break;
-            
+
             case Codes.CANVASSWITCH:
                 object[] data1 = (object[])eventData.CustomData;
                 if ((int)data1[0] == 0)
