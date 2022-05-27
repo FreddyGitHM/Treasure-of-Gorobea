@@ -192,23 +192,24 @@ public class MainMenu : MonoBehaviourPunCallbacks
         {
             if (PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber() && canStart)
             {
-                if (HeroSelectionTimer <= 0)
+                if (PhotonNetwork.IsMasterClient)
                 {
-                    DisableHeroCanvas();
-                    // SendMessage(1);
+                    if (HeroSelectionTimer <= 0)
+                    {
+                        DisableHeroCanvas();
+                        SendMessage(1);
                         
-                    // SendMessage("MATCH STARTS IN: " + (int)countdown + " s.", Codes.TIMER);
-                    roomText.text = "MATCH STARTS IN: " + (int)countdown + " s.";
-                    countdown -= Time.deltaTime;
-                }
-                else
-                {
-                    ShowHeroConvas();
-                    // SendMessage(0);
+                        SendMessage("MATCH STARTS IN: " + (int)countdown + " s.", Codes.TIMER);
+                        countdown -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        ShowHeroConvas();
+                        SendMessage(0);
                         
-                    // SendMessage("HERO SELECTION END IN " + (int)HeroSelectionTimer + " s.", Codes.HEROTIMER);
-                    countdownText.text = "HERO SELECTION END IN " + (int)HeroSelectionTimer + " s.";
-                    HeroSelectionTimer -= Time.deltaTime;
+                        SendMessage("HERO SELECTION END IN " + (int)HeroSelectionTimer + " s.", Codes.HEROTIMER);
+                        HeroSelectionTimer -= Time.deltaTime;
+                    }
                 }
 
                 if (countdown <= 0f)
