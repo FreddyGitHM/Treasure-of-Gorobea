@@ -22,10 +22,19 @@ public class MainMenu : MonoBehaviourPunCallbacks
     GameStatus gameStatus;
     Resolution[] resolutions;
 
-    // Matchmaking timer
+    // Matchmaking timers
     private float MatchmakingTimer = 6f;
     private float ResetTimer = 3f;
+    private float HeroSelectionTimer = 10f;
     private bool canStart = false;
+
+    // Hero selection before the match
+    public GameObject mainCamera;
+    public GameObject canvasCamera;
+    public GameObject menuCanvas;
+    public GameObject heroCanvas;
+    public TextMeshProUGUI countdownText;
+    public GameObject exitButton;
 
     //quick-match
     RoomManager roomManager;
@@ -69,6 +78,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
             string option = resolutions[i].width + " x " + resolutions[i].height;
             options.Add(option);
         }
+
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = gameStatus.resolutionIndex;
         resolutionDropdown.RefreshShownValue();
@@ -138,6 +148,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.ConnectUsingSettings();
     }
 
+    // ReSharper disable Unity.PerformanceAnalysis
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to server");
@@ -183,20 +194,22 @@ public class MainMenu : MonoBehaviourPunCallbacks
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    string text = "MATCH STARTS IN: " + (int)countdown + " s.";
-                    roomText.text = text;
-
-                    object[] data = new object[] { text };
-                    RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
-                    raiseEventOptions.Receivers = ReceiverGroup.Others;
-                    raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
-
-                    SendOptions sendOptions = new SendOptions();
-                    sendOptions.Reliability = true;
-
-                    PhotonNetwork.RaiseEvent(Codes.TIMER, data, raiseEventOptions, sendOptions);
-
-                    countdown -= Time.deltaTime;
+                    if (HeroSelectionTimer <= 0)
+                    {
+                        DisableHeroCanvas();
+                        SendMessage(1);
+                        
+                        SendMessage("MATCH STARTS IN: " + (int)countdown + " s.", Codes.TIMER);
+                        countdown -= Time.deltaTime;
+                    }
+                    else
+                    {
+                        ShowHeroConvas();
+                        SendMessage(0);
+                        
+                        SendMessage("HERO SELECTION END IN " + (int)HeroSelectionTimer + " s.", Codes.HEROTIMER);
+                        HeroSelectionTimer -= Time.deltaTime;
+                    }
                 }
 
                 if (countdown <= 0f)
@@ -221,21 +234,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
                     {
                         canStart = true;
                     }
-                    else if(PhotonNetwork.IsMasterClient)
+                    else if (PhotonNetwork.IsMasterClient)
                     {
-                        string text = "NOT ENOUGH PLAYER FOUND, RESTARTING TIMER...";
-                        roomText.text = text;
-
-                        object[] data = new object[] { text };
-                        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
-                        raiseEventOptions.Receivers = ReceiverGroup.Others;
-                        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
-
-                        SendOptions sendOptions = new SendOptions();
-                        sendOptions.Reliability = true;
-
-                        PhotonNetwork.RaiseEvent(Codes.TIMER, data, raiseEventOptions, sendOptions);
-
+                        SendMessage("NOT ENOUGH PLAYER FOUND, RESTARTING TIMER...", Codes.TIMER);
                         ResetTimer -= Time.deltaTime;
                     }
                 }
@@ -243,19 +244,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
                 {
                     if (PhotonNetwork.IsMasterClient)
                     {
-                        string text = "WAITING FOR OTHER PLAYERS..." + "\n" + (int)MatchmakingTimer + " s.";
-                        roomText.text = text;
-
-                        object[] data = new object[] { text };
-                        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
-                        raiseEventOptions.Receivers = ReceiverGroup.Others;
-                        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
-
-                        SendOptions sendOptions = new SendOptions();
-                        sendOptions.Reliability = true;
-
-                        PhotonNetwork.RaiseEvent(Codes.TIMER, data, raiseEventOptions, sendOptions);
-
+                        SendMessage("WAITING FOR OTHER PLAYERS..." + "\n" + (int)MatchmakingTimer + " s.", Codes.TIMER);
                         MatchmakingTimer -= Time.deltaTime;
                     }
                 }
@@ -265,6 +254,69 @@ public class MainMenu : MonoBehaviourPunCallbacks
         }
     }
 
+    private void ShowHeroConvas()
+    {
+        menuCanvas.GetComponent<Canvas>().enabled = false;
+        mainCamera.SetActive(false);
+
+        heroCanvas.GetComponent<Canvas>().enabled = true;
+        canvasCamera.SetActive(true);
+        
+        // Disable return to main menu button
+        exitButton.SetActive(false);
+        
+        // Activate hero selection countdown text
+        countdownText.enabled = true;
+    }
+
+    private void DisableHeroCanvas()
+    {
+        menuCanvas.GetComponent<Canvas>().enabled = true;
+        mainCamera.SetActive(true);
+
+        heroCanvas.GetComponent<Canvas>().enabled = false;
+        canvasCamera.SetActive(false);
+
+        // Disable hero selection countdown text
+        countdownText.enabled = false;
+    }
+
+    private void SendMessage(int choose)
+    {
+        object[] data = { choose };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+        raiseEventOptions.Receivers = ReceiverGroup.Others;
+        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+        SendOptions sendOptions = new SendOptions();
+        sendOptions.Reliability = true;
+
+        PhotonNetwork.RaiseEvent(Codes.CANVASSWITCH, data, raiseEventOptions, sendOptions);
+    }
+
+    private void SendMessage(string text, byte message)
+    {
+        if (message == Codes.HEROTIMER)
+        {
+            countdownText.text = text;
+        }
+        else
+        {
+            roomText.text = text;
+        }
+
+        object[] data = { text };
+        RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
+        raiseEventOptions.Receivers = ReceiverGroup.Others;
+        raiseEventOptions.CachingOption = EventCaching.AddToRoomCache;
+
+        SendOptions sendOptions = new SendOptions();
+        sendOptions.Reliability = true;
+
+        PhotonNetwork.RaiseEvent(message, data, raiseEventOptions, sendOptions);
+    }
+
+    // ReSharper disable Unity.PerformanceAnalysis
     void StartMatch()
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
@@ -283,7 +335,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         // Set the loadingScreen canvas visible
         // loadingScreen.SetActive(true);  
-
     }
 
     public void ExitRoom()
@@ -332,11 +383,28 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     void OnEvent(EventData eventData)
     {
-        if (eventData.Code == Codes.TIMER)
+        switch (eventData.Code)
         {
-            object[] data0 = (object[])eventData.CustomData;
-            roomText.text = (string)data0[0];
+            case Codes.TIMER: 
+                object[] data0 = (object[])eventData.CustomData;
+                roomText.text = (string)data0[0];
+                break;
+            
+            case Codes.HEROTIMER:
+                break;
+            
+            case Codes.CANVASSWITCH:
+                object[] data1 = (object[])eventData.CustomData;
+                if ((int)data1[0] == 0)
+                {
+                    ShowHeroConvas();
+                }
+                else
+                {
+                    DisableHeroCanvas();
+                }
+
+                break;
         }
     }
-
 }

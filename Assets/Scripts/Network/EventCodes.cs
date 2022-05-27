@@ -14,5 +14,7 @@
         public const byte SPOT_PLAYER = 9;
         public const byte MATCH_FINISHED = 10;
         public const byte TIMER = 11;
+        public const byte HEROTIMER = 12;
+        public const byte CANVASSWITCH = 13;
     }
 }
