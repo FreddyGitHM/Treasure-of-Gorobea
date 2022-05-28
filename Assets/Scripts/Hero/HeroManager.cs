@@ -55,7 +55,7 @@ public class HeroManager : MonoBehaviour
         GameObject PreviousButton = GameObject.Find(heroes[previousIndex].HeroName + "Button");
         PreviousButton.GetComponent<Image>().sprite = heroes[previousIndex].HeroSprite;
 
-        selectedHero = heroes[currentIndex].HeroName;
+        selectedHero = "Heroes/" + heroes[currentIndex].HeroName;
 
         Button = GameObject.Find(heroes[currentIndex].HeroName + "Button");
         Button.GetComponent<Image>().sprite = heroes[currentIndex].HeroSpriteSelected;
