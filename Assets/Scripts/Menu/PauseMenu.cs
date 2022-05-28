@@ -65,7 +65,7 @@ public class PauseMenu : MonoBehaviour
         resumeButton.interactable = false;
         resumeButton.interactable = true;
         Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void OnExit()
