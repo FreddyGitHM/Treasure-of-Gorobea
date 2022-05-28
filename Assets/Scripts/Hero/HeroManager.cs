@@ -66,14 +66,10 @@ public class HeroManager : MonoBehaviour
 
     private void DeletePreviousModel()
     {
-        foreach(Heroes hero in heroes)
+        GameObject toDelete = GameObject.FindGameObjectWithTag("Player");
+        if(toDelete != null)
         {
-            GameObject heroGO = GameObject.Find(hero.HeroName + "(Clone)");
-            if(heroGO != null)
-            {
-                DestroyImmediate(heroGO);
-                break;
-            }
+            DestroyImmediate(toDelete);
         }
     }
 
