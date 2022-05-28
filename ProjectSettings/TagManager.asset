@@ -38,6 +38,7 @@ TagManager:
   - EndGameCanvas
   - TreasureChest
   - TreeWIthMap
+  - PauseCanvas
   layers:
   - Default
   - TransparentFX
