@@ -56,6 +56,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     bool fixAmmoDisplay;
 
+    GameObject pauseCanvas;
+
     void Awake()
     {
         instantiated = false;
@@ -74,6 +76,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         fixAmmoDisplay = false;
 
+        pauseCanvas = GameObject.FindWithTag("PauseCanvas");
     }
 
     void Start()
@@ -192,10 +195,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
             killText.text = "KILL(S): " + kills;
 
-            if(Input.GetButtonDown("Escape"))
+            if(Input.GetKeyDown(KeyCode.P))
             {
-                Debug.Log("exit to main menu");
-                endGameCanvas.GetComponent<EndGameMenu>().OnClick();
+                pauseCanvas.GetComponent<PauseMenu>().Call();
             }
         }
 

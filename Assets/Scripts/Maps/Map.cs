@@ -92,17 +92,19 @@ public class Map : MonoBehaviour
         if (Input.GetButtonDown("Back"))
         {
             MapCanvas.enabled = !MapCanvas.enabled;
-            Cursor.visible = true;
-            Cursor.lockState = CursorLockMode.Confined;
-        }
-
-        // If the map is close reset camera parameter
-        if (!MapCanvas.enabled)
-        {
-            MapCamera.orthographicSize = MaxZoom;
-            MapCamera.transform.position = terrain.GetPosition() + Vector3.one * terrain.terrainData.size.x * .5f;
-            Cursor.visible = false;
-            Cursor.lockState = CursorLockMode.None;
+            // If the map is close reset camera parameter
+            if(!MapCanvas.enabled)
+            {
+                MapCamera.orthographicSize = MaxZoom;
+                MapCamera.transform.position = terrain.GetPosition() + Vector3.one * terrain.terrainData.size.x * .5f;
+                Cursor.visible = false;
+                Cursor.lockState = CursorLockMode.Locked;
+            }
+            else
+            {
+                Cursor.visible = true;
+                Cursor.lockState = CursorLockMode.Confined;
+            }
         }
     }
 
