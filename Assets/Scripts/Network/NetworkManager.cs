@@ -237,7 +237,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.transform.Find("Minimap/MinimapCamera").GetComponent<Camera>().enabled = true;
         player.transform.Find("Minimap/Player Marker").GetComponent<SpriteRenderer>().enabled = true;
         player.transform.Find("Minimap/Minimap Canvas").GetComponent<Canvas>().enabled = true;
-
     }
 
     void LateUpdate()
@@ -331,6 +330,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
         player.GetComponent<vGenericAction>().enabled = false;
         player.GetComponent<Skills>().enabled = false;
+
+        Animator animator = player.GetComponent<Animator>();
+        animator.SetFloat("InputHorizontal", 0f);
+        animator.SetFloat("InputVertical", 0f);
+        animator.SetFloat("InputMagnitude", 0f);
+        animator.SetFloat("RotationMagnitude", 0f);
+        animator.SetBool("IsStrafing", false);
+        animator.SetBool("IsSprinting", false);
+        animator.SetBool("IsAiming", false);
 
         yield return new WaitForSecondsRealtime(5f);
 
