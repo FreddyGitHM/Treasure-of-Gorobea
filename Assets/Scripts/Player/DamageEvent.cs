@@ -17,26 +17,15 @@ public class DamageEvent : MonoBehaviourPunCallbacks
     Color originalAimColor;
     Color hitAimColor;
 
-    bool firstTime;
-
     void Start()
     {
         GameObject networkManager = GameObject.FindWithTag("NetworkManager");
-        if (networkManager != null)
+        if(networkManager != null)
         {
             player = networkManager.GetComponent<NetworkManager>().GetPlayer();
         }
-        firstTime = true;
         originalAimColor = new Color(1f, 1f, 1f, 0.73f);
         hitAimColor = new Color(1f, 0f, 0f, 0.73f);
-    }
-
-    void Update()
-    {
-        if(GameObject.FindWithTag("NetworkManager") != null && firstTime){
-            GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
-            firstTime = false;
-        }
     }
 
     public void OnReceiveDamage()
