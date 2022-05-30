@@ -21,8 +21,7 @@ public class DamageEvent : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        // player = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
-        //player = GameObject.FindWithTag("NetworkManager").GetComponent<Network>().GetPlayer(); //debug
+        player = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
         firstTime = true;
         originalAimColor = new Color(1f, 1f, 1f, 0.73f);
         hitAimColor = new Color(1f, 0f, 0f, 0.73f);
@@ -62,7 +61,6 @@ public class DamageEvent : MonoBehaviourPunCallbacks
         {
             StartCoroutine(ChangeAimCenterColor());
         }
-
     }
 
     IEnumerator ChangeAimCenterColor()
