@@ -92,6 +92,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3400064209357495723}
   - component: {fileID: 3400064209377757453}
+  - component: {fileID: 4479734381342420431}
   m_Layer: 6
   m_Name: TreeMap
   m_TagString: TreeWithMap
@@ -146,6 +147,20 @@ LODGroup:
     renderers:
     - renderer: {fileID: 3400064209359265631}
   m_Enabled: 1
+--- !u!136 &4479734381342420431
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3400064209357259147}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  m_Radius: 1.5
+  m_Height: 10
+  m_Direction: 1
+  m_Center: {x: 0, y: 3, z: 0}
 --- !u!1 &3400064209357259161
 GameObject:
   m_ObjectHideFlags: 0
