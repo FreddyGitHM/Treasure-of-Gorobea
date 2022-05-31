@@ -46,7 +46,7 @@ public class DamageEvent : MonoBehaviourPunCallbacks
 
         PhotonNetwork.RaiseEvent(Codes.DAMAGE, data, raiseEventOptions, sendOptions);
 
-        AudioSource audioSource = player.GetComponent<EventsCall>().weapon.transform.Find("renderer").Find("AudioSource").GetComponent<AudioSource>();
+        AudioSource audioSource = player.GetComponent<EventsCall>().weapon.transform.Find("renderer/AudioSource").GetComponent<AudioSource>();
         audioSource.PlayOneShot(hitFeedback);
 
         aimCenter = player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe/AimCenter").gameObject;
