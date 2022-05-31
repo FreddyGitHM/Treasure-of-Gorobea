@@ -22,12 +22,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
     GameStatus gameStatus;
     Resolution[] resolutions;
 
-    // Matchmaking timers
-    private float MatchmakingTimer = 6f;
-    private float ResetTimer = 3f;
-    private float HeroSelectionTimer = 10f;
-    private bool canStart = false;
-
     // Hero selection before the match
     public GameObject mainCamera;
     public GameObject canvasCamera;
@@ -41,6 +35,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
     bool roomJoined;
     bool starting;
     float countdown;
+    
+    // Matchmaking timers
+    private float matchmakingTimer;
+    private float resetTimer;
+    private float heroSelectionTimer;
+    private bool canStart = false;
 
     /*
     // Loading Bar stuff
@@ -68,6 +68,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
         roomJoined = false;
         starting = false;
         countdown = roomManager.Countdown();
+
+        matchmakingTimer = roomManager.MatchMakingTimer();
+        resetTimer = roomManager.MatchMakingTimer();
+        heroSelectionTimer = roomManager.MatchMakingTimer();
     }
 
     void Start()
@@ -194,7 +198,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
             {
                 if (PhotonNetwork.IsMasterClient)
                 {
-                    if (HeroSelectionTimer <= 0)
+                    if (heroSelectionTimer <= 0)
                     {
                         DisableHeroCanvas();
                         SendMessage(1);
@@ -207,8 +211,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
                         ShowHeroConvas();
                         SendMessage(0);
 
-                        SendMessage("HERO SELECTION END IN " + (int)HeroSelectionTimer + " s.", Codes.HEROTIMER);
-                        HeroSelectionTimer -= Time.deltaTime;
+                        SendMessage("HERO SELECTION END IN " + (int)heroSelectionTimer + " s.", Codes.HEROTIMER);
+                        heroSelectionTimer -= Time.deltaTime;
                     }
                 }
 
@@ -223,12 +227,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
             }
             else
             {
-                if (MatchmakingTimer <= 0f)
+                if (matchmakingTimer <= 0f)
                 {
-                    if (ResetTimer <= 0)
+                    if (resetTimer <= 0)
                     {
-                        MatchmakingTimer = 6f;
-                        ResetTimer = 3f;
+                        matchmakingTimer = roomManager.MatchMakingTimer();
+                        resetTimer = roomManager.ResetTimer();
                     }
                     else if (PhotonNetwork.CurrentRoom.PlayerCount >= (byte)roomManager.MinPlayersNumber())
                     {
@@ -237,19 +241,19 @@ public class MainMenu : MonoBehaviourPunCallbacks
                     else if (PhotonNetwork.IsMasterClient)
                     {
                         SendMessage("NOT ENOUGH PLAYER FOUND, RESTARTING TIMER...", Codes.TIMER);
-                        ResetTimer -= Time.deltaTime;
+                        resetTimer -= Time.deltaTime;
                     }
                 }
                 else
                 {
                     if (PhotonNetwork.IsMasterClient)
                     {
-                        SendMessage("WAITING FOR OTHER PLAYERS..." + "\n" + (int)MatchmakingTimer + " s.", Codes.TIMER);
-                        MatchmakingTimer -= Time.deltaTime;
+                        SendMessage("WAITING FOR OTHER PLAYERS..." + "\n" + (int)matchmakingTimer + " s.", Codes.TIMER);
+                        matchmakingTimer -= Time.deltaTime;
                     }
                 }
 
-                countdown = roomManager.Countdown();
+                // countdown = roomManager.Countdown();
             }
         }
     }
@@ -344,9 +348,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public void ExitRoom()
     {
-        MatchmakingTimer = 6f;
-        ResetTimer = 3f;
-        HeroSelectionTimer = 10f;
+        matchmakingTimer = roomManager.MatchMakingTimer();
+        resetTimer = roomManager.ResetTimer();
+        heroSelectionTimer = roomManager.HeroSelectionTimer();
         canStart = false;
 
         roomJoined = false;
