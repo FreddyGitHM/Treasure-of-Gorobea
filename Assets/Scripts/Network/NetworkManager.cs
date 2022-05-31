@@ -232,12 +232,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vCollectShooterMeleeControl>().enabled = true;
         player.GetComponent<vGenericAction>().enabled = true;
         player.GetComponent<Skills>().enabled = true;
-        player.transform.Find("Invector Components").Find("UI").gameObject.GetComponent<Canvas>().enabled = true;
-        player.transform.Find("Invector Components").Find("vThirdPersonCamera").gameObject.SetActive(true);
+        player.transform.Find("Invector Components/UI").gameObject.GetComponent<Canvas>().enabled = true;
+        player.transform.Find("Invector Components/vThirdPersonCamera").gameObject.SetActive(true);
         player.transform.Find("Minimap/MinimapCamera").GetComponent<Camera>().enabled = true;
         player.transform.Find("Minimap/Player Marker").GetComponent<SpriteRenderer>().enabled = true;
         player.transform.Find("Minimap/Minimap Canvas").GetComponent<Canvas>().enabled = true;
-
     }
 
     void LateUpdate()
@@ -331,6 +330,15 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.GetComponent<vCollectShooterMeleeControl>().enabled = false;
         player.GetComponent<vGenericAction>().enabled = false;
         player.GetComponent<Skills>().enabled = false;
+
+        Animator animator = player.GetComponent<Animator>();
+        animator.SetFloat("InputHorizontal", 0f);
+        animator.SetFloat("InputVertical", 0f);
+        animator.SetFloat("InputMagnitude", 0f);
+        animator.SetFloat("RotationMagnitude", 0f);
+        animator.SetBool("IsStrafing", false);
+        animator.SetBool("IsSprinting", false);
+        animator.SetBool("IsAiming", false);
 
         yield return new WaitForSecondsRealtime(5f);
 
@@ -502,9 +510,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
                 if (damagedPlayer.GetComponent<PhotonView>().IsMine)
                 {
-                    Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").Find("health").gameObject.GetComponent<Slider>();
+                    Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components/UI/HUD/health").gameObject.GetComponent<Slider>();
                     damagedPlayerHealthSlider.value = newHealth;
-                    vHUDController vHUDController = damagedPlayer.transform.Find("Invector Components").Find("UI").Find("HUD").GetComponent<vHUDController>();
+                    vHUDController vHUDController = damagedPlayer.transform.Find("Invector Components/UI/HUD").GetComponent<vHUDController>();
                     vHUDController.damaged = true;
 
                     playerIdLastShot = (int)data4[2];
@@ -520,7 +528,9 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 playersIdList.Remove(deathPlayer.GetComponent<PhotonView>().OwnerActorNr);
 
                 deathPlayer.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezePosition;
+                deathPlayer.GetComponent<ColliderSync>().enabled = false;
                 deathPlayer.transform.Find("HealthController").GetComponent<CapsuleCollider>().enabled = false;
+                deathPlayer.transform.Find("HealthController/Head").GetComponent<SphereCollider>().enabled = false;
 
                 if(deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
@@ -556,11 +566,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 object[] data6 = (object[])eventData.CustomData;
                 GameObject shootingPlayer = PhotonNetwork.GetPhotonView((int)data6[0]).gameObject;
 
-                AudioSource audioSource = shootingPlayer.GetComponent<EventsCall>().weapon.transform.Find("renderer").Find("AudioSource").GetComponent<AudioSource>();
+                AudioSource audioSource = shootingPlayer.GetComponent<EventsCall>().weapon.transform.Find("renderer/AudioSource").GetComponent<AudioSource>();
                 AudioClip shotClip = shootingPlayer.GetComponent<EventsCall>().weapon.GetComponent<vShooterWeapon>().fireClip;
                 audioSource.PlayOneShot(shotClip);
 
-                ParticleSystem[] particleSystems = shootingPlayer.GetComponent<EventsCall>().weapon.transform.Find("renderer").Find("Particles").GetComponentsInChildren<ParticleSystem>();
+                ParticleSystem[] particleSystems = shootingPlayer.GetComponent<EventsCall>().weapon.transform.Find("renderer/Particles").GetComponentsInChildren<ParticleSystem>();
                 foreach (ParticleSystem ps in particleSystems)
                 {
                     ps.Play();
