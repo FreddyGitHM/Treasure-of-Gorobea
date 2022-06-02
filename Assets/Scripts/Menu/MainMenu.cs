@@ -70,8 +70,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         countdown = roomManager.Countdown();
 
         matchmakingTimer = roomManager.MatchMakingTimer();
-        resetTimer = roomManager.MatchMakingTimer();
-        heroSelectionTimer = roomManager.MatchMakingTimer();
+        resetTimer = roomManager.ResetTimer();
+        heroSelectionTimer = roomManager.HeroSelectionTimer();
     }
 
     void Start()
@@ -252,8 +252,6 @@ public class MainMenu : MonoBehaviourPunCallbacks
                         matchmakingTimer -= Time.deltaTime;
                     }
                 }
-
-                // countdown = roomManager.Countdown();
             }
         }
     }
