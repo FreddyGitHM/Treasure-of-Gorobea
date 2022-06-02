@@ -44,7 +44,7 @@ public class ColliderSync : MonoBehaviour
             head.GetComponent<SphereCollider>().enabled = true;
         }
 
-        if(Input.GetButtonDown("Y"))
+        if(Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("B"))
         {
             head.GetComponent<SphereCollider>().enabled = false;
         }

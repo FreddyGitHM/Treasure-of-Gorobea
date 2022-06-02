@@ -199,7 +199,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
             killText.text = "KILL(S): " + kills;
 
-            if(Input.GetKeyDown(KeyCode.P))
+            if(Input.GetKeyDown(KeyCode.Escape) || Input.GetButtonDown("Start"))
             {
                 pauseCanvas.GetComponent<PauseMenu>().Call();
             }

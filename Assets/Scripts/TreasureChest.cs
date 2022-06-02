@@ -23,7 +23,7 @@ public class TreasureChest : MonoBehaviour
         {
             player = networkManager.GetPlayer();
         }
-        if(Input.GetKeyDown(KeyCode.E) && pickable && opened == false && networkManager.GetMatchEnded() == false)
+        if((Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("A")) && pickable && opened == false && networkManager.GetMatchEnded() == false)
         {
             opened = true;
             gameObject.GetComponent<Animator>().SetBool("Opening", true);

@@ -89,7 +89,7 @@ public class Map : MonoBehaviour
     private void OpenCloseMap()
     {
         // Open or close the map
-        if (Input.GetButtonDown("Back"))
+        if(Input.GetKeyDown(KeyCode.M) || Input.GetButtonDown("Back"))
         {
             MapCanvas.enabled = !MapCanvas.enabled;
             // If the map is close reset camera parameter

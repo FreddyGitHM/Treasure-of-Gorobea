@@ -72,7 +72,7 @@ public class Skills : MonoBehaviourPunCallbacks
             skillImage.color = new Color(1f, 1f, 1f, 1f);
             slider.gameObject.SetActive(false);
 
-            if (Input.GetKeyDown(KeyCode.N))
+            if(Input.GetKeyDown(KeyCode.F) || Input.GetButtonDown("Y"))
             {
                 skillImage.color = new Color(1f, 0f, 0f, 1f);
                 chargingLevel = 0;

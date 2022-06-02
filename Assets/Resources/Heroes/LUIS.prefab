@@ -4723,7 +4723,7 @@ MonoBehaviour:
     keyboardAxis: 0
     joystick: LeftAnalogHorizontal
     joystickAxis: 0
-    mobile: Horizontal
+    mobile: None
     mobileAxis: 0
     joystickAxisInvert: 0
     keyboardAxisInvert: 0
@@ -4739,7 +4739,7 @@ MonoBehaviour:
     keyboardAxis: 0
     joystick: LeftAnalogVertical
     joystickAxis: 0
-    mobile: Vertical
+    mobile: None
     mobileAxis: 0
     joystickAxisInvert: 0
     keyboardAxisInvert: 0
@@ -4755,7 +4755,7 @@ MonoBehaviour:
     keyboardAxis: 0
     joystick: LeftStickClick
     joystickAxis: 0
-    mobile: LeftStickClick
+    mobile: None
     mobileAxis: 0
     joystickAxisInvert: 0
     keyboardAxisInvert: 0
@@ -4769,9 +4769,9 @@ MonoBehaviour:
     isUnityInput: 0
     keyboard: C
     keyboardAxis: 0
-    joystick: Y
+    joystick: B
     joystickAxis: 0
-    mobile: Y
+    mobile: None
     mobileAxis: 0
     joystickAxisInvert: 0
     keyboardAxisInvert: 0
@@ -4839,7 +4839,7 @@ MonoBehaviour:
     keyboardAxis: 0
     joystick: RightAnalogHorizontal
     joystickAxis: 0
-    mobile: Mouse X
+    mobile: None
     mobileAxis: 0
     joystickAxisInvert: 0
     keyboardAxisInvert: 0
@@ -4855,7 +4855,7 @@ MonoBehaviour:
     keyboardAxis: 0
     joystick: RightAnalogVertical
     joystickAxis: 0
-    mobile: Mouse Y
+    mobile: None
     mobileAxis: 0
     joystickAxisInvert: 0
     keyboardAxisInvert: 0
@@ -4957,7 +4957,7 @@ MonoBehaviour:
     keyboardAxis: 0
     joystick: LT
     joystickAxis: 1
-    mobile: LT
+    mobile: None
     mobileAxis: 0
     joystickAxisInvert: 0
     keyboardAxisInvert: 0
@@ -4987,9 +4987,9 @@ MonoBehaviour:
     isUnityInput: 0
     keyboard: R
     keyboardAxis: 0
-    joystick: LB
+    joystick: X
     joystickAxis: 0
-    mobile: LB
+    mobile: None
     mobileAxis: 0
     joystickAxisInvert: 0
     keyboardAxisInvert: 0

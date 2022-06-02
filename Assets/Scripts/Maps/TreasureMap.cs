@@ -24,7 +24,7 @@ public class TreasureMap : MonoBehaviour
         {
             player = networkManager.GetPlayer();
         }
-        if (Input.GetKeyDown(KeyCode.E) && pickable && taken == false)
+        if((Input.GetKeyDown(KeyCode.E) || Input.GetButtonDown("A")) && pickable && taken == false)
         {
             taken = true;
             gameObject.GetComponent<MeshRenderer>().enabled = false;
