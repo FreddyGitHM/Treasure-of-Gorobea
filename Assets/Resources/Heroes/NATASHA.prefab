@@ -11439,7 +11439,7 @@ MonoBehaviour:
   joystickSensitivity: 1
   cullingLayer:
     serializedVersion: 2
-    m_Bits: 2147999743
+    m_Bits: 2147999742
   clipPlaneMargin: 0
   checkHeightRadius: 0
   showGizmos: 0
