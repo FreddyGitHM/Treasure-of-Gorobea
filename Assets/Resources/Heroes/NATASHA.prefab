@@ -7550,7 +7550,7 @@ MonoBehaviour:
   useLockOn: 0
   useLockOnMeleeOnly: 1
   hipfireShot: 1
-  hipfireDispersion: 0.5
+  hipfireDispersion: 0
   hipfireAimTime: 2
   cameraMaxSwayAmount: 2
   cameraSwaySpeed: 0.5
