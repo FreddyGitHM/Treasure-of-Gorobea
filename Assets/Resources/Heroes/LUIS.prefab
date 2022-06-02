@@ -4620,6 +4620,7 @@ GameObject:
   - component: {fileID: 6720641366752904748}
   - component: {fileID: -820986126566114828}
   - component: {fileID: -1790664824717639131}
+  - component: {fileID: 2164998895393656294}
   - component: {fileID: 6714560979643478179}
   - component: {fileID: 1806765206657992471}
   - component: {fileID: 4474905533809444296}
@@ -5638,6 +5639,7 @@ MonoBehaviour:
   ObservedComponents:
   - {fileID: -820986126566114828}
   - {fileID: -1790664824717639131}
+  - {fileID: 2164998895393656294}
   - {fileID: 1806765206657992471}
   sceneViewId: 0
   InstantiationId: 0
@@ -5813,6 +5815,22 @@ MonoBehaviour:
     LayerIndex: 6
   - SynchronizeType: 1
     LayerIndex: 7
+--- !u!114 &2164998895393656294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 675774443656745868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64179f3720bbfe947b7724caa67b7c1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizeVelocity: 1
+  m_SynchronizeAngularVelocity: 1
+  m_TeleportEnabled: 0
+  m_TeleportIfDistanceGreaterThan: 3
 --- !u!114 &6714560979643478179
 MonoBehaviour:
   m_ObjectHideFlags: 0
