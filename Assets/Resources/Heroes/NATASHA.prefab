@@ -9073,7 +9073,7 @@ MonoBehaviour:
   aimTarget: {fileID: 8842717592172724070}
   aimCenter: {fileID: 8842717593725543400}
   useScopeTransition: 1
-  scaleAimWithMovement: 1
+  scaleAimWithMovement: 0
   aimCenterToAimTarget: 0
   scaleWithMovement: 2
   smoothChangeScale: 2
