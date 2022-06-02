@@ -58,6 +58,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     GameObject pauseCanvas;
 
+    bool showHeadshotCanvas;
+
     void Awake()
     {
         instantiated = false;
@@ -77,6 +79,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         fixAmmoDisplay = false;
 
         pauseCanvas = GameObject.FindWithTag("PauseCanvas");
+
+        showHeadshotCanvas = false;
     }
 
     void Start()
@@ -220,6 +224,20 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             fpsText.text = "";
         }
+
+        if(showHeadshotCanvas)
+        {
+            StartCoroutine(ShowDamageImage());
+            showHeadshotCanvas = false;
+        }
+    }
+
+    IEnumerator ShowDamageImage()
+    {
+        Canvas headshotCanvas = GameObject.Find("HeadshotCanvas").GetComponent<Canvas>();
+        headshotCanvas.enabled = true;
+        yield return new WaitForSecondsRealtime(0.5f);
+        headshotCanvas.enabled = false;
     }
 
     void EnableComponents()
@@ -534,6 +552,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
                 if(deathPlayer.GetComponent<PhotonView>().IsMine)
                 {
+                    showHeadshotCanvas = true;
+
                     //tell to my killer that he has killed me
                     object[] data = new object[] { };
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
