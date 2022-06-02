@@ -14707,6 +14707,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Gun
       objectReference: {fileID: 0}
+    - target: {fileID: 741257030427982281, guid: 7dc079cff6ae24c0b8535299218fd42d, type: 3}
+      propertyPath: selectedToolbar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 741257030427982281, guid: 7dc079cff6ae24c0b8535299218fd42d, type: 3}
+      propertyPath: onShot.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 565315638029889803}
+    - target: {fileID: 741257030427982281, guid: 7dc079cff6ae24c0b8535299218fd42d, type: 3}
+      propertyPath: onShot.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnShot
+      objectReference: {fileID: 0}
+    - target: {fileID: 741257030427982281, guid: 7dc079cff6ae24c0b8535299218fd42d, type: 3}
+      propertyPath: onShot.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: EventsCall, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 741257030427982286, guid: 7dc079cff6ae24c0b8535299218fd42d, type: 3}
       propertyPath: m_RootOrder
       value: 1
