@@ -4753,7 +4753,7 @@ MonoBehaviour:
     isUnityInput: 0
     keyboard: LeftShift
     keyboardAxis: 0
-    joystick: LeftStickClick
+    joystick: LB
     joystickAxis: 0
     mobile: None
     mobileAxis: 0
