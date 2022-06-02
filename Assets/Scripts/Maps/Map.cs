@@ -25,10 +25,14 @@ public class Map : MonoBehaviour
     public static float RandomX;
     public static float RandomY;
 
+    private NetworkManager networkManager;
+    private Canvas pauseCavas;
+
     private void Awake()
     {
         FullscreenMapImage = GameObject.Find("FullscreenMap");
-        player = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
+        networkManager = GameObject.FindGameObjectWithTag("NetworkManager").GetComponent<NetworkManager>();
+        player = networkManager.GetPlayer();
         MapCanvas = GameObject.Find("MapCanvas").GetComponent<Canvas>();
         MapCamera = GetComponent<Camera>();
         terrain = GameObject.FindGameObjectWithTag("Terrain").GetComponent<Terrain>();
@@ -39,6 +43,8 @@ public class Map : MonoBehaviour
         Vector3 SpriteSize = TreasureMapSprite.transform.localScale * .5f;
         RandomX = Random.Range(-SpriteSize.x, SpriteSize.x);
         RandomY = Random.Range(-SpriteSize.z, SpriteSize.z);
+
+        pauseCavas = GameObject.FindWithTag("PauseCanvas").GetComponent<Canvas>();
     }
 
     private void Start()
@@ -89,7 +95,7 @@ public class Map : MonoBehaviour
     private void OpenCloseMap()
     {
         // Open or close the map
-        if(Input.GetKeyDown(KeyCode.M) || Input.GetButtonDown("Back"))
+        if((Input.GetKeyDown(KeyCode.M) || Input.GetButtonDown("Back")) && networkManager.GetMatchEnded() == false && pauseCavas.enabled == false)
         {
             MapCanvas.enabled = !MapCanvas.enabled;
             // If the map is close reset camera parameter
