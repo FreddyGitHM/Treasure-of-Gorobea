@@ -43,6 +43,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     int playerIdLastShot;
     int kills;
 
+    //kill canvas
+    TextMeshProUGUI killMsgText;
+    float killMessageTimer;
+    string killedPlayer;
+    string killerPlayer;
+    bool endGameMenuLoaded;
+
     //endgame info
     GameObject endGameCanvas;
     bool matchEnded;
@@ -67,6 +74,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         mainCamera = GameObject.FindWithTag("MainCamera");
         distanceCovered = 0f;
         playersIdList = new List<int>();
+
+        killMsgText = GameObject.Find("KillCanvas/Text").GetComponent<TextMeshProUGUI>();
+        killMessageTimer = 5f;
+        killedPlayer = "";
+        killerPlayer = "";
+        endGameMenuLoaded = false;
 
         endGameCanvas = GameObject.FindWithTag("EndGameCanvas");
         matchEnded = false;
@@ -230,6 +243,24 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             StartCoroutine(ShowDamageImage());
             showHeadshotCanvas = false;
         }
+
+        if(endGameMenuLoaded == false)
+        {
+            killMessageTimer -= Time.deltaTime;
+            if(killMessageTimer >= 0f && !killedPlayer.Equals(""))
+            {
+                killMsgText.text = killedPlayer + " killed by " + killerPlayer;
+            }
+            else
+            {
+                killMsgText.text = "";
+            }
+        }
+        else
+        {
+            killMsgText.text = "";
+        }
+        
     }
 
     IEnumerator ShowDamageImage()
@@ -387,6 +418,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         mainCamera.GetComponent<Camera>().enabled = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
+        endGameMenuLoaded = true;
     }
 
     IEnumerator CampingCheck()
@@ -555,7 +587,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     showHeadshotCanvas = true;
 
                     //tell to my killer that he has killed me
-                    object[] data = new object[] { };
+                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName };
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
                     int[] receivers = { playerIdLastShot };
                     raiseEventOptions.TargetActors = receivers;
@@ -574,10 +606,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 {
                     StartCoroutine(LoadEndGameMenu("YOU DIED"));
                     matchEnded = true;
-                }
-                else
-                {
-                    Debug.Log("Player " + deathPlayer.GetComponent<PhotonView>().ViewID + " killed");
                 }
                 break;
 
@@ -599,6 +627,22 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
             //i have killed someone, update my stat
             case Codes.KILL:
+                object[] data9 = (object[])eventData.CustomData;
+                killedPlayer = (string)data9[0];
+                killerPlayer = PhotonNetwork.LocalPlayer.NickName;
+                killMessageTimer = 5f;
+
+                //tell to the others
+                object[] data10 = new object[] { killedPlayer, killerPlayer };
+                RaiseEventOptions raiseEventOptions1 = new RaiseEventOptions();
+                raiseEventOptions1.Receivers = ReceiverGroup.Others;
+                raiseEventOptions1.CachingOption = EventCaching.AddToRoomCache;
+
+                SendOptions sendOptions1 = new SendOptions();
+                sendOptions1.Reliability = true;
+
+                PhotonNetwork.RaiseEvent(Codes.KILL_MSG, data10, raiseEventOptions1, sendOptions1);
+
                 kills++;
                 player.GetComponent<Skills>().IncrChargingLevel(25);
                 break;
@@ -623,6 +667,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             case Codes.MATCH_FINISHED:
                 StartCoroutine(LoadEndGameMenu("YOU LOSE!"));
                 matchEnded = true;
+                break;
+
+            //someone was killed, print the message
+            case Codes.KILL_MSG:
+                object[] data11 = (object[])eventData.CustomData;
+                killedPlayer = (string)data11[0];
+                killerPlayer = (string)data11[1];
+                killMessageTimer = 5f;
                 break;
         }
     }

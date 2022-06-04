@@ -16,5 +16,6 @@
         public const byte TIMER = 11;
         public const byte HEROTIMER = 12;
         public const byte CANVASSWITCH = 13;
+        public const byte KILL_MSG = 14;
     }
 }
