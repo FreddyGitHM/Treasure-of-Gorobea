@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
@@ -17,6 +18,12 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public Dropdown qualityDropdown;
     public Slider volumeSlider;
     public TextMeshProUGUI roomText;
+    
+    public GameObject inputField;
+    public GameObject DisplayName;
+    public GameObject PopupPanel;
+    public GameObject QuickMatchMenu;
+    public GameObject MainMenuObject;
 
     bool loading;
     GameStatus gameStatus;
@@ -64,6 +71,13 @@ public class MainMenu : MonoBehaviourPunCallbacks
         gameStatus = GameObject.FindWithTag("GameController").GetComponent<GameStatus>();
         resolutions = Screen.resolutions;
 
+        if (gameStatus.username != "")
+        {   
+            inputField.SetActive(false);
+            DisplayName.SetActive(true);
+            DisplayName.GetComponent<TextMeshProUGUI>().text = gameStatus.username;
+        }
+
         roomManager = GameObject.FindWithTag("GameController").GetComponent<RoomManager>();
         roomJoined = false;
         starting = false;
@@ -98,6 +112,14 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
         //add this class for EventsHandler and IPunOwnershipCallbacks
         PhotonNetwork.AddCallbackTarget(this);
+    }
+
+    public void SetUsername()
+    {   
+        string username = inputField.GetComponent<TMP_InputField>().text;
+        gameStatus.username = username;
+        DisplayName.GetComponent<TextMeshProUGUI>().text = username;
+        SaveSystem.Save();
     }
 
     public void SetResolution(int resolutionIndex)
@@ -141,9 +163,24 @@ public class MainMenu : MonoBehaviourPunCallbacks
         }
     }
 
-    //Quickmatch functions
-    public void PlayGame()
+    public void CanStartGame()
     {
+        if (gameStatus.username == "")
+        {
+            PopupPanel.SetActive(true);
+        }
+        else
+        {
+            PlayGame();
+        }
+    }
+    
+    //Quickmatch functions
+    private void PlayGame()
+    {
+        QuickMatchMenu.SetActive(true);
+        MainMenuObject.SetActive(false);
+        
         Debug.Log("Connecting to server...");
         int n = Random.Range(0, 9999);
         PhotonNetwork.NickName = gameStatus.username + "_" + n.ToString();
@@ -151,8 +188,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
         PhotonNetwork.AutomaticallySyncScene = true;
         PhotonNetwork.ConnectUsingSettings();
     }
-
-    // ReSharper disable Unity.PerformanceAnalysis
+    
     public override void OnConnectedToMaster()
     {
         Debug.Log("Connected to server");
