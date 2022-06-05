@@ -116,9 +116,18 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public void SetUsername()
     {   
         string username = inputField.GetComponent<TMP_InputField>().text;
-        gameStatus.username = username;
-        DisplayName.GetComponent<TextMeshProUGUI>().text = username;
-        SaveSystem.Save();
+
+        if (username == "")
+        {
+            DisplayName.SetActive(false);
+            inputField.SetActive(true);
+        }
+        else
+        {
+            gameStatus.username = username;
+            DisplayName.GetComponent<TextMeshProUGUI>().text = username;
+            SaveSystem.Save();
+        }
     }
 
     public void SetResolution(int resolutionIndex)
