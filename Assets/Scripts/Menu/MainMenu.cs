@@ -9,7 +9,6 @@ using TMPro;
 using EventCodes;
 using ExitGames.Client.Photon;
 
-
 public class MainMenu : MonoBehaviourPunCallbacks
 {
     public Dropdown resolutionDropdown;
@@ -21,7 +20,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     
     public GameObject inputField;
     public GameObject DisplayName;
-    public GameObject PopupPanel;
+    public GameObject PopupMessage;
     public GameObject QuickMatchMenu;
     public GameObject MainMenuObject;
 
@@ -167,7 +166,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         if (gameStatus.username == "")
         {
-            PopupPanel.SetActive(true);
+            inputField.SetActive(false);
+            MainMenuObject.SetActive(false);
+            PopupMessage.SetActive(true);
         }
         else
         {
