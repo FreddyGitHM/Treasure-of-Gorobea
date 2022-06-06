@@ -17,7 +17,7 @@ MonoBehaviour:
   HeroSprite: {fileID: 21300000, guid: 678bad0529c21da318d15abdb8b934ea, type: 3}
   HeroSpriteSelected: {fileID: 21300000, guid: d2be2c105f7fc041d87df19816957667, type: 3}
   HeroDescription: Born in Moscow in Russia, an expert on counter-terrorism.
-  AbilitySprite: {fileID: 21300000, guid: 840d5a16ba60fce479d81fddb3674409, type: 3}
+  AbilitySprite: {fileID: 21300000, guid: 79e717d3963b5414d9a3565c9d7f6dea, type: 3}
   AbilityName: SILENT STEPS
   AbilityDescription: When the player activates the silent steps skill for 10 seconds,
     they will move with a noise reduction of 80%, this will allow them to act more

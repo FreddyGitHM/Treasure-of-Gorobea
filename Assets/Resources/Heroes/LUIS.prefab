@@ -5611,8 +5611,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   skill: 0
   skillIcons:
-  - {fileID: 2800000, guid: bebeac5f741b4ac4d92b94e2e23c6844, type: 3}
-  - {fileID: 2800000, guid: 840d5a16ba60fce479d81fddb3674409, type: 3}
+  - {fileID: 2800000, guid: 619c79e0139fd43dab7646b1659f9d68, type: 3}
+  - {fileID: 2800000, guid: 79e717d3963b5414d9a3565c9d7f6dea, type: 3}
   chargingSpeed: 0.333
   speedMultiplier: 1.8
   speedRunningTime: 10

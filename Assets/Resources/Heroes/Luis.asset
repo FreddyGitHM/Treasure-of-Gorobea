@@ -18,7 +18,7 @@ MonoBehaviour:
   HeroSpriteSelected: {fileID: 21300000, guid: 531991e5cd66dba99b88cf3dd9e71461, type: 3}
   HeroDescription: Born in ... (top secret) ... in America, is a US Army sniper trained
     to carry out high-risk operations in top secret locations.
-  AbilitySprite: {fileID: 21300000, guid: bebeac5f741b4ac4d92b94e2e23c6844, type: 3}
+  AbilitySprite: {fileID: 21300000, guid: 619c79e0139fd43dab7646b1659f9d68, type: 3}
   AbilityName: FAST RUN
   AbilityDescription: When the player activates the Fast Run skill for 10 seconds
     they will move 80% faster.
