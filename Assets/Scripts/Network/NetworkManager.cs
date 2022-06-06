@@ -32,6 +32,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     GameObject mainCamera;
     Vector3 playerPos;
     float distanceCovered;
+    GameObject damageImage;
 
     //match info
     TextMeshProUGUI timeText;
@@ -267,7 +268,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator ShowDamageImage()
     {
-        GameObject damageImage = player.transform.Find("Invector Components/UI/HUD/damageImage").gameObject;
         damageImage.GetComponent<Image>().enabled = true;
         yield return new WaitForSecondsRealtime(0.3f);
         damageImage.GetComponent<Image>().enabled = false;
@@ -325,6 +325,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         timeText.text = "TIME REMAINING: " + GetTimer(timeLeft);
         playerText.text = "PLAYER(S) ALIVE: " + playersIdList.Count;
         killText.text = "KILL(S): " + kills;
+
+        damageImage = player.transform.Find("Invector Components/UI/HUD/damageImage").gameObject;
     }
 
     string GetTimer(float seconds)
