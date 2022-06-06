@@ -42,6 +42,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     List<int> playersIdList;
     int playerIdLastShot;
     int kills;
+    List<int> playersKilledList;
 
     //kill canvas
     TextMeshProUGUI killMsgText;
@@ -80,6 +81,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         killedPlayer = "";
         killerPlayer = "";
         endGameMenuLoaded = false;
+        playersKilledList = new List<int>();
 
         endGameCanvas = GameObject.FindWithTag("EndGameCanvas");
         matchEnded = false;
@@ -587,7 +589,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     showHeadshotCanvas = true;
 
                     //tell to my killer that he has killed me
-                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName };
+                    object[] data = new object[] { PhotonNetwork.LocalPlayer.NickName, PhotonNetwork.LocalPlayer.ActorNumber };
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
                     int[] receivers = { playerIdLastShot };
                     raiseEventOptions.TargetActors = receivers;
@@ -628,23 +630,30 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             //i have killed someone, update my stat
             case Codes.KILL:
                 object[] data9 = (object[])eventData.CustomData;
-                killedPlayer = (string)data9[0];
-                killerPlayer = PhotonNetwork.LocalPlayer.NickName;
-                killMessageTimer = 5f;
+                int killedId = (int)data9[1];
+                if(!playersKilledList.Contains(killedId))
+                {
+                    playersKilledList.Add(killedId);
 
-                //tell to the others
-                object[] data10 = new object[] { killedPlayer, killerPlayer };
-                RaiseEventOptions raiseEventOptions1 = new RaiseEventOptions();
-                raiseEventOptions1.Receivers = ReceiverGroup.Others;
-                raiseEventOptions1.CachingOption = EventCaching.AddToRoomCache;
+                    killedPlayer = (string)data9[0];
+                    killerPlayer = PhotonNetwork.LocalPlayer.NickName;
+                    killMessageTimer = 5f;
 
-                SendOptions sendOptions1 = new SendOptions();
-                sendOptions1.Reliability = true;
+                    //tell to the others
+                    object[] data10 = new object[] { killedPlayer, killerPlayer };
+                    RaiseEventOptions raiseEventOptions1 = new RaiseEventOptions();
+                    raiseEventOptions1.Receivers = ReceiverGroup.Others;
+                    raiseEventOptions1.CachingOption = EventCaching.AddToRoomCache;
 
-                PhotonNetwork.RaiseEvent(Codes.KILL_MSG, data10, raiseEventOptions1, sendOptions1);
+                    SendOptions sendOptions1 = new SendOptions();
+                    sendOptions1.Reliability = true;
 
-                kills++;
-                player.GetComponent<Skills>().IncrChargingLevel(25);
+                    PhotonNetwork.RaiseEvent(Codes.KILL_MSG, data10, raiseEventOptions1, sendOptions1);
+
+                    kills++;
+                    player.GetComponent<Skills>().IncrChargingLevel(25);
+                }    
+                
                 break;
 
             //someone used the skill "silent footsteps"
