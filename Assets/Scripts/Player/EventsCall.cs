@@ -44,4 +44,9 @@ public class EventsCall : MonoBehaviourPunCallbacks
         PhotonNetwork.RaiseEvent(Codes.SHOT, data, raiseEventOptions, sendOptions);
     }
 
+    public void OnStartSprinting()
+    {
+        gameObject.GetComponent<vShooterMeleeInput>().IsCrouching = false;
+    }
+
 }
