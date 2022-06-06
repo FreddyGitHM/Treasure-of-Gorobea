@@ -7433,6 +7433,7 @@ MonoBehaviour:
   PopupMessage: {fileID: 861516474}
   QuickMatchMenu: {fileID: 916542325}
   MainMenuObject: {fileID: 2076505962}
+  mouseCursor: {fileID: 2800000, guid: cf8f7472c302f4ddb8911aba19b798ad, type: 3}
   mainCamera: {fileID: 1712451012}
   canvasCamera: {fileID: 1882449986}
   menuCanvas: {fileID: 1512107138}

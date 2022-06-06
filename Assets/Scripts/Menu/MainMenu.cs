@@ -24,6 +24,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public GameObject QuickMatchMenu;
     public GameObject MainMenuObject;
 
+    public Texture2D mouseCursor;
+
     bool loading;
     GameStatus gameStatus;
     Resolution[] resolutions;
@@ -85,6 +87,8 @@ public class MainMenu : MonoBehaviourPunCallbacks
         matchmakingTimer = roomManager.MatchMakingTimer();
         resetTimer = roomManager.ResetTimer();
         heroSelectionTimer = roomManager.HeroSelectionTimer();
+
+        Cursor.SetCursor(mouseCursor, Vector2.zero, CursorMode.ForceSoftware);
     }
 
     void Start()

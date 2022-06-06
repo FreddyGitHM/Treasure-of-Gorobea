@@ -267,10 +267,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     IEnumerator ShowDamageImage()
     {
-        Canvas headshotCanvas = GameObject.Find("HeadshotCanvas").GetComponent<Canvas>();
-        headshotCanvas.enabled = true;
-        yield return new WaitForSecondsRealtime(0.5f);
-        headshotCanvas.enabled = false;
+        GameObject damageImage = player.transform.Find("Invector Components/UI/HUD/damageImage").gameObject;
+        damageImage.GetComponent<Image>().enabled = true;
+        yield return new WaitForSecondsRealtime(0.3f);
+        damageImage.GetComponent<Image>().enabled = false;
     }
 
     void EnableComponents()
@@ -564,8 +564,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 {
                     Slider damagedPlayerHealthSlider = damagedPlayer.transform.Find("Invector Components/UI/HUD/health").gameObject.GetComponent<Slider>();
                     damagedPlayerHealthSlider.value = newHealth;
-                    vHUDController vHUDController = damagedPlayer.transform.Find("Invector Components/UI/HUD").GetComponent<vHUDController>();
-                    vHUDController.damaged = true;
+
+                    StartCoroutine(ShowDamageImage());
 
                     playerIdLastShot = (int)data4[2];
                 }
