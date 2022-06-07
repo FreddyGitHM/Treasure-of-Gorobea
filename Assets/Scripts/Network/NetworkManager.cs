@@ -396,7 +396,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
         yield return new WaitForSecondsRealtime(5f);
 
-        GameObject.Find("vThirdPersonCamera").SetActive(false);
+        DestroyImmediate(GameObject.Find("vThirdPersonCamera"));
 
         endGameCanvas.transform.Find("Background/Text").GetComponent<TextMeshProUGUI>().text = text;
         endGameCanvas.transform.Find("Background/Kills").GetComponent<TextMeshProUGUI>().text = "KILL(S): " + kills;
