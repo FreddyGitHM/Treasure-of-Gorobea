@@ -160,6 +160,8 @@ namespace Invector.vShooter
 
         public vMelee.OnEquipWeaponEvent onEquipWeapon;
 
+        bool beforeFirstReload;
+
         #endregion
 
         public virtual void Start()
@@ -223,6 +225,7 @@ namespace Invector.vShooter
                 }
             }
             UpdateTotalAmmo();
+            beforeFirstReload = true;
         }
         public bool AllAmmoInfinity
         {
@@ -501,6 +504,11 @@ namespace Invector.vShooter
         public virtual bool WeaponHasUnloadedAmmo()
         {
             var hasAmmo = extraAmmo > 0;
+            if(beforeFirstReload)
+            {
+                beforeFirstReload = false;
+                return true;
+            }
             return hasAmmo;
         }
 
