@@ -63,8 +63,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     public bool showFps;
     TextMeshProUGUI fpsText;
 
-    bool fixAmmoDisplay;
-
     GameObject pauseCanvas;
 
     bool showHeadshotCanvas;
@@ -91,8 +89,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         exitCountdown = 35f;
 
         fpsText = GameObject.Find("FPSCanvas/Text").GetComponent<TextMeshProUGUI>();
-
-        fixAmmoDisplay = false;
 
         pauseCanvas = GameObject.FindWithTag("PauseCanvas");
 
@@ -289,24 +285,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.transform.Find("Minimap/MinimapCamera").GetComponent<Minimap>().enabled = true;
         player.transform.Find("Minimap/Player Marker").GetComponent<SpriteRenderer>().enabled = true;
         player.transform.Find("Minimap/Minimap Canvas").GetComponent<Canvas>().enabled = true;
-    }
-
-    void LateUpdate()
-    {
-        if(fixAmmoDisplay == false && ready)
-        {
-            int ammoId = player.GetComponent<EventsCall>().weapon.GetComponent<vShooterWeapon>().ammoID;
-            List<vAmmo> ammoList = player.GetComponent<vAmmoManager>().ammoListData.ammos;
-            foreach (vAmmo ammo in ammoList)
-            {
-                if (ammo.ammoID == ammoId)
-                {
-                    player.transform.Find("Invector Components/AimCanvas/AimCanvas/AmmoDisplay/secundaryText").GetComponent<Text>().text = ammo.count.ToString();
-                    break;
-                }
-            }
-            fixAmmoDisplay = true;
-        }
+        player.transform.Find("Invector Components/AimCanvas/AimCanvas/AmmoDisplay").GetComponent<AmmoDisplay>().enabled = true;
     }
 
     void InitMatchInfo()
