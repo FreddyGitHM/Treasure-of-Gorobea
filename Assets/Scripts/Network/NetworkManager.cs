@@ -97,9 +97,14 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
     void Start()
     {
-        Debug.Log("Connected: " + PhotonNetwork.IsConnected);
-        Debug.Log("Nickname: " + PhotonNetwork.NickName);
-        Debug.Log("Host: " + PhotonNetwork.IsMasterClient);
+        if(PhotonNetwork.IsMasterClient)
+        {
+            Debug.Log("I'm the master");
+        }
+        else
+        {
+            Debug.Log("I'm a client");
+        }
 
         //initialize players list
         foreach (Player p in PhotonNetwork.PlayerList)
@@ -110,14 +115,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         if (PhotonNetwork.IsMasterClient)
         {
             Vector3 TreeMapPosition = RandomTreeMapGenerator.Instance.spawnTreeMap();
-            Debug.Log("Calculating tree map poistion: " + TreeMapPosition);
 
             // Spawning the treasure chest
             Vector3 TreasureChestPosition = TreasureSpawn.Instance.getTreasurePosition();
             Quaternion TreasureChestRotation = TreasureSpawn.Instance.getTreasureRotation();
             TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureChestPosition, TreasureChestRotation);
 
-            Debug.Log("Calculating players spawn position with " + PhotonNetwork.CurrentRoom.PlayerCount + " players...");
             SpawnPosition.Instance.calculateSpawnPositions(PhotonNetwork.CurrentRoom.PlayerCount);
 
             //send random position for players
@@ -125,7 +128,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             {
                 //set here the spawn position
                 Vector3 spawnPos = SpawnPosition.Instance.getSpawnPosition();
-                Debug.Log("Position for player " + p.NickName + ": " + spawnPos);
 
                 // getting random rotation for hero
                 Quaternion spawnRot = SpawnPosition.Instance.getLookDirection(spawnPos);
@@ -142,7 +144,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     SendOptions sendOptions = new SendOptions();
                     sendOptions.Reliability = true;
 
-                    Debug.Log("send SPAWN_POSITION and TreeMapPosition to player: " + p.NickName);
                     PhotonNetwork.RaiseEvent(Codes.SPAWN_POSITION, data, raiseEventOptions, sendOptions);
                 }
                 else
@@ -187,7 +188,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             timeLeft -= Time.deltaTime;
             if(timeLeft <= 0)
             {
-                Debug.Log("TIME UP!");
                 StartCoroutine(LoadEndGameMenu("TIME UP"));
                 matchEnded = true;
                 timeLeft = 0f;
@@ -330,8 +330,6 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         {
             if(/*playersIdList.Count == 1 ||*/ chestOpened)
             {
-                Debug.Log("YOU WIN!");
-
                 if(playersIdList.Count > 1)
                 {
                     //tell to the others that i won
