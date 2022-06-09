@@ -24,6 +24,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
     public GameObject QuickMatchMenu;
     public GameObject MainMenuObject;
 
+    public TextMeshProUGUI currentPlayersCount;
+    public TextMeshProUGUI maxPlayersCount;
+
     public Texture2D mouseCursor;
 
     bool loading;
@@ -205,8 +208,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
     
     public override void OnConnectedToMaster()
     {
-        Debug.Log("Connected to server");
-        Debug.Log("Connected as: " + PhotonNetwork.LocalPlayer.NickName);
+        Debug.Log("Connected to server as: " + PhotonNetwork.LocalPlayer.NickName);
 
         Debug.Log("Joining lobby...");
         PhotonNetwork.JoinLobby();
@@ -222,10 +224,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        Debug.Log("Room joined");
-        Debug.Log(PhotonNetwork.CurrentRoom.Name);
-        Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
-        Debug.Log(PhotonNetwork.CurrentRoom.MaxPlayers);
+        Debug.Log("Joined room: " + PhotonNetwork.CurrentRoom.Name);
         roomJoined = true;
     }
 
@@ -303,6 +302,9 @@ public class MainMenu : MonoBehaviourPunCallbacks
                     }
                 }
             }
+
+            currentPlayersCount.text = PhotonNetwork.CurrentRoom.PlayerCount.ToString();
+            maxPlayersCount.text = "/ " + PhotonNetwork.CurrentRoom.MaxPlayers + " PLAYERS";
         }
     }
 
@@ -404,6 +406,10 @@ public class MainMenu : MonoBehaviourPunCallbacks
         roomJoined = false;
         starting = false;
         countdown = roomManager.Countdown();
+
+        currentPlayersCount.text = "";
+        maxPlayersCount.text = "";
+
         PhotonNetwork.Disconnect();
     }
 
