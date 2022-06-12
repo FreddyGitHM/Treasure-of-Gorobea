@@ -260,7 +260,7 @@ public class MainMenu : MonoBehaviourPunCallbacks
                         ShowHeroConvas();
                         SendMessage(0);
 
-                        SendMessage("HERO SELECTION END IN " + (int)heroSelectionTimer + " s.", Codes.HEROTIMER);
+                        SendMessage("HERO SELECTION ENDS IN " + (int)heroSelectionTimer + " s.", Codes.HEROTIMER);
                         heroSelectionTimer -= Time.deltaTime;
                     }
                 }

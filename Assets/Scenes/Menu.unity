@@ -6963,8 +6963,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameVersion: 0.0.1
-  maxPlayersNumber: 8
-  minPlayersNumber: 1
+  maxPlayersNumber: 16
+  minPlayersNumber: 3
   countdown: 4
   matchmakingTimer: 61
   resetTimer: 3
