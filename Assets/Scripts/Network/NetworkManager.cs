@@ -49,6 +49,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     TextMeshProUGUI killMsgText;
     float killMessageTimer;
     string killedPlayer;
+    string killedByText;
     string killerPlayer;
     bool endGameMenuLoaded;
 
@@ -78,6 +79,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         killMsgText = GameObject.Find("KillCanvas/Text").GetComponent<TextMeshProUGUI>();
         killMessageTimer = 5f;
         killedPlayer = "";
+        killedByText = " killed by ";
         killerPlayer = "";
         endGameMenuLoaded = false;
         playersKilledList = new List<int>();
@@ -248,7 +250,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             killMessageTimer -= Time.deltaTime;
             if(killMessageTimer >= 0f && !killedPlayer.Equals(""))
             {
-                killMsgText.text = killedPlayer + " killed by " + killerPlayer;
+                killMsgText.text = killedPlayer + killedByText + killerPlayer;
             }
             else
             {
@@ -400,6 +402,17 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.Confined;
         endGameMenuLoaded = true;
+    }
+
+    public override void OnPlayerLeftRoom(Player disconnectedPlayer)
+    {
+        if(playersIdList.Contains(disconnectedPlayer.ActorNumber)) //check if the player was alive before disconnection
+        {
+            killedPlayer = disconnectedPlayer.NickName;
+            killedByText = " disconnected";
+            killerPlayer = "";
+            killMessageTimer = 5f;
+        }
     }
 
     IEnumerator CampingCheck()
@@ -661,6 +674,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             case Codes.KILL_MSG:
                 object[] data11 = (object[])eventData.CustomData;
                 killedPlayer = (string)data11[0];
+                killedByText = " killed by ";
                 killerPlayer = (string)data11[1];
                 killMessageTimer = 5f;
                 break;
