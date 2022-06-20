@@ -9,6 +9,7 @@ public class PauseMenu : MonoBehaviour
 {
     GameObject player;
     Button resumeButton;
+    GameObject aim;
 
     void Awake()
     {
@@ -20,6 +21,10 @@ public class PauseMenu : MonoBehaviour
         if(player == null)
         {
             player = GameObject.FindWithTag("NetworkManager").GetComponent<NetworkManager>().GetPlayer();
+            if(player != null)
+            {
+                aim = player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe").gameObject;
+            }
         }
     }
 
@@ -41,11 +46,13 @@ public class PauseMenu : MonoBehaviour
     void EnablePlayerController()
     {
         player.GetComponent<vShooterMeleeInput>().enabled = true;
+        aim.SetActive(true);
     }
 
     void DisablePlayerController()
     {
         player.GetComponent<vShooterMeleeInput>().enabled = false;
+        aim.SetActive(false);
 
         Animator animator = player.GetComponent<Animator>();
 
