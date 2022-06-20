@@ -105,7 +105,7 @@ MonoBehaviour:
     rotationOffSet: {x: 0, y: 0, z: 0}
     cullingHeight: 1
     cullingMinDist: 0.1
-    fov: 60
+    fov: 30
     useZoom: 0
     fixedAngle: {x: 0, y: 15}
     lookPoints:
