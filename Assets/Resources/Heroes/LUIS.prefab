@@ -5246,7 +5246,7 @@ MonoBehaviour:
   useLockOnMeleeOnly: 1
   hipfireShot: 1
   hipfireDispersion: 0
-  hipfireAimTime: 2
+  hipfireAimTime: 0.15
   cameraMaxSwayAmount: 2
   cameraSwaySpeed: 0.5
   rWeapon: {fileID: 0}
