@@ -287,6 +287,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
         player.transform.Find("Minimap/MinimapCamera").GetComponent<Minimap>().enabled = true;
         player.transform.Find("Minimap/Player Marker").GetComponent<SpriteRenderer>().enabled = true;
         player.transform.Find("Minimap/Minimap Canvas").GetComponent<Canvas>().enabled = true;
+        player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle").GetComponent<vAimCanvas>().enabled = true;
+        player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe/AimCenter").GetComponent<Image>().enabled = true;
+        player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe/AimTarget/valid/AimCenter (1)").GetComponent<Image>().enabled = true;
+        player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe/AimTarget/valid/AimCenter (2)").GetComponent<Image>().enabled = true;
+        player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe/AimTarget/valid/AimCenter (3)").GetComponent<Image>().enabled = true;
+        player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe/AimTarget/valid/AimCenter (4)").GetComponent<Image>().enabled = true;
+        player.transform.Find("Invector Components/AimCanvas/AimCanvas/AmmoDisplay").GetComponent<AmmoDisplay>().enabled = true;
         player.transform.Find("Invector Components/AimCanvas/AimCanvas/AmmoDisplay").GetComponent<AmmoDisplay>().enabled = true;
     }
 

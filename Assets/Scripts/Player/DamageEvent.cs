@@ -19,13 +19,24 @@ public class DamageEvent : MonoBehaviourPunCallbacks
 
     void Start()
     {
-        GameObject networkManager = GameObject.FindWithTag("NetworkManager");
-        if(networkManager != null)
+        originalAimColor = new Color(1f, 1f, 1f, 1f);
+        hitAimColor = new Color(1f, 0f, 0f, 1f);
+    }
+
+    void Update()
+    {
+        if(player == null)
         {
-            player = networkManager.GetComponent<NetworkManager>().GetPlayer();
+            GameObject networkManager = GameObject.FindWithTag("NetworkManager");
+            if(networkManager != null)
+            {
+                player = networkManager.GetComponent<NetworkManager>().GetPlayer();
+                if (player != null)
+                {
+                    aimCenter = player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe/AimCenter").gameObject;
+                }
+            }
         }
-        originalAimColor = new Color(1f, 1f, 1f, 0.73f);
-        hitAimColor = new Color(1f, 0f, 0f, 0.73f);
     }
 
     public void OnReceiveDamage()
@@ -49,7 +60,6 @@ public class DamageEvent : MonoBehaviourPunCallbacks
         AudioSource audioSource = player.GetComponent<EventsCall>().weapon.transform.Find("renderer/AudioSource").GetComponent<AudioSource>();
         audioSource.PlayOneShot(hitFeedback);
 
-        aimCenter = player.transform.Find("Invector Components/AimCanvas/AimCanvas/AimID_2_AssaultRifle/SimpleAimGroupe/AimCenter").gameObject;
         if(aimCenter != null)
         {
             StartCoroutine(ChangeAimCenterColor());
