@@ -6,7 +6,7 @@ public class Minimap : MonoBehaviour
     private GameObject MinimapCamera;
     private Vector3 TreeMapPosition;
     private GameObject MinimapTreeMapSprite;
-    private Vector3 TreasurePosition;
+    private static Vector3 TreasurePosition;
     private GameObject TreasureMinimapSprite;
 
     public float MinimapTreeSize;
@@ -19,10 +19,8 @@ public class Minimap : MonoBehaviour
 
         TreeMapPosition = GameObject.Find("TreeMap(Clone)").transform.position;
         MinimapTreeMapSprite = GameObject.Find("Minimap TreeMap Sprite");
-
-        TreasurePosition = GameObject.Find("TreasureChest(Clone)").transform.position;
+        
         TreasureMinimapSprite = GameObject.Find("Minimap Treasure Sprite");
-        TreasurePosition = RandomTreasureZonePosition();
     }
 
     private void Update()
@@ -38,9 +36,9 @@ public class Minimap : MonoBehaviour
         transform.rotation = Quaternion.Euler(90f, 0f, 0f);
     }
 
-    private Vector3 RandomTreasureZonePosition()
+    public static void SetTreasurePosition(Vector3 pos)
     {
-        return new Vector3(TreasurePosition.x + Map.RandomX, MinimapCamera.transform.position.y - 10, TreasurePosition.z + Map.RandomY);
+        TreasurePosition = pos;
     }
 
     private Vector3 ClampTreeMapPosition(Vector3 TreeMapPos)

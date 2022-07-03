@@ -67,6 +67,11 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     GameObject pauseCanvas;
 
     bool showHeadshotCanvas;
+    
+    private GameObject TreasureMapSprite;
+    private Vector3 SpriteTreasureZonePosition;
+    public static float RandomX;
+    public static float RandomY;
 
     void Awake()
     {
@@ -124,6 +129,13 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
             TreasureChest = PhotonNetwork.InstantiateRoomObject("TreasureChest", TreasureChestPosition, TreasureChestRotation);
 
             SpawnPosition.Instance.calculateSpawnPositions(PhotonNetwork.CurrentRoom.PlayerCount);
+            
+            // Sprite treasure zone position
+            TreasureMapSprite = GameObject.Find("Map Treasure Sprite");
+            Vector3 SpriteSize = TreasureMapSprite.transform.localScale * .5f;
+            RandomX = Random.Range(-SpriteSize.x, SpriteSize.x);
+            RandomY = Random.Range(-SpriteSize.z, SpriteSize.z);
+            SpriteTreasureZonePosition = new Vector3(TreasureChestPosition.x + RandomX, GameObject.FindGameObjectWithTag("Terrain").GetComponent<Terrain>().terrainData.size.y - 10, TreasureChestPosition.z + RandomY);
 
             //send random position for players
             foreach (Player p in PhotonNetwork.PlayerList)
@@ -136,7 +148,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
                 if (PhotonNetwork.LocalPlayer != p)
                 {
-                    object[] data = new object[] { spawnPos, spawnRot, TreeMapPosition };
+                    object[] data = new object[] { spawnPos, spawnRot, TreeMapPosition, SpriteTreasureZonePosition };
 
                     RaiseEventOptions raiseEventOptions = new RaiseEventOptions();
                     int[] reveivers = { p.ActorNumber };
@@ -160,6 +172,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                     MinimapTreeMapSprite.transform.parent = MapTree.transform.parent;
 
                     MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
+                    
+                    Map.RandomTreasureZonePosition(SpriteTreasureZonePosition);
+                    
+                    Minimap.SetTreasurePosition(SpriteTreasureZonePosition);
 
                     instantiated = true;
                 }
@@ -337,7 +353,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         while(matchEnded == false)
         {
-            if(playersIdList.Count == 1 || chestOpened)
+            if(/*playersIdList.Count == 1 ||*/ chestOpened)
             {
                 if(playersIdList.Count > 1)
                 {
@@ -448,7 +464,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         return player;
     }
-
+    
     public bool GetMapTaken()
     {
         return mapTaken;
@@ -494,8 +510,10 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
                 mainCamera.GetComponent<Camera>().enabled = false;
 
                 object[] data0 = (object[])eventData.CustomData;
+
                 Vector3 TreeMapPosition = (Vector3)data0[2];
                 MapTree = Instantiate(MapTree, TreeMapPosition, Quaternion.identity);
+                
                 Vector3 spawnPos = (Vector3)data0[0];
                 Quaternion spawnRot = (Quaternion)data0[1];
                 player = PhotonNetwork.Instantiate(HeroManager.selectedHero, spawnPos, spawnRot);
@@ -503,7 +521,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
 
                 GameObject MinimapTreeMapSprite = MapTree.transform.Find("Minimap TreeMap Sprite").gameObject;
                 MinimapTreeMapSprite.transform.parent = MapTree.transform.parent;
+                
                 MapCamera = Instantiate(MapCamera, MapCamera.transform.position, MapCamera.transform.rotation);
+                Map.RandomTreasureZonePosition((Vector3) data0[3]);
+
+                Minimap.SetTreasurePosition((Vector3) data0[3]);
+
                 instantiated = true;
                 break;
 

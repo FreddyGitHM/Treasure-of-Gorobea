@@ -10,7 +10,7 @@ public class Map : MonoBehaviour
     private Terrain terrain;
     private Canvas MinimapCanvas;
     private Vector3 TreasurePosition;
-    private GameObject TreasureMapSprite;
+    private static GameObject TreasureMapSprite;
 
     // Zoom parameters
     private float MaxZoom;
@@ -21,9 +21,6 @@ public class Map : MonoBehaviour
     private Vector3 dragOrigin;
     private float MinMovement;
     private float MaxMovement;
-
-    public static float RandomX;
-    public static float RandomY;
 
     private NetworkManager networkManager;
     private Canvas pauseCavas;
@@ -40,10 +37,6 @@ public class Map : MonoBehaviour
         TreasurePosition = GameObject.Find("TreasureChest(Clone)").transform.position;
         TreasureMapSprite = GameObject.Find("Map Treasure Sprite");
 
-        Vector3 SpriteSize = TreasureMapSprite.transform.localScale * .5f;
-        RandomX = Random.Range(-SpriteSize.x, SpriteSize.x);
-        RandomY = Random.Range(-SpriteSize.z, SpriteSize.z);
-
         pauseCavas = GameObject.FindWithTag("PauseCanvas").GetComponent<Canvas>();
     }
 
@@ -52,7 +45,7 @@ public class Map : MonoBehaviour
         // Setting camera position according to terrain size
         MapCamera.transform.position = terrain.GetPosition() + Vector3.one * terrain.terrainData.size.x * .5f;
 
-        // Setting ortographic size to the half of terrain width and height
+        // Setting orthographic size to the half of terrain width and height
         MapCamera.orthographicSize = terrain.terrainData.size.x * .5f;
 
         // Setting values for zoom
@@ -60,8 +53,11 @@ public class Map : MonoBehaviour
 
         MinMovement = MapCamera.orthographicSize;
         MaxMovement = terrain.terrainData.size.x - MapCamera.orthographicSize;
-
-        TreasureMapSprite.transform.position = RandomTreasureZonePosition();
+    }
+    
+    public static void RandomTreasureZonePosition(Vector3 position)
+    {
+        TreasureMapSprite.transform.position = position;
     }
 
     private void Update()
@@ -85,11 +81,6 @@ public class Map : MonoBehaviour
 
             EnableShooterInput();
         }
-    }
-
-    private Vector3 RandomTreasureZonePosition()
-    {
-        return new Vector3(TreasurePosition.x + RandomX, MapCamera.transform.position.y - 50, TreasurePosition.z + RandomY);
     }
 
     private void OpenCloseMap()
