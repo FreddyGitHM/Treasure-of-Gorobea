@@ -353,7 +353,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks, IPunOwnershipCallbacks
     {
         while(matchEnded == false)
         {
-            if(/*playersIdList.Count == 1 ||*/ chestOpened)
+            if(playersIdList.Count == 1 || chestOpened)
             {
                 if(playersIdList.Count > 1)
                 {
