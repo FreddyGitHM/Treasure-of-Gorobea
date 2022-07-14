@@ -14,4 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game Medium Map.unity
     guid: e2db1ee7ffcbe9904bd0884ed501a178
+  - enabled: 1
+    path: Assets/Scenes/Game Small Map.unity
+    guid: 08aa33e4b56d9076f9ccc69a8ef2cb6b
   m_configObjects: {}
