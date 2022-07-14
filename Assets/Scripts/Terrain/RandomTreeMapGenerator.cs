@@ -24,6 +24,7 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
     // Tree with Map
     public GameObject TreeWithMap;
     public static Vector3 TreeWithMapPosition;
+    public int treeDestroyRange;
 
     // Radius of the circle where will spawn tree with a map inside it
     public float radius = 180f;
@@ -70,7 +71,7 @@ public class RandomTreeMapGenerator : MonoBehaviourPunCallbacks
         // Initialize the position of the tree with map
         TreeWithMapPosition = new Vector3((int)randomPosition.x, (heightmap[(int)randomPosition.y, (int)randomPosition.x] * td.size.y) - 3, (int)randomPosition.y);
 
-        Collider[] colliders = Physics.OverlapBox(TreeWithMapPosition, new Vector3(100, 100, 100) * .5f, Quaternion.identity, LayerMask.GetMask("Tree"));
+        Collider[] colliders = Physics.OverlapBox(TreeWithMapPosition, new Vector3(treeDestroyRange, treeDestroyRange, treeDestroyRange) * .5f, Quaternion.identity, LayerMask.GetMask("Tree"));
 
         List<int> trees = new List<int>();
 

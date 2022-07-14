@@ -380,7 +380,11 @@ public class MainMenu : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.CurrentRoom.IsOpen = false;
 
-        if (PhotonNetwork.CurrentRoom.PlayerCount > 4)
+        if (PhotonNetwork.CurrentRoom.PlayerCount < 4)
+        {
+            PhotonNetwork.LoadLevel(3);
+        }
+        else if (PhotonNetwork.CurrentRoom.PlayerCount < 7)
         {
             PhotonNetwork.LoadLevel(1);
         }
