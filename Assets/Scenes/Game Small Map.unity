@@ -2758,6 +2758,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TreeWithMap: {fileID: 3400064209357259147, guid: c84d7bb4606b2d517a7460afb25a841e, type: 3}
+  treeDestroyRange: 50
   radius: 10
 --- !u!1 &750142105
 GameObject:

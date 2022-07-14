@@ -17294,6 +17294,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TreeWithMap: {fileID: 3400064209357259147, guid: c84d7bb4606b2d517a7460afb25a841e, type: 3}
+  treeDestroyRange: 100
   radius: 60
 --- !u!114 &892035669
 MonoBehaviour:
